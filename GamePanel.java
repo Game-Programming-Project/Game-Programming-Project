@@ -11,7 +11,6 @@ public class GamePanel extends JPanel implements Runnable {
 	private static int NUM_ALIENS = 3;
 
 	private SoundManager soundManager;
-	private Bat bat;
 	private Alien[] aliens;
 	private boolean alienDropped;
 	private boolean isRunning;
@@ -22,7 +21,7 @@ public class GamePanel extends JPanel implements Runnable {
 	private BufferedImage image;
  	private Image backgroundImage;
 
-	private WalkAnimation walk;
+	private Player player;
 
 	private CharacterSelection charSelect;
 	private String character;
@@ -55,13 +54,12 @@ public class GamePanel extends JPanel implements Runnable {
 
 
 	public void createGameEntities() {
-		bat = new Bat (this, 50, 350);
-		walk = new WalkAnimation(this, 50, 350);
+		player = new Player(this, 50, 350, character);
 
 		aliens = new Alien [3];
-		aliens[0] = new Alien (this, 275, 10, bat,walk);
-		aliens[1] = new Alien (this, 150, 10, bat,walk);
-		aliens[2] = new Alien (this, 330, 10, bat,walk);
+		aliens[0] = new Alien (this, 275, 10, player);
+		aliens[1] = new Alien (this, 150, 10, player);
+		aliens[2] = new Alien (this, 330, 10, player);
 	
 	}
 
@@ -89,26 +87,26 @@ public class GamePanel extends JPanel implements Runnable {
 		//imageFX.update();
 		//imageFX2.update();
 
-		walk.update();
+		player.update();
 	}
 
 
 	public void updateBat (int direction) {
 
-		if (bat != null && !isPaused) {
-			bat.move(direction);
-		}
+		// if (bat != null && !isPaused) {
+		// 	bat.move(direction);
+		// }
 
-		if (walk != null && !isPaused) {
+		if (player != null && !isPaused) {
 			
 			if(direction!=99){
-				walk.start();
-				walk.move(direction);
+				player.start();
+				player.move(direction);
 				System.out.println("walk.update(direction) called "+direction);
 			}
 
 			if(direction==99)
-				walk.attack();
+				player.attack();
 		}
 
 	}
@@ -122,38 +120,15 @@ public class GamePanel extends JPanel implements Runnable {
 
 		imageContext.drawImage(backgroundImage, 0, 0, null);	// draw the background image
 
-		if (bat != null) {
-			//bat.draw(imageContext);
-		}
 
-		if (walk != null) {
-			walk.draw(imageContext);
+		if (player != null) {
+			player.draw(imageContext);
 		}
 
 		if (aliens != null) {
 			for (int i=0; i<NUM_ALIENS; i++)
 				aliens[i].draw(imageContext);
-       		}
-
-		if (imageFX != null) {
-			imageFX.draw (imageContext);
-		}
-
-		if (imageFX2 != null) {
-			imageFX2.draw (imageContext);
-		}
-
-		if (animation != null) {
-			//animation.draw (imageContext);
-		}
-
-		if (animation2 != null) {
-			//animation2.draw (imageContext);
-		}
-
-		if (animation3 != null) {
-			animation3.draw (imageContext);
-		}
+       	}
 
 		Graphics2D g2 = (Graphics2D) getGraphics();	// get the graphics context for the panel
 		g2.drawImage(image, 0, 0, 400, 400, null);
@@ -171,17 +146,6 @@ public class GamePanel extends JPanel implements Runnable {
 			gameThread = new Thread (this);			
 			gameThread.start();
 
-			if (animation != null) {
-				animation.start();
-			}
-
-			if (animation2 != null) {
-				animation2.start();
-			}
-
-			if (animation3 != null) {
-				//animation3.start();
-			}
 		}
 
 	}
@@ -197,17 +161,6 @@ public class GamePanel extends JPanel implements Runnable {
 			gameThread = new Thread (this);			
 			gameThread.start();
 
-			if (animation != null) {
-				animation.start();
-			}
-
-			if (animation2 != null) {
-				animation2.start();
-			}
-
-			if (animation3 != null) {
-				//animation3.start();
-			}
 		}
 	}
 
@@ -229,7 +182,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 
 	public void shootCat() {
-		animation3.start();
+		//animation3.start();
 	}
 
 	

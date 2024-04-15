@@ -22,9 +22,9 @@ public class CharacterSelection extends JPanel {
         // character2Button = new JButton(character2Icon);
         // character3Button = new JButton(character3Icon);
 
-        ImageIcon character1Icon = new ImageIcon(new ImageIcon("images/Woodcutter.png").getImage().getScaledInstance(120, 120, Image.SCALE_DEFAULT));
-        ImageIcon character2Icon = new ImageIcon(new ImageIcon("images/GraveRobber.png").getImage().getScaledInstance(120, 120, Image.SCALE_DEFAULT));
-        ImageIcon character3Icon = new ImageIcon(new ImageIcon("images/SteamMan.png").getImage().getScaledInstance(120, 120, Image.SCALE_DEFAULT));
+        ImageIcon character1Icon = new ImageIcon(new ImageIcon("images/Player/1/Woodcutter.png").getImage().getScaledInstance(120, 120, Image.SCALE_DEFAULT));
+        ImageIcon character2Icon = new ImageIcon(new ImageIcon("images/Player/2/GraveRobber.png").getImage().getScaledInstance(120, 120, Image.SCALE_DEFAULT));
+        ImageIcon character3Icon = new ImageIcon(new ImageIcon("images/Player/3/SteamMan.png").getImage().getScaledInstance(120, 120, Image.SCALE_DEFAULT));
 
         character1Button = new JButton(character1Icon);
         character1Button.setPreferredSize(new Dimension(120, 120)); // adjust size as needed
@@ -46,21 +46,21 @@ public class CharacterSelection extends JPanel {
 
         character1Button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                selectedCharacter = "one";
+                selectedCharacter = "1";
                 gamePanel.setCharacter(selectedCharacter);
             }
         });
 
         character2Button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                selectedCharacter = "two";
+                selectedCharacter = "2";
                 gamePanel.setCharacter(selectedCharacter);
             }
         });
 
         character3Button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                selectedCharacter = "three";
+                selectedCharacter = "3";
                 gamePanel.setCharacter(selectedCharacter);
             }
         });
