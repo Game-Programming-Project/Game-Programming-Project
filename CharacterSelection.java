@@ -14,26 +14,19 @@ public class CharacterSelection extends JPanel {
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
-        // ImageIcon character1Icon = new ImageIcon("images/Woodcutter.png");
-        // ImageIcon character2Icon = new ImageIcon("images/GraveRobber.png");
-        // ImageIcon character3Icon = new ImageIcon("images/SteamMan.png");
-
-        // character1Button = new JButton(character1Icon);
-        // character2Button = new JButton(character2Icon);
-        // character3Button = new JButton(character3Icon);
-
+        //setting images for each button
         ImageIcon character1Icon = new ImageIcon(new ImageIcon("images/Player/1/Woodcutter.png").getImage().getScaledInstance(120, 120, Image.SCALE_DEFAULT));
         ImageIcon character2Icon = new ImageIcon(new ImageIcon("images/Player/2/GraveRobber.png").getImage().getScaledInstance(120, 120, Image.SCALE_DEFAULT));
         ImageIcon character3Icon = new ImageIcon(new ImageIcon("images/Player/3/SteamMan.png").getImage().getScaledInstance(120, 120, Image.SCALE_DEFAULT));
 
         character1Button = new JButton(character1Icon);
-        character1Button.setPreferredSize(new Dimension(120, 120)); // adjust size as needed
+        character1Button.setPreferredSize(new Dimension(120, 120)); 
 
         character2Button = new JButton(character2Icon);
-        character2Button.setPreferredSize(new Dimension(120, 120)); // adjust size as needed
+        character2Button.setPreferredSize(new Dimension(120, 120)); 
 
         character3Button = new JButton(character3Icon);
-        character3Button.setPreferredSize(new Dimension(120, 120)); // adjust size as needed
+        character3Button.setPreferredSize(new Dimension(120, 120)); 
 
         // Make the buttons transparent
         character1Button.setContentAreaFilled(false);
@@ -72,7 +65,6 @@ public class CharacterSelection extends JPanel {
         gbc.gridwidth = 3;
         add(label, gbc);
 
-        // Reset the gridwidth and add the buttons
         gbc.gridwidth = 1;
 
         gbc.gridy = 1;
@@ -85,6 +77,7 @@ public class CharacterSelection extends JPanel {
         add(character3Button, gbc);
     }
 
+    //send the selected character to the gamePanel
     public String getSelectedCharacter() {
         return selectedCharacter;
     }

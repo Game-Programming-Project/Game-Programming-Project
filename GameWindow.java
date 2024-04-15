@@ -206,19 +206,19 @@ public class GameWindow extends JFrame
 		keyTF.setText(keyText + " pressed.");
 
 		if (keyCode == KeyEvent.VK_A) {
-			gamePanel.updateBat (1);
+			gamePanel.updatePlayer (1);
 		}
 
 		if (keyCode == KeyEvent.VK_D) {
-			gamePanel.updateBat (2);
+			gamePanel.updatePlayer (2);
 		}
 
 		if (keyCode == KeyEvent.VK_W) {
-			gamePanel.updateBat (3);
+			gamePanel.updatePlayer (3);
 		}
 
 		if (keyCode == KeyEvent.VK_S) {
-			gamePanel.updateBat (4);
+			gamePanel.updatePlayer (4);
 		}
 	}
 
@@ -238,7 +238,8 @@ public class GameWindow extends JFrame
 		int x = e.getX();
 		int y = e.getY();
 
-		gamePanel.updateBat(99);
+		//99 means attack, so clicking makes player swing weapon
+		gamePanel.updatePlayer(99);
 
 		mouseTF.setText("(" + x +", " + y + ")");
 	}

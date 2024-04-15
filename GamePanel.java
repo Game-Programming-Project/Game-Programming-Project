@@ -84,18 +84,11 @@ public class GamePanel extends JPanel implements Runnable {
 			aliens[i].move();
 		}
 
-		//imageFX.update();
-		//imageFX2.update();
-
 		player.update();
 	}
 
 
-	public void updateBat (int direction) {
-
-		// if (bat != null && !isPaused) {
-		// 	bat.move(direction);
-		// }
+	public void updatePlayer (int direction) {
 
 		if (player != null && !isPaused) {
 			

@@ -16,16 +16,16 @@ public class Player {
     Animation attackAnimationLeft;
 	Animation attackAnimation;
 
-    private int x;		// x position of animation
-	private int y;		// y position of animation
+    private int x;		
+	private int y;		
 
 	private int width;
 	private int height;
 
     private GamePanel panel;
 
-	private int dx;		// increment to move along x-axis
-	private int dy;		// increment to move along y-axis
+	private int dx;		
+	private int dy;	
 
 	private Image standImageRight;
 	private Image standImageLeft;
@@ -49,19 +49,16 @@ public class Player {
 
         width=height=48;
         
-        x = xPos;		// set x position
-        y = yPos;		// set y position
+        x = xPos;		
+        y = yPos;		
 
-        dx = 5;		// increment to move along x-axis
-        dy = 5;	// increment to move along y-axis
+        dx = 5;	
+        dy = 5;	
 
 		// load images from strip files
 		loadImages();
 		loadAnimations();
-
-		
-
-		
+    
 	}
 
     public void start() {
@@ -111,7 +108,7 @@ public class Player {
 			standImage = standImageLeft;
 			walkAnimation = walkAnimationLeft;
             attackAnimation = attackAnimationLeft;          
-			if (x < -30)			// move to right of GamePanel
+			if (x < -30)			
 				x = 380;
 		}
 		else 
@@ -121,13 +118,14 @@ public class Player {
 		    standImage = standImageRight;
 		    walkAnimation = walkAnimationRight;
             attackAnimation = attackAnimationRight;
-			if (x > 380)			// move to left of GamePanel
+
+			if (x > 380)			
 				x = -30;
 		}
 		else
 		if (direction == 3) {
 			y = y - dy;
-			if (y < 0)			// move to bottom of GamePanel
+			if (y < 0)			
 				y = 0;
 		}
 		else
@@ -236,7 +234,6 @@ public class Player {
     private void loadAnimations(){
         loadWalkAnimation();
         loadAttackAnimation();
-    
     }
 
     private void loadImages(){
