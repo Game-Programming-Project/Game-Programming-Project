@@ -23,10 +23,13 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private Player player;
 
+	private boolean characterSelected;
 	private CharacterSelection charSelect;
 	private String character;
 
 	public GamePanel () {
+
+		characterSelected=false;
 
 		setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -133,7 +136,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 	public void startGame() {				// initialise and start the game thread 
 
-		if (gameThread == null) {
+		if (gameThread == null && characterSelected) {
 			//soundManager.playClip ("background", true);
 			createGameEntities();
 			gameThread = new Thread (this);			
@@ -186,6 +189,7 @@ public class GamePanel extends JPanel implements Runnable {
         // Remove the SelectCharacter panel
         remove(charSelect);
 
+		characterSelected=true;
         // Redraw the GamePanel
         revalidate();
         repaint();
