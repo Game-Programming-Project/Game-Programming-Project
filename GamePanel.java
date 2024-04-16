@@ -190,7 +190,6 @@ public class GamePanel extends JPanel implements Runnable {
         remove(charSelect);
 
 		characterSelected=true;
-		startGame();
         // Redraw the GamePanel
         revalidate();
         repaint();
