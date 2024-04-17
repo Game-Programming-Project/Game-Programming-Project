@@ -19,13 +19,15 @@ public class GamePanel extends JPanel implements Runnable {
 	private Thread gameThread;
 
 	private BufferedImage image;
- 	private Image backgroundImage;
+ 	//private Image backgroundImage;
 
 	private Player player;
 
 	private boolean characterSelected;
 	private CharacterSelection charSelect;
 	private String character;
+
+	private Background background;
 
 	public GamePanel () {
 
@@ -50,19 +52,22 @@ public class GamePanel extends JPanel implements Runnable {
 		isPaused = false;
 		soundManager = SoundManager.getInstance();
 
-		backgroundImage = ImageManager.loadImage ("images/Background.jpg");
+		//backgroundImage = ImageManager.loadImage ("images/Background.jpg");
 
 		image = new BufferedImage (400, 400, BufferedImage.TYPE_INT_RGB);
 	}
 
 
 	public void createGameEntities() {
-		player = new Player(this, 50, 350, character);
 
-		aliens = new Alien [3];
-		aliens[0] = new Alien (this, 275, 10, player);
-		aliens[1] = new Alien (this, 150, 10, player);
-		aliens[2] = new Alien (this, 330, 10, player);
+		background = new Background(this, "images/Level1Map.png", 96);
+
+		player = new Player(this, 190, 180, character);
+
+		// aliens = new Alien [3];
+		// aliens[0] = new Alien (this, 275, 10, player);
+		// aliens[1] = new Alien (this, 150, 10, player);
+		// aliens[2] = new Alien (this, 330, 10, player);
 	
 	}
 
@@ -83,11 +88,11 @@ public class GamePanel extends JPanel implements Runnable {
 
 	public void gameUpdate() {
 
-		for (int i=0; i<NUM_ALIENS; i++) {
-			aliens[i].move();
-		}
+		// for (int i=0; i<NUM_ALIENS; i++) {
+		// 	aliens[i].move();
+		// }
 
-		player.update();
+		player.update(); // needed for animations to run
 	}
 
 
@@ -98,11 +103,19 @@ public class GamePanel extends JPanel implements Runnable {
 			if(direction!=99){
 				player.start();
 				player.move(direction);
-				System.out.println("walk.update(direction) called "+direction);
+				//System.out.println("walk.update(direction) called "+direction);
 			}
 
 			if(direction==99)
 				player.attack();
+		}
+
+		if (background != null && player != null) {
+			int batMovement= background.move(direction); //check whether the bat can start/stop moving in a new direction 
+
+
+			player.setDirections(batMovement);
+			background.setDirections(player.move(direction));	// check if the bat is centred so the background can move
 		}
 
 	}
@@ -114,7 +127,9 @@ public class GamePanel extends JPanel implements Runnable {
 
 		Graphics2D imageContext = (Graphics2D) image.getGraphics();
 
-		imageContext.drawImage(backgroundImage, 0, 0, null);	// draw the background image
+		background.draw(imageContext);
+
+		//imageContext.drawImage(backgroundImage, 0, 0, null);	// draw the background image
 
 
 		if (player != null) {
