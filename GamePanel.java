@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements Runnable {
    
@@ -15,6 +16,8 @@ public class GamePanel extends JPanel implements Runnable {
 	private boolean alienDropped;
 	private boolean isRunning;
 	private boolean isPaused;
+
+	private ArrayList<Rock> rocks;
 
 	private Thread gameThread;
 
@@ -62,7 +65,12 @@ public class GamePanel extends JPanel implements Runnable {
 
 		background = new Background(this, "images/Level1Map.png", 96);
 
-		player = new Player(this, 190, 180, character);
+		player = new Player(this, 87, 134, character);
+
+		rocks = new ArrayList<>();
+		rocks.add(new Rock(this, 823, 222));
+		rocks.add(new Rock(this, 87,134));
+
 
 		// aliens = new Alien [3];
 		// aliens[0] = new Alien (this, 275, 10, player);
@@ -131,6 +139,10 @@ public class GamePanel extends JPanel implements Runnable {
 
 		//imageContext.drawImage(backgroundImage, 0, 0, null);	// draw the background image
 
+		if(rocks !=null){
+			for (int i=0; i<rocks.size(); i++)
+				rocks.get(i).draw(imageContext, background);
+		}
 
 		if (player != null) {
 			player.draw(imageContext);

@@ -57,8 +57,8 @@ public class Player {
         x = xPos;		
         y = yPos;		
 
-        dx = 5;	
-        dy = 5;	
+        dx = 8;	
+        dy = 8;	
 
 		// load images from strip files
 		loadImages();
@@ -70,7 +70,7 @@ public class Player {
 		if (walkAnimation.isStillActive())
 			return;
 			
-		System.out.println("start");
+		//System.out.println("start");
 		walkAnimation.start();
 	}
 
@@ -377,5 +377,13 @@ public class Player {
     public Rectangle2D.Double getBoundingRectangle() {
 
 		return new Rectangle2D.Double (x, y, width, height);
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
 	}
 }

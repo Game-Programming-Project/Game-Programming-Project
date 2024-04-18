@@ -188,4 +188,12 @@ public class Background {
 	g2.drawImage(bgImage, bg1X, bg1Y, null);
   }
 
+  public int getbg1X(){
+	return bg1X;
+  }
+
+  public int getbg1Y(){
+	return bg1Y;
+  }
+
 }
