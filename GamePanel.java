@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class GamePanel extends JPanel implements Runnable {
    
@@ -68,8 +69,8 @@ public class GamePanel extends JPanel implements Runnable {
 		player = new Player(this, 190, 180, character);
 
 		rocks = new ArrayList<>();
-		rocks.add(new Rock(this, 823, 222));
-		rocks.add(new Rock(this, 87,134));
+		rocks.add(new Rock(this, 823, 222, background));
+		rocks.add(new Rock(this, 87,134, background));
 	
 	}
 
@@ -90,7 +91,25 @@ public class GamePanel extends JPanel implements Runnable {
 
 	public void gameUpdate() {
 
-		player.update(); // needed for animations to run
+		if(player!= null)
+			player.update(); // needed for animations to run
+
+		// iterator is needed to avoid ConcurrentModificationException
+		Iterator<Rock> iterator = rocks.iterator(); 
+		while (iterator.hasNext()) { // loop through all rocks in the arrayList
+
+			Rock rock = iterator.next();
+
+			if(rock.collidesWithPlayer(player) && player.justAttacked() && !rock.isDestroyed()){
+
+				rock.destroy();
+				rock.setDestroyed(true);
+				iterator.remove(); // Use iterator's remove method to remove the destroyed rock from the list
+				player.setJustAttacked(false);
+			}
+
+		}
+		
 	}
 
 
@@ -104,8 +123,9 @@ public class GamePanel extends JPanel implements Runnable {
 				//System.out.println("walk.update(direction) called "+direction);
 			}
 
-			if(direction==99)
+			if(direction==99){ // direction of 99 means click on screen to attack
 				player.attack();
+			}
 		}
 
 		if (background != null && player != null) {
@@ -131,7 +151,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		if(rocks !=null){
 			for (int i=0; i<rocks.size(); i++)
-				rocks.get(i).draw(imageContext, background);
+				rocks.get(i).draw(imageContext);
 		}
 
 		if (player != null) {

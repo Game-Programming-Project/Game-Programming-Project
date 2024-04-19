@@ -1,6 +1,7 @@
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.Graphics2D;
+import java.awt.geom.Rectangle2D;
 
 public class Rock {
     private Image rockImage;
@@ -10,19 +11,28 @@ public class Rock {
     private int mapX, mapY;
     private GamePanel gPanel;
 
-    public Rock (GamePanel gPanel, int mapX, int mapY) {
+    private Background bg;
+
+    private SoundManager soundManager;
+
+    private boolean destroyed;
+
+    public Rock (GamePanel gPanel, int mapX, int mapY, Background bg) {
 
         this.mapX = mapX;
         this.mapY = mapY;
         this.gPanel = gPanel;
+        this.bg = bg;
 
         width = height = 30;
 
-        rockImage = ImageManager.loadImage("images/Rocks/Rock_1.png");
+        soundManager = SoundManager.getInstance();
 
+        rockImage = ImageManager.loadImage("images/Rocks/Rock_1.png");
+        destroyed = false;
     }
 
-    public void draw(Graphics2D g2, Background bg) {
+    public void draw(Graphics2D g2) {
 
         int bgX = bg.getbg1X();
         int bgY = bg.getbg1Y();
@@ -35,12 +45,51 @@ public class Rock {
 
         //positioning the rock on the screen relative to the background
         //this calculation makes it so that the rock stays on the map where it needs to be
-        int screenX = mapX - bgX;
-        int screenY = mapY - bgY;
+        x = mapX - bgX;
+        y = mapY - bgY;
         
-        g2.drawImage(rockImage, screenX, screenY, width, height, null);
+        if(!destroyed) // draw if rock is NOT destroyed
+            g2.drawImage(rockImage, x, y, width, height, null);
 
     }
 
+    public void destroy() {
+        soundManager.playClip("break_rock", false);
+    }
+
+    public Rectangle2D.Double getBoundingRectangle() {
+		return new Rectangle2D.Double (x, y, width, height);
+	}
+
+    public boolean collidesWithPlayer(Player p) {
+        Rectangle2D.Double myRect = getBoundingRectangle();
+        Rectangle2D.Double playerRect = p.getBoundingRectangle();
+        
+        return myRect.intersects(playerRect); 
+    }
+
+    public boolean isDestroyed() {
+        return destroyed;
+    }
+
+    public void setDestroyed(boolean destroyed) {
+        this.destroyed = destroyed;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
 
 }

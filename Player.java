@@ -35,6 +35,9 @@ public class Player {
     private String characterType;
 
 	private HashSet directions;
+
+	private Boolean attacking;
+	private Boolean justAttacked;
     
     public Player(GamePanel p, int xPos, int yPos, String cType) {
 
@@ -63,7 +66,9 @@ public class Player {
 		// load images from strip files
 		loadImages();
 		loadAnimations();
-    
+		
+		attacking = false;
+		justAttacked = false;
 	}
 
     public void start() {
@@ -77,11 +82,20 @@ public class Player {
 	
 	public void update() {
 
-		if(!walkAnimation.isStillActive() && !attackAnimation.isStillActive()) // if animations are not active no need to update
+		if(!walkAnimation.isStillActive() && !attackAnimation.isStillActive()){ // if animations are not active no need to update
+			if (attacking)
+				justAttacked = true; //just finished attacking so set to true
+			
+			attacking = false;
 			return;
+		}
+
+		// set to false every time update is called cause didn't just finish attacking
+		justAttacked = false; //need this or else it will falsely think it just finished attacking
 
 		if(attackAnimation.isStillActive()){ // if attack animation is active update it
 			System.out.println("attack update");
+			attacking = true;
 			attackAnimation.update();
 			return;
 		}
@@ -90,12 +104,15 @@ public class Player {
 		
 	}
 
-    public void attack() {
+    public boolean attack() {
 		if (attackAnimation.isStillActive()) // if an attack is currently going on return, else start the animation
-			return;
+			return false; // indicates that attack did not go off
+		else
+			attacking = true;
 
 		System.out.println("attack");
 		attackAnimation.start();
+		return true; // attack went off
 	}
 
 	public int move (int direction) {
@@ -333,8 +350,19 @@ public class Player {
     }
 
     public Rectangle2D.Double getBoundingRectangle() {
-
 		return new Rectangle2D.Double (x, y, width, height);
+	}
+
+	public void setJustAttacked(boolean a) {
+		justAttacked = a;
+	}
+
+	public boolean justAttacked() {
+		return justAttacked;
+	}
+
+	public boolean isAttacking() {
+		return attacking;
 	}
 
 	public int getX() {
