@@ -9,7 +9,7 @@ import java.awt.Graphics2D;
  * 108 327
  * 
  */
-public class BeeAnimation {
+public class BeeAnimation extends Enemy {
 
 	Animation animation;
 
@@ -23,7 +23,8 @@ public class BeeAnimation {
 	private int dx; // increment to move along x-axis
 	private int dy; // increment to move along y-axis
 
-	public BeeAnimation() {
+	public BeeAnimation(GamePanel gPanel, int mapX, int mapY, Background bg) {
+		super(gPanel, mapX, mapY, bg);
 		animation = new Animation(true); // run animation once
 
 		width = 50;
@@ -58,8 +59,6 @@ public class BeeAnimation {
 	}
 
 	public void start() {
-		x = 150;
-		y = 150;
 		animation.start();
 	}
 
@@ -68,11 +67,12 @@ public class BeeAnimation {
 			return;
 
 		animation.update();
-		x = x + dx;
-		y = y + dy;
+		mapX = mapX + dx;
+		mapY = mapY + dy;
 	}
 
 	public void draw(Graphics2D g2) {
+		updateScreenCoordinates();
 		if (!animation.isStillActive())
 			return;
 

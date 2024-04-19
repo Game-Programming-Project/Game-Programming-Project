@@ -68,7 +68,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 	public void createGameEntities() {
 
-		background = new Background(this, "images/testingmap.png", 96);
+		background = new Background(this, "images/Level1Map.png", 96);
 
 		player = new Player(this, 190, 180, character);
 
@@ -78,8 +78,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 		enemies = new ArrayList<>();
 		enemies.add(new Bomber(this, 823, 400, background));
+		enemies.add(new BeeAnimation(this, 108, 327, background));
 
-		animBee = new BeeAnimation();
 		animGrasshopper = new GrasshopperAnimation();
 		animMushroom = new MushroomAnimation();
 	}
@@ -101,7 +101,6 @@ public class GamePanel extends JPanel implements Runnable {
 
 		if (player != null)
 			player.update(); // needed for animations to run
-		animBee.update();
 		animGrasshopper.update();
 		animMushroom.update();
 		// iterator is needed to avoid ConcurrentModificationException
@@ -181,7 +180,7 @@ public class GamePanel extends JPanel implements Runnable {
 		}
 
 		if (animBee != null) {
-			animBee.draw(imageContext);
+			// animBee.draw(imageContext);
 		}
 
 		if (animGrasshopper != null) {
