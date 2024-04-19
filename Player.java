@@ -241,7 +241,6 @@ public class Player {
 
 	}
 
-
 	public void draw(Graphics2D g2) {
 		
 		if(!walkAnimation.isStillActive() && !attackAnimation.isStillActive()) // if animations are not active then draw standing image instead

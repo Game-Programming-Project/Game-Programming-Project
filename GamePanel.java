@@ -67,7 +67,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 	public void createGameEntities() {
 
-		background = new Background(this, "images/Level1MapTest.png", 96);
+		background = new Background(this, "images/Level1MapTest.png", 96, 220, 30);
 
 		player = new Player(this, 190, 180, character);
 
