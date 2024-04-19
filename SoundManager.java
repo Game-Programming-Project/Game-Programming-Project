@@ -13,6 +13,9 @@ public class SoundManager {				// a Singleton class
 	private SoundManager () {
 		clips = new HashMap<String, Clip>();
 
+		Clip clip = loadClip("sounds/break_rock.wav");
+		clips.put("break_rock", clip);
+
 		// Clip clip = loadClip("sounds/background.wav");	// played from start of the game
 		// clips.put("background", clip);
 
