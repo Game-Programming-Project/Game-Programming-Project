@@ -17,11 +17,10 @@ public class Player {
     private Animation attackAnimationLeft;
 	private Animation attackAnimation;
 
-    private int x;		
-	private int y;		
+    private int x,y;			
 
-	private int width;
-	private int height;
+	private int width, height;
+
 
     private GamePanel panel;
 
@@ -55,7 +54,7 @@ public class Player {
 
         panel = p;
 
-        width=height=100;
+        width=height=64;
         
         x = xPos;		
         y = yPos;		

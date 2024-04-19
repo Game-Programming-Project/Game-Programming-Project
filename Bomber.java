@@ -12,8 +12,12 @@ public class Bomber extends Enemy{
     private Animation walkAnimationAway;
     private Animation walkAnimationForward;
 
-    public Bomber(GamePanel gPanel, int mapX, int mapY, Background bg) {
+    private Player player;
+
+    public Bomber(GamePanel gPanel, int mapX, int mapY, Background bg, Player p) {
         super(gPanel,mapX,mapY,bg);
+        player = p;
+
 
         walkAnimationAway= new Animation(false);
         walkAnimationForward= new Animation(false);
@@ -30,6 +34,9 @@ public class Bomber extends Enemy{
     public void move(){
         int oldMapX = mapX;
         int oldMapY = mapY;
+
+        int playerX = player.getX();
+        int playerY = player.getY();
 
         mapX+=dx;
         if(oldMapX<mapX){ //moving right
@@ -50,7 +57,7 @@ public class Bomber extends Enemy{
             walkAnimation = walkAnimationAway;
             standImage = standImageAway;
         }
-        System.out.println("MapX: "+mapX+" MapY: "+mapY);
+       // System.out.println("MapX: "+mapX+" MapY: "+mapY);
     }
 
     public void loadWalkAnimations(){
@@ -81,7 +88,7 @@ public class Bomber extends Enemy{
 					i*imageWidth, 0, (i*imageWidth)+imageWidth, imageHeight,
 					null);
 
-            Animation.addFrame(frameImage, 70);
+            Animation.addFrame(frameImage, 200);
 		}
 
         return Animation;

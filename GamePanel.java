@@ -34,7 +34,6 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private Background background;
 
-	private BeeAnimation animBee;
 	private GrasshopperAnimation animGrasshopper;
 	private MushroomAnimation animMushroom;
 
@@ -68,23 +67,19 @@ public class GamePanel extends JPanel implements Runnable {
 
 	public void createGameEntities() {
 
-		background = new Background(this, "images/testingmap.png", 96);
+		background = new Background(this, "images/Level1MapTest.png", 96);
 
 		player = new Player(this, 190, 180, character);
 
-
 		rocks = new ArrayList<>();
 		rocks.add(new Rock(this, 823, 400, background));
-		rocks.add(new Rock(this, 87,134, background));
-		
+		//rocks.add(new Rock(this, 87, 134, background));
+
 		enemies = new ArrayList<>();
-		enemies.add(new Bomber(this, 823, 400, background));
-	}
-		animBee = new BeeAnimation();
+		enemies.add(new Bomber(this, 87, 134, background, player));
+
 		animGrasshopper = new GrasshopperAnimation();
 		animMushroom = new MushroomAnimation();
-
-
 	}
 
 	public void run() {
@@ -102,18 +97,17 @@ public class GamePanel extends JPanel implements Runnable {
 
 	public void gameUpdate() {
 
-		if(player!= null)
+		if (player != null)
 			player.update(); // needed for animations to run
-      animBee.update();
-      animGrasshopper.update();
-      animMushroom.update();
+		animGrasshopper.update();
+		animMushroom.update();
 		// iterator is needed to avoid ConcurrentModificationException
-		Iterator<Rock> rockIterator = rocks.iterator(); 
+		Iterator<Rock> rockIterator = rocks.iterator();
 		while (rockIterator.hasNext()) { // loop through all rocks in the arrayList
 
 			Rock rock = rockIterator.next();
 
-			if(rock.collidesWithPlayer(player) && player.justAttacked() && !rock.isDestroyed()){
+			if (rock.collidesWithPlayer(player) && player.justAttacked() && !rock.isDestroyed()) {
 
 				rock.destroy();
 				rock.setDestroyed(true);
@@ -128,11 +122,11 @@ public class GamePanel extends JPanel implements Runnable {
 
 			Enemy enemy = enemyIterator.next();
 			enemy.move();
+			enemy.start();
+			enemy.update();
 
+			//if enemy is a beeAnimation then call the status() method
 		}
-		
-	}
-
 
 	}
 
@@ -146,7 +140,7 @@ public class GamePanel extends JPanel implements Runnable {
 				// System.out.println("walk.update(direction) called "+direction);
 			}
 
-			if(direction==99){  // direction of 99 means click on screen to attack
+			if (direction == 99) { // direction of 99 means click on screen to attack
 				player.attack();
 			}
 		}
@@ -169,33 +163,18 @@ public class GamePanel extends JPanel implements Runnable {
 
 		background.draw(imageContext);
 
-
-		//imageContext.drawImage(backgroundImage, 0, 0, null);	// draw the background image
-
-		if(rocks !=null){
-			for (int i=0; i<rocks.size(); i++)
+		if (rocks != null) {
+			for (int i = 0; i < rocks.size(); i++)
 				rocks.get(i).draw(imageContext);
 		}
 
-		if(enemies !=null){
-			for (int i=0; i<enemies.size(); i++)
+		if (enemies != null) {
+			for (int i = 0; i < enemies.size(); i++)
 				enemies.get(i).draw(imageContext);
 		}
 
 		if (player != null) {
 			player.draw(imageContext);
-		}
-
-		if (animBee != null) {
-			animBee.draw(imageContext);
-		}
-
-		if (animGrasshopper != null) {
-			// animGrasshopper.draw(imageContext);
-		}
-
-		if (animMushroom != null) {
-			// animMushroom.draw (imageContext);
 		}
 
 		Graphics2D g2 = (Graphics2D) getGraphics(); // get the graphics context for the panel
@@ -214,9 +193,6 @@ public class GamePanel extends JPanel implements Runnable {
 			gameThread = new Thread(this);
 			gameThread.start();
 
-		}
-		if (animBee != null) {
-			animBee.start();
 		}
 
 		if (animGrasshopper != null) {
