@@ -75,12 +75,10 @@ public class GamePanel extends JPanel implements Runnable {
 		rocks = new ArrayList<>();
 		rocks.add(new Rock(this, 823, 222, background));
 		rocks.add(new Rock(this, 87,134, background));
-	
-	}
+		
 		animBee = new BeeAnimation();
 		animGrasshopper = new GrasshopperAnimation();
 		animMushroom = new MushroomAnimation();
-
 
 	}
 
@@ -101,9 +99,10 @@ public class GamePanel extends JPanel implements Runnable {
 
 		if(player!= null)
 			player.update(); // needed for animations to run
-      animBee.update();
-      animGrasshopper.update();
-      animMushroom.update();
+
+		animBee.update();
+		animGrasshopper.update();
+		animMushroom.update();
 		// iterator is needed to avoid ConcurrentModificationException
 		Iterator<Rock> iterator = rocks.iterator(); 
 		while (iterator.hasNext()) { // loop through all rocks in the arrayList
@@ -122,8 +121,6 @@ public class GamePanel extends JPanel implements Runnable {
 		
 	}
 
-
-	}
 
 	public void updatePlayer(int direction) {
 
