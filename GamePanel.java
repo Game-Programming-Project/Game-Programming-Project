@@ -5,6 +5,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -15,6 +17,8 @@ public class GamePanel extends JPanel implements Runnable {
 	private boolean alienDropped;
 	private boolean isRunning;
 	private boolean isPaused;
+
+	private ArrayList<Rock> rocks;
 
 	private Thread gameThread;
 
@@ -63,17 +67,20 @@ public class GamePanel extends JPanel implements Runnable {
 
 	public void createGameEntities() {
 
-		background = new Background(this, "images/Level1Map.png", 96);
+		background = new Background(this, "images/testingmap.png", 96);
 
 		player = new Player(this, 190, 180, character);
 
-		// aliens = new Alien [3];
-		// aliens[0] = new Alien (this, 275, 10, player);
-		// aliens[1] = new Alien (this, 150, 10, player);
-		// aliens[2] = new Alien (this, 330, 10, player);
+
+		rocks = new ArrayList<>();
+		rocks.add(new Rock(this, 823, 222, background));
+		rocks.add(new Rock(this, 87,134, background));
+	
+	}
 		animBee = new BeeAnimation();
 		animGrasshopper = new GrasshopperAnimation();
 		animMushroom = new MushroomAnimation();
+
 
 	}
 
@@ -92,14 +99,29 @@ public class GamePanel extends JPanel implements Runnable {
 
 	public void gameUpdate() {
 
-		// for (int i=0; i<NUM_ALIENS; i++) {
-		// aliens[i].move();
-		// }
+		if(player!= null)
+			player.update(); // needed for animations to run
+      animBee.update();
+      animGrasshopper.update();
+      animMushroom.update();
+		// iterator is needed to avoid ConcurrentModificationException
+		Iterator<Rock> iterator = rocks.iterator(); 
+		while (iterator.hasNext()) { // loop through all rocks in the arrayList
 
-		player.update(); // needed for animations to run
-		animBee.update();
-		animGrasshopper.update();
-		animMushroom.update();
+			Rock rock = iterator.next();
+
+			if(rock.collidesWithPlayer(player) && player.justAttacked() && !rock.isDestroyed()){
+
+				rock.destroy();
+				rock.setDestroyed(true);
+				iterator.remove(); // Use iterator's remove method to remove the destroyed rock from the list
+				player.setJustAttacked(false);
+			}
+
+		}
+		
+	}
+
 
 	}
 
@@ -113,8 +135,9 @@ public class GamePanel extends JPanel implements Runnable {
 				// System.out.println("walk.update(direction) called "+direction);
 			}
 
-			if (direction == 99)
+			if(direction==99){  // direction of 99 means click on screen to attack
 				player.attack();
+			}
 		}
 
 		if (background != null && player != null) {
@@ -135,8 +158,14 @@ public class GamePanel extends JPanel implements Runnable {
 
 		background.draw(imageContext);
 
-		// imageContext.drawImage(backgroundImage, 0, 0, null); // draw the background
-		// image
+
+		//imageContext.drawImage(backgroundImage, 0, 0, null);	// draw the background image
+
+		if(rocks !=null){
+			for (int i=0; i<rocks.size(); i++)
+				rocks.get(i).draw(imageContext);
+		}
+
 
 		if (player != null) {
 			player.draw(imageContext);

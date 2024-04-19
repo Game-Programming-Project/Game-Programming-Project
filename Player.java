@@ -36,7 +36,11 @@ public class Player {
 
 	private HashSet directions;
 
-	public Player(GamePanel p, int xPos, int yPos, String cType) {
+
+	private Boolean attacking;
+	private Boolean justAttacked;
+    
+    public Player(GamePanel p, int xPos, int yPos, String cType) {
 
 		directions = new HashSet<>(3);
 
@@ -54,15 +58,22 @@ public class Player {
 
 		width = height = 48;
 
-		x = xPos;
-		y = yPos;
+        width=height=100;
+        
+        x = xPos;		
+        y = yPos;		
 
-		dx = 5;
-		dy = 5;
+        dx = 8;	
+        dy = 8;	
+
 
 		// load images from strip files
 		loadImages();
 		loadAnimations();
+
+		
+		attacking = false;
+		justAttacked = false;
 
 	}
 
@@ -71,17 +82,28 @@ public class Player {
 			return;
 
 		System.out.println("start");
+
 		walkAnimation.start();
 	}
 
 	public void update() {
 
-		if (!walkAnimation.isStillActive() && !attackAnimation.isStillActive()) // if animations are not active no need
-																				// to update
+
+		if(!walkAnimation.isStillActive() && !attackAnimation.isStillActive()){ // if animations are not active no need to update
+			if (attacking)
+				justAttacked = true; //just finished attacking so set to true
+			
+			attacking = false;
+
 			return;
+		}
+
+		// set to false every time update is called cause didn't just finish attacking
+		justAttacked = false; //need this or else it will falsely think it just finished attacking
 
 		if (attackAnimation.isStillActive()) { // if attack animation is active update it
 			System.out.println("attack update");
+			attacking = true;
 			attackAnimation.update();
 			return;
 		}
@@ -90,55 +112,19 @@ public class Player {
 
 	}
 
-	public void attack() {
+    public boolean attack() {
+
 		if (attackAnimation.isStillActive()) // if an attack is currently going on return, else start the animation
-			return;
+			return false; // indicates that attack did not go off
+		else
+			attacking = true;
 
 		System.out.println("attack");
 		attackAnimation.start();
+		return true; // attack went off
 	}
 
-	// public void move(int direction) {
-	// if (!walkAnimation.isStillActive())
-	// return;
 
-	// if(attackAnimation.isStillActive()) //dont move if attacking
-	// return;
-
-	// walkAnimation.update();
-
-	// if (direction == 1) {
-	// x = x - dx;
-
-	// standImage = standImageLeft;
-	// walkAnimation = walkAnimationLeft;
-	// attackAnimation = attackAnimationLeft;
-	// if (x < -30)
-	// x = 380;
-	// }
-	// else
-	// if (direction == 2) {
-	// x = x + dx;
-
-	// standImage = standImageRight;
-	// walkAnimation = walkAnimationRight;
-	// attackAnimation = attackAnimationRight;
-
-	// if (x > 380)
-	// x = -30;
-	// }
-	// else
-	// if (direction == 3) {
-	// y = y - dy;
-	// if (y < 0)
-	// y = 0;
-	// }
-	// else
-	// if (direction == 4) {
-	// y = y + dy;
-
-	// }
-	// }
 
 	public int move(int direction) {
 
@@ -371,8 +357,29 @@ public class Player {
 		standImage = standImageRight;
 	}
 
-	public Rectangle2D.Double getBoundingRectangle() {
 
-		return new Rectangle2D.Double(x, y, width, height);
+    public Rectangle2D.Double getBoundingRectangle() {
+		return new Rectangle2D.Double (x, y, width, height);
+
+	}
+
+	public void setJustAttacked(boolean a) {
+		justAttacked = a;
+	}
+
+	public boolean justAttacked() {
+		return justAttacked;
+	}
+
+	public boolean isAttacking() {
+		return attacking;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public int getY() {
+		return y;
 	}
 }
