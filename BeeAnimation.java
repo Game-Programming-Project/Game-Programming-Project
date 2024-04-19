@@ -6,6 +6,8 @@ import java.awt.Graphics2D;
 
 /**
  * The StripAnimation class creates an animation from a strip file.
+ * 108 327
+ * 
  */
 public class BeeAnimation {
 
@@ -13,6 +15,7 @@ public class BeeAnimation {
 
 	private int x; // x position of animation
 	private int y; // y position of animation
+	private int mapX, mapY; // x and y position of map
 
 	private int width;
 	private int height;
@@ -22,6 +25,9 @@ public class BeeAnimation {
 
 	public BeeAnimation() {
 		animation = new Animation(true); // run animation once
+
+		width = 50;
+		height = 50;
 
 		dx = 0; // increment to move along x-axis
 		dy = 0; // increment to move along y-axis
@@ -70,7 +76,7 @@ public class BeeAnimation {
 		if (!animation.isStillActive())
 			return;
 
-		g2.drawImage(animation.getImage(), x, y, 100, 100, null);
+		g2.drawImage(animation.getImage(), x, y, width, height, null);
 	}
 
 }

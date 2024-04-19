@@ -50,12 +50,11 @@ public class Background {
 		this.bgDX = 8; // move factor along x-axis
 		this.bgDY = 8; // move factor along y-axis
 
-		// bg1X = ((bgImageWidth - panelWidth) / 2) * -1; // position panel at centre of
-		// image
-		// bg1Y = ((bgImageHeight - panelHeight) / 2) * -1;
+		bg1X = ((bgImageWidth - panelWidth) / 2) * -1; // position panel at centre of image
+		bg1Y = ((bgImageHeight - panelHeight) / 2) * -1;
 
-		bg1X = 87;
-		bg1Y = 134;
+		// bg1X = 87;
+		// bg1Y = 134;
 
 	}
 
@@ -178,12 +177,12 @@ public class Background {
 		g2.drawImage(bgImage, bg1X, bg1Y, null);
 	}
 
-  public int getbg1X(){
-	return bg1X;
-  }
+	public int getbg1X() {
+		return bg1X;
+	}
 
-  public int getbg1Y(){
-	return bg1Y;
-  }
+	public int getbg1Y() {
+		return bg1Y;
+	}
 
 }

@@ -71,16 +71,13 @@ public class GamePanel extends JPanel implements Runnable {
 
 		player = new Player(this, 190, 180, character);
 
-
 		rocks = new ArrayList<>();
 		rocks.add(new Rock(this, 823, 222, background));
-		rocks.add(new Rock(this, 87,134, background));
-	
-	}
+		rocks.add(new Rock(this, 87, 134, background));
+
 		animBee = new BeeAnimation();
 		animGrasshopper = new GrasshopperAnimation();
 		animMushroom = new MushroomAnimation();
-
 
 	}
 
@@ -99,18 +96,18 @@ public class GamePanel extends JPanel implements Runnable {
 
 	public void gameUpdate() {
 
-		if(player!= null)
+		if (player != null)
 			player.update(); // needed for animations to run
-      animBee.update();
-      animGrasshopper.update();
-      animMushroom.update();
+		animBee.update();
+		animGrasshopper.update();
+		animMushroom.update();
 		// iterator is needed to avoid ConcurrentModificationException
-		Iterator<Rock> iterator = rocks.iterator(); 
+		Iterator<Rock> iterator = rocks.iterator();
 		while (iterator.hasNext()) { // loop through all rocks in the arrayList
 
 			Rock rock = iterator.next();
 
-			if(rock.collidesWithPlayer(player) && player.justAttacked() && !rock.isDestroyed()){
+			if (rock.collidesWithPlayer(player) && player.justAttacked() && !rock.isDestroyed()) {
 
 				rock.destroy();
 				rock.setDestroyed(true);
@@ -119,9 +116,6 @@ public class GamePanel extends JPanel implements Runnable {
 			}
 
 		}
-		
-	}
-
 
 	}
 
@@ -135,7 +129,7 @@ public class GamePanel extends JPanel implements Runnable {
 				// System.out.println("walk.update(direction) called "+direction);
 			}
 
-			if(direction==99){  // direction of 99 means click on screen to attack
+			if (direction == 99) { // direction of 99 means click on screen to attack
 				player.attack();
 			}
 		}
@@ -158,14 +152,13 @@ public class GamePanel extends JPanel implements Runnable {
 
 		background.draw(imageContext);
 
+		// imageContext.drawImage(backgroundImage, 0, 0, null); // draw the background
+		// image
 
-		//imageContext.drawImage(backgroundImage, 0, 0, null);	// draw the background image
-
-		if(rocks !=null){
-			for (int i=0; i<rocks.size(); i++)
+		if (rocks != null) {
+			for (int i = 0; i < rocks.size(); i++)
 				rocks.get(i).draw(imageContext);
 		}
-
 
 		if (player != null) {
 			player.draw(imageContext);
