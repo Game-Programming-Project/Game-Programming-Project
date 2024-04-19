@@ -52,7 +52,7 @@ public class Player {
 
         panel = p;
 
-        width=height=48;
+        width=height=100;
         
         x = xPos;		
         y = yPos;		
@@ -97,48 +97,6 @@ public class Player {
 		System.out.println("attack");
 		attackAnimation.start();
 	}
-
-    // public void move(int direction) {
-		// if (!walkAnimation.isStillActive())
-		// 	return;
-        
-        // if(attackAnimation.isStillActive()) //dont move if attacking
-        //     return;
-
-        //     walkAnimation.update();
-		
-    //     if (direction == 1) {
-	// 		x = x - dx;
-	     
-	// 		standImage = standImageLeft;
-		// 	walkAnimation = walkAnimationLeft;
-        //  attackAnimation = attackAnimationLeft;          
-	// 		if (x < -30)			
-	// 			x = 380;
-	// 	}
-	// 	else 
-	// 	if (direction == 2) {
-	// 		x = x + dx;
-           
-	// 	    standImage = standImageRight;
-	// 	    walkAnimation = walkAnimationRight;
-    //         attackAnimation = attackAnimationRight;
-
-	// 		if (x > 380)			
-	// 			x = -30;
-	// 	}
-	// 	else
-	// 	if (direction == 3) {
-	// 		y = y - dy;
-	// 		if (y < 0)			
-	// 			y = 0;
-	// 	}
-	// 	else
-	// 	if (direction == 4) {
-	// 		y = y + dy;
-			
-	// 	}
-	// }
 
 	public int move (int direction) {
 

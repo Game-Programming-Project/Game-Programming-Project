@@ -63,19 +63,13 @@ public class GamePanel extends JPanel implements Runnable {
 
 	public void createGameEntities() {
 
-		background = new Background(this, "images/Level1Map.png", 96);
+		background = new Background(this, "images/testingmap.png", 96);
 
-		player = new Player(this, 87, 134, character);
+		player = new Player(this, 190, 180, character);
 
 		rocks = new ArrayList<>();
 		rocks.add(new Rock(this, 823, 222));
 		rocks.add(new Rock(this, 87,134));
-
-
-		// aliens = new Alien [3];
-		// aliens[0] = new Alien (this, 275, 10, player);
-		// aliens[1] = new Alien (this, 150, 10, player);
-		// aliens[2] = new Alien (this, 330, 10, player);
 	
 	}
 
@@ -95,10 +89,6 @@ public class GamePanel extends JPanel implements Runnable {
 
 
 	public void gameUpdate() {
-
-		// for (int i=0; i<NUM_ALIENS; i++) {
-		// 	aliens[i].move();
-		// }
 
 		player.update(); // needed for animations to run
 	}

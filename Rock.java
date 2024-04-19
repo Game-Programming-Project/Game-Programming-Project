@@ -16,8 +16,7 @@ public class Rock {
         this.mapY = mapY;
         this.gPanel = gPanel;
 
-        width = 30;
-        height = 30;
+        width = height = 30;
 
         rockImage = ImageManager.loadImage("images/Rocks/Rock_1.png");
 
@@ -35,11 +34,11 @@ public class Rock {
             bgY *= -1;
 
         //positioning the rock on the screen relative to the background
+        //this calculation makes it so that the rock stays on the map where it needs to be
         int screenX = mapX - bgX;
         int screenY = mapY - bgY;
-
-        //this calculation makes it so that the rock stays on screen where it needs to be
-        g2.drawImage(rockImage, screenX, screenY, null);
+        
+        g2.drawImage(rockImage, screenX, screenY, width, height, null);
 
     }
 
