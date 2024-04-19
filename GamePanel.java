@@ -84,8 +84,6 @@ public class GamePanel extends JPanel implements Runnable {
 		animMushroom = new MushroomAnimation();
 	}
 
-	}
-
 	public void run() {
 		try {
 			isRunning = true;
@@ -119,14 +117,6 @@ public class GamePanel extends JPanel implements Runnable {
 				rockIterator.remove(); // Use iterator's remove method to remove the destroyed rock from the list
 				player.setJustAttacked(false);
 			}
-
-		}
-
-		Iterator<Enemy> enemyIterator = enemies.iterator();
-		while (enemyIterator.hasNext()) { // loop through all enemies in the arrayList
-
-			Enemy enemy = enemyIterator.next();
-			enemy.move();
 
 		}
 
