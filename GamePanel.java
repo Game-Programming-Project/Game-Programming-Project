@@ -19,6 +19,7 @@ public class GamePanel extends JPanel implements Runnable {
 	private boolean isPaused;
 
 	private ArrayList<Rock> rocks;
+	private ArrayList<Enemy> enemies;
 
 	private Thread gameThread;
 
@@ -69,9 +70,11 @@ public class GamePanel extends JPanel implements Runnable {
 		player = new Player(this, 190, 180, character);
 
 		rocks = new ArrayList<>();
-		rocks.add(new Rock(this, 823, 222, background));
+		rocks.add(new Rock(this, 823, 400, background));
 		rocks.add(new Rock(this, 87,134, background));
-	
+		
+		enemies = new ArrayList<>();
+		enemies.add(new Bomber(this, 823, 400, background));
 	}
 
 
@@ -95,18 +98,26 @@ public class GamePanel extends JPanel implements Runnable {
 			player.update(); // needed for animations to run
 
 		// iterator is needed to avoid ConcurrentModificationException
-		Iterator<Rock> iterator = rocks.iterator(); 
-		while (iterator.hasNext()) { // loop through all rocks in the arrayList
+		Iterator<Rock> rockIterator = rocks.iterator(); 
+		while (rockIterator.hasNext()) { // loop through all rocks in the arrayList
 
-			Rock rock = iterator.next();
+			Rock rock = rockIterator.next();
 
 			if(rock.collidesWithPlayer(player) && player.justAttacked() && !rock.isDestroyed()){
 
 				rock.destroy();
 				rock.setDestroyed(true);
-				iterator.remove(); // Use iterator's remove method to remove the destroyed rock from the list
+				rockIterator.remove(); // Use iterator's remove method to remove the destroyed rock from the list
 				player.setJustAttacked(false);
 			}
+
+		}
+
+		Iterator<Enemy> enemyIterator = enemies.iterator();
+		while (enemyIterator.hasNext()) { // loop through all enemies in the arrayList
+
+			Enemy enemy = enemyIterator.next();
+			enemy.move();
 
 		}
 		
@@ -154,14 +165,14 @@ public class GamePanel extends JPanel implements Runnable {
 				rocks.get(i).draw(imageContext);
 		}
 
+		if(enemies !=null){
+			for (int i=0; i<enemies.size(); i++)
+				enemies.get(i).draw(imageContext);
+		}
+
 		if (player != null) {
 			player.draw(imageContext);
 		}
-
-		if (aliens != null) {
-			for (int i=0; i<NUM_ALIENS; i++)
-				aliens[i].draw(imageContext);
-       	}
 
 		Graphics2D g2 = (Graphics2D) getGraphics();	// get the graphics context for the panel
 		g2.drawImage(image, 0, 0, 400, 400, null);

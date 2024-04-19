@@ -9,13 +9,13 @@ import java.util.HashSet;
 
 public class Player {
 
-    Animation walkAnimationRight;
-	Animation walkAnimationLeft;
-	Animation walkAnimation;
+    private Animation walkAnimationRight;
+	private Animation walkAnimationLeft;
+	private Animation walkAnimation;
 
-    Animation attackAnimationRight;
-    Animation attackAnimationLeft;
-	Animation attackAnimation;
+    private Animation attackAnimationRight;
+    private Animation attackAnimationLeft;
+	private Animation attackAnimation;
 
     private int x;		
 	private int y;		
@@ -65,7 +65,7 @@ public class Player {
 
 		// load images from strip files
 		loadImages();
-		loadAnimations();
+		loadAllAnimations();
 		
 		attacking = false;
 		justAttacked = false;
@@ -256,50 +256,30 @@ public class Player {
 	}
 
 
-    private void loadAttackAnimation(){
-        // loading animation for attacking
-		Image stripImage = ImageManager.loadImage("images/Player/"+characterType+"/"+characterType+"_attackRight.png");
-
-		int imageWidth = (int) stripImage.getWidth(null) / 6;
-		int imageHeight = stripImage.getHeight(null);
-
-		for (int i=0; i<6; i++) {
-
-			BufferedImage frameImage = new BufferedImage (imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g = (Graphics2D) frameImage.getGraphics();
-     
-			g.drawImage(stripImage, 
-					0, 0, imageWidth, imageHeight,
-					i*imageWidth, 0, (i*imageWidth)+imageWidth, imageHeight,
-					null);
-
-            attackAnimationRight.addFrame(frameImage, 100);
-		}
-
-
-        stripImage = ImageManager.loadImage("images/Player/"+characterType+"/"+characterType+"_attackLeft.png");
-
-        imageWidth = (int) stripImage.getWidth(null) / 6;
-		imageHeight = stripImage.getHeight(null);
-
-        for (int i=0; i<6; i++) {
-
-			BufferedImage frameImage = new BufferedImage (imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g = (Graphics2D) frameImage.getGraphics();
-     
-			g.drawImage(stripImage, 
-					0, 0, imageWidth, imageHeight,
-					i*imageWidth, 0, (i*imageWidth)+imageWidth, imageHeight,
-					null);
-
-            attackAnimationLeft.addFrame(frameImage, 100);
-		}
+    private void loadAttackAnimations(){ // loading animation for attacking
+        attackAnimationRight = loadAnimation("images/Player/"+characterType+"/"+characterType+"_attackRight.png");
+		attackAnimationLeft = loadAnimation("images/Player/"+characterType+"/"+characterType+"_attackLeft.png");
 
         attackAnimation = attackAnimationRight;
     }
 
-    private void loadWalkAnimation() {
-        Image stripImage = ImageManager.loadImage("images/Player/"+characterType+"/"+characterType+"_walkRight.png");
+    private void loadWalkAnimations() {
+		walkAnimationRight = loadAnimation("images/Player/"+characterType+"/"+characterType+"_walkRight.png");
+		walkAnimationLeft = loadAnimation("images/Player/"+characterType+"/"+characterType+"_walkLeft.png");
+	
+        walkAnimation = walkAnimationRight;
+    }
+
+    private void loadAllAnimations(){
+        loadWalkAnimations();
+        loadAttackAnimations();
+    }
+
+	private Animation loadAnimation(String stripFilePath){
+
+		Animation Animation = new Animation(false);
+
+		Image stripImage = ImageManager.loadImage(stripFilePath);
 
 		int imageWidth = (int) stripImage.getWidth(null) / 6;
 		int imageHeight = stripImage.getHeight(null);
@@ -314,34 +294,11 @@ public class Player {
 					i*imageWidth, 0, (i*imageWidth)+imageWidth, imageHeight,
 					null);
 
-            walkAnimationRight.addFrame(frameImage, 70);
+			Animation.addFrame(frameImage, 70);
 		}
 
-		stripImage = ImageManager.loadImage("images/Player/"+characterType+"/"+characterType+"_walkLeft.png");
-
-		imageWidth = (int) stripImage.getWidth(null) / 6;
-		imageHeight = stripImage.getHeight(null);
-
-		for (int i=0; i<6; i++) {
-
-			BufferedImage frameImage = new BufferedImage (imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g = (Graphics2D) frameImage.getGraphics();
-     
-			g.drawImage(stripImage, 
-					0, 0, imageWidth, imageHeight,
-					i*imageWidth, 0, (i*imageWidth)+imageWidth, imageHeight,
-					null);
-
-            walkAnimationLeft.addFrame(frameImage, 70);
-		}
-
-        walkAnimation = walkAnimationRight;
-    }
-
-    private void loadAnimations(){
-        loadWalkAnimation();
-        loadAttackAnimation();
-    }
+        return Animation;
+	}
 
     private void loadImages(){
         standImageRight = ImageManager.loadImage("images/Player/"+characterType+"/"+characterType+"_standRight.png");

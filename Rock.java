@@ -34,6 +34,16 @@ public class Rock {
 
     public void draw(Graphics2D g2) {
 
+        updateScreenCoordinates();
+        
+        if(!destroyed) // draw if rock is NOT destroyed
+            g2.drawImage(rockImage, x, y, width, height, null);
+
+    }
+
+    //this method is needed to ensure the entity stays where you want it to on the background map coordinates
+    //the x and y that is updated are the coordinates to be drawn to the screen
+    public void updateScreenCoordinates(){ //meant to be called right before the entity is drawn to the screen
         int bgX = bg.getbg1X();
         int bgY = bg.getbg1Y();
 
@@ -43,14 +53,10 @@ public class Rock {
         if(bgY <0)
             bgY *= -1;
 
-        //positioning the rock on the screen relative to the background
-        //this calculation makes it so that the rock stays on the map where it needs to be
+        //positioning the entity on the screen relative to the background
+        //this calculation makes it so that the entity stays on the map where it needs to be
         x = mapX - bgX;
         y = mapY - bgY;
-        
-        if(!destroyed) // draw if rock is NOT destroyed
-            g2.drawImage(rockImage, x, y, width, height, null);
-
     }
 
     public void destroy() {
