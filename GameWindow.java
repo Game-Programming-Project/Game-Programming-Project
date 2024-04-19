@@ -38,7 +38,7 @@ public class GameWindow extends JFrame
 	public GameWindow() {
 
 		setTitle("A Game With Aliens, Image Effects, and Animations");
-		setSize(500, 575);
+		setSize(1200, 875);
 
 		// create user interface objects
 
@@ -91,7 +91,7 @@ public class GameWindow extends JFrame
 		// create the gamePanel for game entities
 
 		gamePanel = new GamePanel();
-		gamePanel.setPreferredSize(new Dimension(400, 400));
+		gamePanel.setPreferredSize(new Dimension(1100, 700));
 
 		// create infoPanel
 
@@ -145,7 +145,7 @@ public class GameWindow extends JFrame
 
 		// set properties of window
 
-		setResizable(true);
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		setVisible(true);

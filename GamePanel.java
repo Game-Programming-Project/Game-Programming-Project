@@ -62,14 +62,14 @@ public class GamePanel extends JPanel implements Runnable {
 
 		// backgroundImage = ImageManager.loadImage ("images/Background.jpg");
 
-		image = new BufferedImage(400, 400, BufferedImage.TYPE_INT_RGB);
+		image = new BufferedImage(1100, 700, BufferedImage.TYPE_INT_RGB);
 	}
 
 	public void createGameEntities() {
 
-		background = new Background(this, "images/Level1MapTest.png", 96, 220, 30);
+		background = new Background(this, "images/Level1MapTest.png", 96, 360, 30);
 
-		player = new Player(this, 190, 180, character);
+		player = new Player(this, 550, 350, character);
 
 		rocks = new ArrayList<>();
 		rocks.add(new Rock(this, 823, 400, background));
@@ -179,7 +179,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		Graphics2D g2 = (Graphics2D) getGraphics(); // get the graphics context for the panel
 
-		g2.drawImage(image, 0, 0, 400, 400, null);
+		g2.drawImage(image, 0, 0, 1100, 700, null);
 
 		imageContext.dispose();
 		g2.dispose();

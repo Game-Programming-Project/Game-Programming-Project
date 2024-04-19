@@ -54,7 +54,7 @@ public class Player {
 
         panel = p;
 
-        width=height=64;
+        width=height=80;
         
         x = xPos;		
         y = yPos;		
