@@ -200,19 +200,19 @@ public class GameWindow extends JFrame
 		String keyText = e.getKeyText(keyCode);
 		keyTF.setText(keyText + " pressed.");
 
-		if (keyCode == KeyEvent.VK_A) {
+		if (keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_LEFT) {
 			gamePanel.updatePlayer(1);
 		}
 
-		if (keyCode == KeyEvent.VK_D) {
+		if (keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT) {
 			gamePanel.updatePlayer(2);
 		}
 
-		if (keyCode == KeyEvent.VK_W) {
+		if (keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) {
 			gamePanel.updatePlayer(3);
 		}
 
-		if (keyCode == KeyEvent.VK_S) {
+		if (keyCode == KeyEvent.VK_S || keyCode == KeyEvent.VK_DOWN) {
 			gamePanel.updatePlayer(4);
 		}
 	}
