@@ -12,7 +12,9 @@ public class Bomber extends Enemy {
     private Animation walkAnimationAway;
     private Animation walkAnimationForward;
 
- public Bomber(GamePanel gPanel, int mapX, int mapY, Background bg, Player p) {
+    private Player player;
+
+    public Bomber(GamePanel gPanel, int mapX, int mapY, Background bg, Player p) {
         super(gPanel,mapX,mapY,bg);
         player = p;
 
