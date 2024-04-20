@@ -10,9 +10,13 @@ public class CharacterSelection extends JPanel {
     private String selectedCharacter;
 
     public CharacterSelection(GamePanel gamePanel) {
-
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
+
+        // Set background image
+        ImageIcon backgroundImage = new ImageIcon("images/MineEntrance.png");
+        JLabel backgroundLabel = new JLabel(backgroundImage);
+        add(backgroundLabel);
 
         // setting images for each button
         ImageIcon character1Icon = new ImageIcon(new ImageIcon("images/Player/1/Woodcutter.png").getImage()
@@ -42,7 +46,7 @@ public class CharacterSelection extends JPanel {
 
         // Add labels for displaying character stats
         JLabel character1Label = new JLabel(
-                "<html><center>Woodcutter<br>Speed: 5<br>Strength: 8<br>Health: 10</center></html>");
+                "<html><center>Lumberjack<br>Speed: 5<br>Strength: 8<br>Health: 10</center></html>");
         JLabel character2Label = new JLabel(
                 "<html><center>Path Finder<br>Speed: 8<br>Strength: 6<br>Health: 10</center></html>");
         JLabel character3Label = new JLabel(
@@ -79,17 +83,11 @@ public class CharacterSelection extends JPanel {
             }
         });
 
-        // Create a label and add it to the panel
-        JLabel label = new JLabel("Select Your Character!");
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.gridwidth = 3;
-        add(label, gbc);
-
         // Add characters and labels to the panel
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.gridwidth = 1;
         gbc.gridy = 1;
+        gbc.gridx = 0;
         add(character1Button, gbc);
         gbc.gridx = 1;
         add(character2Button, gbc);
