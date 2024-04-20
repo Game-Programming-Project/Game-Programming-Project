@@ -23,7 +23,7 @@ public class BeeAnimation extends Enemy {
 
 		width = height = 50;
 
-		dx = 0;
+		dx = -1;
 		dy = 0;
 
 	}
@@ -53,8 +53,8 @@ public class BeeAnimation extends Enemy {
 	}
 
 	public void loadWalkAnimations() {
-		walkAnimationRight = loadAnimation("images/Enemies/Level1/Bee/beeSprite.png");
 		walkAnimationLeft = loadAnimation("images/Enemies/Level1/Bee/beeSpriteLeft.png");
+		walkAnimationRight = loadAnimation("images/Enemies/Level1/Bee/beeSpriteRight.png");
 
 		walkAnimation = walkAnimationRight;
 	}
@@ -83,7 +83,7 @@ public class BeeAnimation extends Enemy {
 						(row * imageHeight) + imageHeight,
 						null);
 
-				Animation.addFrame(frameImage, 200);
+				Animation.addFrame(frameImage, 130);
 			}
 
 		}
@@ -92,7 +92,8 @@ public class BeeAnimation extends Enemy {
 	}
 
 	public void loadImages() {
-		standImageForward = ImageManager.loadImage("images/Alien2.png");
+		standImageLeft = ImageManager.loadImage("images/Enemies/Level1/Bee/beeStandingLeft.png");
+		standImageRight = ImageManager.loadImage("images/Enemies/Level1/Bee/beeStandingRight.png");
 
 		standImage = standImageForward;
 	}

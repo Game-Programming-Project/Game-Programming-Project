@@ -48,7 +48,6 @@ public class Bomber extends Enemy {
             walkAnimation = walkAnimationAway;
             standImage = standImageAway;
         }
-        System.out.println("MapX: " + mapX + " MapY: " + mapY);
     }
 
     public void loadWalkAnimations() {

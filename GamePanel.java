@@ -78,9 +78,9 @@ public class GamePanel extends JPanel implements Runnable {
 		enemies = new ArrayList<>();
 		enemies.add(new Bomber(this, 87, 134, background));
 		enemies.add(new BeeAnimation(this, 87, 134, background));
+		enemies.add(new GrasshopperAnimation(this, 87, 134, background));
+		enemies.add(new MushroomAnimation(this, 87, 154, background));
 
-		animGrasshopper = new GrasshopperAnimation();
-		animMushroom = new MushroomAnimation();
 	}
 
 	public void run() {
@@ -100,8 +100,6 @@ public class GamePanel extends JPanel implements Runnable {
 
 		if (player != null)
 			player.update(); // needed for animations to run
-		animGrasshopper.update();
-		animMushroom.update();
 		// iterator is needed to avoid ConcurrentModificationException
 		Iterator<Rock> rockIterator = rocks.iterator();
 		while (rockIterator.hasNext()) { // loop through all rocks in the arrayList
@@ -123,7 +121,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 			Enemy enemy = enemyIterator.next();
 			enemy.move();
-			enemy.start();
+			if (enemy.getDX() != 0)
+				enemy.start();
 			enemy.update();
 
 			// if enemy is a beeAnimation then call the status() method
@@ -181,14 +180,6 @@ public class GamePanel extends JPanel implements Runnable {
 			player.draw(imageContext);
 		}
 
-		if (animGrasshopper != null) {
-			// animGrasshopper.draw(imageContext);
-		}
-
-		if (animMushroom != null) {
-			// animMushroom.draw (imageContext);
-		}
-
 		Graphics2D g2 = (Graphics2D) getGraphics(); // get the graphics context for the panel
 
 		g2.drawImage(image, 0, 0, 400, 400, null);
@@ -205,14 +196,6 @@ public class GamePanel extends JPanel implements Runnable {
 			gameThread = new Thread(this);
 			gameThread.start();
 
-		}
-
-		if (animGrasshopper != null) {
-			animGrasshopper.start();
-		}
-
-		if (animMushroom != null) {
-			animMushroom.start();
 		}
 
 	}
