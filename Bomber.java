@@ -12,7 +12,9 @@ public class Bomber extends Enemy {
     private Animation walkAnimationAway;
     private Animation walkAnimationForward;
 
- public Bomber(GamePanel gPanel, int mapX, int mapY, Background bg, Player p) {
+    private Player player;
+
+    public Bomber(GamePanel gPanel, int mapX, int mapY, Background bg, Player p) {
         super(gPanel,mapX,mapY,bg);
         player = p;
 
@@ -57,10 +59,10 @@ public class Bomber extends Enemy {
     }
 
     public void loadWalkAnimations() {
-        walkAnimationAway = loadAnimation("images/Enemies/Bomber/bomberWalkAway.png");
-        walkAnimationForward = loadAnimation("images/Enemies/Bomber/bomberWalkForward.png");
-        walkAnimationLeft = loadAnimation("images/Enemies/Bomber/bomberWalkLeft.png");
-        walkAnimationRight = loadAnimation("images/Enemies/Bomber/bomberWalkRight.png");
+        walkAnimationAway = loadAnimation("images/Enemies/Level3/Bomber/bomberWalkAway.png");
+        walkAnimationForward = loadAnimation("images/Enemies/Level3/Bomber/bomberWalkForward.png");
+        walkAnimationLeft = loadAnimation("images/Enemies/Level3/Bomber/bomberWalkLeft.png");
+        walkAnimationRight = loadAnimation("images/Enemies/Level3/Bomber/bomberWalkRight.png");
 
         walkAnimation = walkAnimationForward;
     }
@@ -91,10 +93,10 @@ public class Bomber extends Enemy {
     }
 
     public void loadImages() {
-        standImageForward = ImageManager.loadImage("images/Enemies/Bomber/Standing/bomberStandForward.png");
-        standImageAway = ImageManager.loadImage("images/Enemies/Bomber/Standing/bomberStandAway.png");
-        standImageRight = ImageManager.loadImage("images/Enemies/Bomber/Standing/bomberStandRight.png");
-        standImageLeft = ImageManager.loadImage("images/Enemies/Bomber/Standing/bomberStandLeft.png");
+        standImageForward = ImageManager.loadImage("images/Enemies/Level3/Bomber/Standing/bomberStandForward.png");
+        standImageAway = ImageManager.loadImage("images/Enemies/Level3/Bomber/Standing/bomberStandAway.png");
+        standImageRight = ImageManager.loadImage("images/Enemies/Level3/Bomber/Standing/bomberStandRight.png");
+        standImageLeft = ImageManager.loadImage("images/Enemies/Level3/Bomber/Standing/bomberStandLeft.png");
         standImage = standImageForward;
     }
 }

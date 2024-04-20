@@ -76,17 +76,17 @@ public class GamePanel extends JPanel implements Runnable {
 		soManager.initLevelOne();
 		soManager.setAllObjectsVisible(false);
     
-    player = new Player(this, 550, 350, character, soManager);
+    	player = new Player(this, 550, 350, character, soManager);
 
 		rocks = new ArrayList<>();
-		rocks.add(new Rock(this, 823, 400, background));
+		rocks.add(new Rock(this, 823, 960, background));
 		// rocks.add(new Rock(this, 87, 134, background));
 
 		enemies = new ArrayList<>();
-		enemies.add(new Bomber(this, 87, 134, background));
-		enemies.add(new BeeAnimation(this, 87, 134, background));
-		enemies.add(new GrasshopperAnimation(this, 87, 134, background));
-		enemies.add(new MushroomAnimation(this, 87, 154, background));
+		enemies.add(new Bomber(this, 720, 960, background, player));
+		enemies.add(new BeeAnimation(this, 720, 930, background));
+		enemies.add(new GrasshopperAnimation(this, 720, 990, background));
+		enemies.add(new MushroomAnimation(this, 720, 960, background));
 
 	}
 
