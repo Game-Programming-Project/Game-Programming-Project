@@ -4,37 +4,67 @@ import java.util.ArrayList;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-/**
- * The StripAnimation class creates an animation from a strip file.
- * 108 327
- * 
- */
 public class BeeAnimation extends Enemy {
 
-	Animation animation;
+	private Image standImageForward;
+	private Image standImageAway;
 
-	private int x; // x position of animation
-	private int y; // y position of animation
-	private int mapX, mapY; // x and y position of map
-
-	private int width;
-	private int height;
-
-	private int dx; // increment to move along x-axis
-	private int dy; // increment to move along y-axis
+	private Animation walkAnimationAway;
+	private Animation walkAnimationForward;
 
 	public BeeAnimation(GamePanel gPanel, int mapX, int mapY, Background bg) {
 		super(gPanel, mapX, mapY, bg);
-		animation = new Animation(true); // run animation once
 
-		width = 50;
-		height = 50;
+		walkAnimationAway = new Animation(false);
+		walkAnimationForward = new Animation(false);
 
-		dx = 0; // increment to move along x-axis
-		dy = 0; // increment to move along y-axis
+		loadImages();
+		loadWalkAnimations();
+
+		width = height = 50;
+
+		dx = 0;
+		dy = 0;
+
+	}
+
+	public void move() {
+		int oldMapX = mapX;
+		int oldMapY = mapY;
+
+		mapX += dx;
+		if (oldMapX < mapX) { // moving right
+			walkAnimation = walkAnimationRight;
+			standImage = standImageRight;
+		} else if (oldMapX > mapX) { // moving left
+			walkAnimation = walkAnimationLeft;
+			standImage = standImageLeft;
+		}
+
+		mapY += dy;
+		if (oldMapY < mapY) { // moving down
+			walkAnimation = walkAnimationForward;
+			standImage = standImageForward;
+		} else if (oldMapY > mapY) { // moving up
+			walkAnimation = walkAnimationAway;
+			standImage = standImageAway;
+		}
+
+	}
+
+	public void loadWalkAnimations() {
+		walkAnimationRight = loadAnimation("images/Enemies/Level1/Bee/beeSprite.png");
+		walkAnimationLeft = loadAnimation("images/Enemies/Level1/Bee/beeSpriteLeft.png");
+
+		walkAnimation = walkAnimationRight;
+	}
+
+	public Animation loadAnimation(String stripFilePath) {
+
+		Animation Animation = new Animation(false);
 
 		// load images from strip file
-		Image stripImage = ImageManager.loadImage("images/beeSprite.png");
+		Image stripImage = ImageManager.loadImage(stripFilePath);
 
 		int spriteColumns = 5; // Assuming 5 columns in the sprite sheet
 		int spriteRows = 2; // Assuming 2 rows in the sprite sheet
@@ -53,30 +83,17 @@ public class BeeAnimation extends Enemy {
 						(row * imageHeight) + imageHeight,
 						null);
 
-				animation.addFrame(frameImage, 200);
+				Animation.addFrame(frameImage, 200);
 			}
+
 		}
+
+		return Animation;
 	}
 
-	public void start() {
-		animation.start();
+	public void loadImages() {
+		standImageForward = ImageManager.loadImage("images/Alien2.png");
+
+		standImage = standImageForward;
 	}
-
-	public void update() {
-		if (!animation.isStillActive())
-			return;
-
-		animation.update();
-		mapX = mapX + dx;
-		mapY = mapY + dy;
-	}
-
-	public void draw(Graphics2D g2) {
-		updateScreenCoordinates();
-		if (!animation.isStillActive())
-			return;
-
-		g2.drawImage(animation.getImage(), x, y, width, height, null);
-	}
-
 }

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-public class Bomber extends Enemy{
-    
+public class Bomber extends Enemy {
+
     private Image standImageForward;
     private Image standImageAway;
 
@@ -13,47 +13,45 @@ public class Bomber extends Enemy{
     private Animation walkAnimationForward;
 
     public Bomber(GamePanel gPanel, int mapX, int mapY, Background bg) {
-        super(gPanel,mapX,mapY,bg);
+        super(gPanel, mapX, mapY, bg);
 
-        walkAnimationAway= new Animation(false);
-        walkAnimationForward= new Animation(false);
-        
+        walkAnimationAway = new Animation(false);
+        walkAnimationForward = new Animation(false);
+
         loadImages();
         loadWalkAnimations();
 
-        width=height=30;
+        width = height = 30;
 
-        dx=5;
-        dy=0;
+        dx = 5;
+        dy = 0;
     }
 
-    public void move(){
+    public void move() {
         int oldMapX = mapX;
         int oldMapY = mapY;
 
-        mapX+=dx;
-        if(oldMapX<mapX){ //moving right
+        mapX += dx;
+        if (oldMapX < mapX) { // moving right
             walkAnimation = walkAnimationRight;
             standImage = standImageRight;
-        }
-        else if(oldMapX>mapX){ //moving left
+        } else if (oldMapX > mapX) { // moving left
             walkAnimation = walkAnimationLeft;
             standImage = standImageLeft;
         }
 
-        mapY+=dy;
-        if(oldMapY<mapY){ //moving down
+        mapY += dy;
+        if (oldMapY < mapY) { // moving down
             walkAnimation = walkAnimationForward;
             standImage = standImageForward;
-        }
-        else if(oldMapY>mapY){ //moving up
+        } else if (oldMapY > mapY) { // moving up
             walkAnimation = walkAnimationAway;
             standImage = standImageAway;
         }
-        System.out.println("MapX: "+mapX+" MapY: "+mapY);
+        System.out.println("MapX: " + mapX + " MapY: " + mapY);
     }
 
-    public void loadWalkAnimations(){
+    public void loadWalkAnimations() {
         walkAnimationAway = loadAnimation("images/Enemies/Bomber/bomberWalkAway.png");
         walkAnimationForward = loadAnimation("images/Enemies/Bomber/bomberWalkForward.png");
         walkAnimationLeft = loadAnimation("images/Enemies/Bomber/bomberWalkLeft.png");
@@ -62,32 +60,32 @@ public class Bomber extends Enemy{
         walkAnimation = walkAnimationForward;
     }
 
-    public Animation loadAnimation(String stripFilePath){
+    public Animation loadAnimation(String stripFilePath) {
 
         Animation Animation = new Animation(false);
 
         Image stripImage = ImageManager.loadImage(stripFilePath);
 
-		int imageWidth = (int) stripImage.getWidth(null) / 4;
-		int imageHeight = stripImage.getHeight(null);
+        int imageWidth = (int) stripImage.getWidth(null) / 4;
+        int imageHeight = stripImage.getHeight(null);
 
-		for (int i=0; i<4; i++) {
+        for (int i = 0; i < 4; i++) {
 
-			BufferedImage frameImage = new BufferedImage (imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g = (Graphics2D) frameImage.getGraphics();
-     
-			g.drawImage(stripImage, 
-					0, 0, imageWidth, imageHeight,
-					i*imageWidth, 0, (i*imageWidth)+imageWidth, imageHeight,
-					null);
+            BufferedImage frameImage = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g = (Graphics2D) frameImage.getGraphics();
 
-            Animation.addFrame(frameImage, 70);
-		}
+            g.drawImage(stripImage,
+                    0, 0, imageWidth, imageHeight,
+                    i * imageWidth, 0, (i * imageWidth) + imageWidth, imageHeight,
+                    null);
+
+            Animation.addFrame(frameImage, 200);
+        }
 
         return Animation;
     }
-    
-    public void loadImages(){
+
+    public void loadImages() {
         standImageForward = ImageManager.loadImage("images/Enemies/Bomber/Standing/bomberStandForward.png");
         standImageAway = ImageManager.loadImage("images/Enemies/Bomber/Standing/bomberStandAway.png");
         standImageRight = ImageManager.loadImage("images/Enemies/Bomber/Standing/bomberStandRight.png");

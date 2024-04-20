@@ -34,7 +34,6 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private Background background;
 
-	private BeeAnimation animBee;
 	private GrasshopperAnimation animGrasshopper;
 	private MushroomAnimation animMushroom;
 
@@ -74,11 +73,11 @@ public class GamePanel extends JPanel implements Runnable {
 
 		rocks = new ArrayList<>();
 		rocks.add(new Rock(this, 823, 400, background));
-		rocks.add(new Rock(this, 87, 134, background));
+		// rocks.add(new Rock(this, 87, 134, background));
 
 		enemies = new ArrayList<>();
-		enemies.add(new Bomber(this, 823, 400, background));
-		enemies.add(new BeeAnimation(this, 108, 327, background));
+		enemies.add(new Bomber(this, 87, 134, background));
+		enemies.add(new BeeAnimation(this, 87, 134, background));
 
 		animGrasshopper = new GrasshopperAnimation();
 		animMushroom = new MushroomAnimation();
@@ -124,7 +123,10 @@ public class GamePanel extends JPanel implements Runnable {
 
 			Enemy enemy = enemyIterator.next();
 			enemy.move();
+			enemy.start();
+			enemy.update();
 
+			// if enemy is a beeAnimation then call the status() method
 		}
 
 	}
@@ -179,10 +181,6 @@ public class GamePanel extends JPanel implements Runnable {
 			player.draw(imageContext);
 		}
 
-		if (animBee != null) {
-			// animBee.draw(imageContext);
-		}
-
 		if (animGrasshopper != null) {
 			// animGrasshopper.draw(imageContext);
 		}
@@ -207,9 +205,6 @@ public class GamePanel extends JPanel implements Runnable {
 			gameThread = new Thread(this);
 			gameThread.start();
 
-		}
-		if (animBee != null) {
-			animBee.start();
 		}
 
 		if (animGrasshopper != null) {
