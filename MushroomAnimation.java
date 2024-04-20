@@ -21,8 +21,8 @@ public class MushroomAnimation extends Enemy {
 		loadImages();
 		loadWalkAnimations();
 
-		width = 106;
-		height = 52;
+		width = 212; //53:26
+		height = 104;
 
 		dx = 0;
 		dy = 0;
