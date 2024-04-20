@@ -7,6 +7,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.awt.geom.Rectangle2D;
+
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -25,6 +27,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private BufferedImage image;
 	// private Image backgroundImage;
+	private SolidObjectManager soManager;
 
 	private Player player;
 
@@ -67,9 +70,13 @@ public class GamePanel extends JPanel implements Runnable {
 
 	public void createGameEntities() {
 
-		background = new Background(this, "images/Level1MapTest.png", 96, 360, 30);
+		background = new Background(this, "images/Level1MapTest.png", 96, 360, 80);
 
-		player = new Player(this, 550, 350, character);
+		soManager = new SolidObjectManager(background);
+		soManager.initLevelOne();
+		soManager.setAllObjectsVisible(false);
+
+		player = new Player(this, 550, 350, character, soManager);
 
 		rocks = new ArrayList<>();
 		rocks.add(new Rock(this, 823, 400, background));
@@ -132,12 +139,18 @@ public class GamePanel extends JPanel implements Runnable {
 
 	public void updatePlayer(int direction) {
 
-		if (player != null && !isPaused) {
+		Rectangle2D.Double futurePosition = player.getFutureBoundingRectangle(direction);
 
-			if (direction != 99) {
-				player.start();
-				player.move(direction);
-				// System.out.println("walk.update(direction) called "+direction);
+		Boolean wouldCollide = soManager.collidesWithSolid(futurePosition); 
+		System.out.println("Would collide: " + wouldCollide);
+
+		if (player != null && !isPaused) {
+			if (direction != 99) { //if not colliding with a solid then move
+
+				if(!wouldCollide){ // if would not collide in the next move then move
+					player.start();
+					player.move(direction);
+				}
 			}
 
 			if (direction == 99) { // direction of 99 means click on screen to attack
@@ -145,14 +158,15 @@ public class GamePanel extends JPanel implements Runnable {
 			}
 		}
 
-		if (background != null && player != null) {
-			int batMovement = background.move(direction); // check whether the bat can start/stop moving in a new
-															// direction
+		if (background != null && player != null && !isPaused && direction!=99) {
+			if(!wouldCollide){ //if wouldn't collide with solid then move in the direction
+				int batMovement = background.move(direction); // check whether the bat can start/stop moving in a new
+																// direction
 
-			player.setDirections(batMovement);
-			background.setDirections(player.move(direction)); // check if the bat is centred so the background can move
+				player.setDirections(batMovement);
+				background.setDirections(player.move(direction)); // check if the bat is centred so the background can move
+			}
 		}
-
 	}
 
 	public void gameRender() {
@@ -162,6 +176,10 @@ public class GamePanel extends JPanel implements Runnable {
 		Graphics2D imageContext = (Graphics2D) image.getGraphics();
 
 		background.draw(imageContext);
+
+		if (soManager != null) {
+			soManager.draw(imageContext);
+		}
 
 		if (rocks != null) {
 			for (int i = 0; i < rocks.size(); i++)

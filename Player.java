@@ -37,8 +37,14 @@ public class Player {
 
 	private Boolean attacking;
 	private Boolean justAttacked;
+
+	private SolidObjectManager soManager;
+	private SolidObject solidObject;
+
+	private int centerX;
+	private int centerY;
     
-    public Player(GamePanel p, int xPos, int yPos, String cType) {
+    public Player(GamePanel p, int xPos, int yPos, String cType, SolidObjectManager soManager) {
 
 		directions = new HashSet<>(3);
 
@@ -56,8 +62,10 @@ public class Player {
 
         width=height=80;
         
-        x = xPos;		
-        y = yPos;		
+		this.soManager = soManager;
+
+        x = centerX = xPos;		
+        y = centerY = yPos;		
 
         dx = 8;	
         dy = 8;	
@@ -68,6 +76,7 @@ public class Player {
 		
 		attacking = false;
 		justAttacked = false;
+		solidObject=null;
 	}
 
     public void start() {
@@ -100,6 +109,8 @@ public class Player {
 		}
 
 		walkAnimation.update();
+
+
 		
 	}
 
@@ -116,6 +127,8 @@ public class Player {
 
 	public int move (int direction) {
 
+		solidObject = collidesWithSolid(); // if the player collides with a solid object (map boundary) this will be !=null
+
 		if (!walkAnimation.isStillActive())
 			return 0;
 	
@@ -130,7 +143,8 @@ public class Player {
 			int oldX = x;
 			standImage = standImageLeft;
 			walkAnimation = walkAnimationLeft;
-         	attackAnimation = attackAnimationLeft;  
+         	attackAnimation = attackAnimationLeft;
+
 			
 			if(directions.contains(Integer.valueOf(1))){		// can move left
 				x = x - dx;			
@@ -138,8 +152,8 @@ public class Player {
 					x= 33;
 				
 				
-				if(x<=190 && oldX > 190){		// check if was moving left and reaches centre
-					x = 190;					// reposition at centre
+				if(x<=centerX && oldX > centerX){		// check if was moving left and reaches centre
+					x = centerX;//x = 190;					// reposition at centre
 					directions.remove(Integer.valueOf(1));	// stop moving left
 					directions.remove(Integer.valueOf(2));	// and right
 					return 10;					// background can start scrolling left and right
@@ -158,13 +172,14 @@ public class Player {
 			standImage = standImageRight;
 			walkAnimation = walkAnimationRight;
 		 	attackAnimation = attackAnimationRight;
+
 			if(directions.contains(Integer.valueOf(1))){		// can move right
 				x = x + dx;			// move right
 				if(x+width>panel.getWidth()-33)
 					x= panel.getWidth() - width-33;
 				
-				if(x>=190 && oldX < 190){					// check if was moving left and reaches centre
-					x = 190;								// reposition at centre
+				if(x>=centerX && oldX < centerX){					// check if was moving left and reaches centre
+					x = centerX;//x = 190;								// reposition at centre
 					directions.remove(Integer.valueOf(1));	// stop moving left
 					directions.remove(Integer.valueOf(2));	// and right
 					return 10;								// background can start scrolling left and right
@@ -185,8 +200,8 @@ public class Player {
 				if (y < 82)
 					y = 82;
 
-				if(y<=180 && oldY > 180){				// check if was moving up and reaches centre
-					y = 180;							// reposition at centre
+				if(y<=centerY && oldY > centerY){				// check if was moving up and reaches centre
+					y=centerY;//y = 180;							// reposition at centre
 					directions.remove(Integer.valueOf(3));	// stop moving up
 					directions.remove(Integer.valueOf(4));	// and down
 					return 30;							// background can start scrolling up and down
@@ -206,8 +221,8 @@ public class Player {
 				if (y + height> panel.getHeight()-33)
 					y = panel.getHeight() - height-33;
 				
-				if(y>=180 && oldY < 180){				// check if was moving up and reaches centre
-					y = 180;							// reposition at centre
+				if(y>=centerY && oldY < centerY){				// check if was moving up and reaches centre
+					y=centerY;//y = 180;							// reposition at centre
 					directions.remove(Integer.valueOf(3));	// stop moving up
 					directions.remove(Integer.valueOf(4));	// and down
 					return 30;							// background can start scrolling up and down
@@ -306,6 +321,27 @@ public class Player {
 
     public Rectangle2D.Double getBoundingRectangle() {
 		return new Rectangle2D.Double (x, y, width, height);
+	}
+
+	public Rectangle2D.Double getFutureBoundingRectangle(int direction){
+
+		int futureX = x , futureY = y;
+
+		if(direction == 1)
+			futureX = x - dx;
+		else if(direction == 2)
+			futureX = x + dx;
+		else if(direction == 3)
+			futureY = y - dy;
+		else if(direction == 4)
+			futureY = y + dy;
+
+		return new Rectangle2D.Double (futureX, futureY, width, height);
+	}
+
+	public SolidObject collidesWithSolid () {
+		Rectangle2D.Double myRect = getBoundingRectangle();
+		return soManager.collidesWith (myRect);
 	}
 
 	public void setJustAttacked(boolean a) {
