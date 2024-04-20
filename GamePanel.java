@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.awt.geom.Rectangle2D;
 
-
 public class GamePanel extends JPanel implements Runnable {
 
 	private SoundManager soundManager;
@@ -67,8 +66,8 @@ public class GamePanel extends JPanel implements Runnable {
 		soManager = new SolidObjectManager(background);
 		soManager.initLevelOne();
 		soManager.setAllObjectsVisible(false);
-    
-    	player = new Player(this, 550, 350, character, soManager);
+
+		player = new Player(this, 550, 350, character, soManager);
 
 		rocks = new ArrayList<>();
 		rocks.add(new Rock(this, 823, 960, background));
@@ -77,9 +76,9 @@ public class GamePanel extends JPanel implements Runnable {
 		enemies = new ArrayList<>();
 		enemies.add(new Shaman(this, 720, 900, background, player));
 		enemies.add(new Bomber(this, 720, 960, background, player));
-		enemies.add(new BeeAnimation(this, 720, 930, background,player));
-		enemies.add(new GrasshopperAnimation(this, 720, 990, background,player));
-		enemies.add(new MushroomAnimation(this, 720, 960, background,player));
+		enemies.add(new BeeAnimation(this, 720, 930, background, player));
+		enemies.add(new GrasshopperAnimation(this, 720, 990, background, player));
+		enemies.add(new MushroomAnimation(this, 720, 960, background, player));
 
 	}
 
@@ -135,13 +134,13 @@ public class GamePanel extends JPanel implements Runnable {
 
 		Rectangle2D.Double futurePosition = player.getFutureBoundingRectangle(direction);
 
-		Boolean wouldCollide = soManager.collidesWithSolid(futurePosition); 
+		Boolean wouldCollide = soManager.collidesWithSolid(futurePosition);
 		System.out.println("Would collide: " + wouldCollide);
 
 		if (player != null && !isPaused) {
-			if (direction != 99) { //if not colliding with a solid then move
+			if (direction != 99) { // if not colliding with a solid then move
 
-				if(!wouldCollide){ // if would not collide in the next move then move
+				if (!wouldCollide) { // if would not collide in the next move then move
 					player.start();
 					player.move(direction);
 				}
@@ -152,13 +151,14 @@ public class GamePanel extends JPanel implements Runnable {
 			}
 		}
 
-		if (background != null && player != null && !isPaused && direction!=99) {
-			if(!wouldCollide){ //if wouldn't collide with solid then move in the direction
+		if (background != null && player != null && !isPaused && direction != 99) {
+			if (!wouldCollide) { // if wouldn't collide with solid then move in the direction
 				int batMovement = background.move(direction); // check whether the bat can start/stop moving in a new
 																// direction
 
 				player.setDirections(batMovement);
-				background.setDirections(player.move(direction)); // check if the bat is centred so the background can move
+				background.setDirections(player.move(direction)); // check if the bat is centred so the background can
+																	// move
 			}
 		}
 	}
@@ -174,7 +174,6 @@ public class GamePanel extends JPanel implements Runnable {
 		if (soManager != null) {
 			soManager.draw(imageContext);
 		}
-
 
 		if (rocks != null) {
 			for (int i = 0; i < rocks.size(); i++)
