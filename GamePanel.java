@@ -12,11 +12,7 @@ import java.awt.geom.Rectangle2D;
 
 public class GamePanel extends JPanel implements Runnable {
 
-	private static int NUM_ALIENS = 3;
-
 	private SoundManager soundManager;
-	private Alien[] aliens;
-	private boolean alienDropped;
 	private boolean isRunning;
 	private boolean isPaused;
 
@@ -57,8 +53,6 @@ public class GamePanel extends JPanel implements Runnable {
 
 		add(charSelect, gbc);
 
-		aliens = null;
-		alienDropped = false;
 		isRunning = false;
 		isPaused = false;
 		soundManager = SoundManager.getInstance();

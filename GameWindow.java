@@ -2,10 +2,7 @@ import javax.swing.*; // need this for GUI objects
 import java.awt.*; // need this for Layout Managers
 import java.awt.event.*; // need this to respond to GUI events
 
-public class GameWindow extends JFrame
-		implements ActionListener,
-		KeyListener,
-		MouseListener {
+public class GameWindow extends JFrame implements ActionListener, KeyListener, MouseListener {
 	// declare instance variables for user interface objects
 
 	// declare labels
@@ -37,7 +34,7 @@ public class GameWindow extends JFrame
 	@SuppressWarnings({ "unchecked" })
 	public GameWindow() {
 
-		setTitle("A Game With Aliens, Image Effects, and Animations");
+		setTitle("A Game With Enemies, Image Effects, and Animations");
 		setSize(1200, 875);
 
 		// create user interface objects
