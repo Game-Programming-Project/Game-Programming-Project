@@ -19,12 +19,6 @@ public class SoundManager {				// a Singleton class
 		// Clip clip = loadClip("sounds/background.wav");	// played from start of the game
 		// clips.put("background", clip);
 
-		// clip = loadClip("sounds/hitSound.wav");	// played when the bat hits an alien
-		// clips.put("hit", clip);
-
-		// clip = loadClip("sounds/appearSound.wav");	// played when an alien is regenerated at the top of the JPanel
-		// clips.put("appear", clip);
-
 		// clip = loadClip("sounds/Fireball.wav");	// played when a fireball is shot
 		// clips.put("fireball", clip);
 	}
