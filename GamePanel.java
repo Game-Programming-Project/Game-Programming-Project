@@ -22,7 +22,7 @@ public class GamePanel extends JPanel implements Runnable {
 	private Thread gameThread;
 
 	private BufferedImage image;
-	// private Image backgroundImage;
+
 	private SolidObjectManager soManager;
 
 	private Player player;
@@ -57,8 +57,6 @@ public class GamePanel extends JPanel implements Runnable {
 		isPaused = false;
 		soundManager = SoundManager.getInstance();
 
-		// backgroundImage = ImageManager.loadImage ("images/Background.jpg");
-
 		image = new BufferedImage(1100, 700, BufferedImage.TYPE_INT_RGB);
 	}
 
@@ -77,10 +75,11 @@ public class GamePanel extends JPanel implements Runnable {
 		// rocks.add(new Rock(this, 87, 134, background));
 
 		enemies = new ArrayList<>();
+		enemies.add(new Shaman(this, 720, 900, background, player));
 		enemies.add(new Bomber(this, 720, 960, background, player));
-		enemies.add(new BeeAnimation(this, 720, 930, background));
-		enemies.add(new GrasshopperAnimation(this, 720, 990, background));
-		enemies.add(new MushroomAnimation(this, 720, 960, background));
+		enemies.add(new BeeAnimation(this, 720, 930, background,player));
+		enemies.add(new GrasshopperAnimation(this, 720, 990, background,player));
+		enemies.add(new MushroomAnimation(this, 720, 960, background,player));
 
 	}
 

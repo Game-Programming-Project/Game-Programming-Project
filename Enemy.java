@@ -1,5 +1,6 @@
 import java.awt.Image;
 import java.awt.Graphics2D;
+import java.util.Random;
 
 public class Enemy {
 
@@ -24,12 +25,19 @@ public class Enemy {
 
     protected SoundManager soundManager;
 
-    public Enemy(GamePanel gPanel, int mapX, int mapY, Background bg) {
+    protected Player player;
+
+    protected int aggression; // how aggressive the enemy is, how likely it is to attack the player
+
+    public Enemy(GamePanel gPanel, int mapX, int mapY, Background bg, Player player){
 
         this.mapX = mapX;
         this.mapY = mapY;
         this.gPanel = gPanel;
         this.bg = bg;
+        this.player = player;
+
+        aggression = 1;
 
         soundManager = SoundManager.getInstance();
 
@@ -62,6 +70,35 @@ public class Enemy {
     public void move() {
         // code to move the enemy, add dy and dx to mapY and mapX when moving, not x and
         // y
+
+    }
+
+    public void chasePlayer(){
+        int playerX = player.getX();
+        int playerY = player.getY();
+
+        Random rand = new Random();
+        int random = rand.nextInt(aggression);
+
+        updateScreenCoordinates();
+
+        if(random == 0){
+            if(playerX > x){ // player is to the right
+                mapX += dx;
+            }
+
+            if(playerX < x){ // player is to the left
+                mapX -= dx;
+            }
+
+            if(playerY > y){ // player is below
+                mapY += dy;
+            }
+
+            if(playerY < y){ // player is above
+                mapY -= dy;
+            }
+        }
 
     }
 
@@ -98,6 +135,10 @@ public class Enemy {
 
     public int getDX() {
         return dx;
+    }
+
+    public void setAggression(int a){
+        aggression = a;
     }
 
 }
