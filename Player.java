@@ -60,7 +60,8 @@ public class Player {
 
         panel = p;
 
-        width=height=80;
+        width=57;
+		height=80;
         
 		this.soManager = soManager;
 
@@ -261,8 +262,11 @@ public class Player {
 		if(!walkAnimation.isStillActive() && !attackAnimation.isStillActive()) // if animations are not active then draw standing image instead
 			g2.drawImage(standImage, x, y, width, height, null);
 
+		// if(attackAnimation.isStillActive())
+		// 	g2.drawImage(attackAnimation.getImage(), x, y, width, height, null);
+
 		if(attackAnimation.isStillActive())
-			g2.drawImage(attackAnimation.getImage(), x, y, width, height, null);
+        	g2.drawImage(attackAnimation.getImage(), x - (80 - width) / 2, y, 80, height, null);
 
 		if (walkAnimation.isStillActive())
 			g2.drawImage(walkAnimation.getImage(), x, y, width, height, null);
@@ -270,15 +274,20 @@ public class Player {
 
 
     private void loadAttackAnimations(){ // loading animation for attacking
-        attackAnimationRight = loadAnimation("images/Player/"+characterType+"/"+characterType+"_attackRight.png");
-		attackAnimationLeft = loadAnimation("images/Player/"+characterType+"/"+characterType+"_attackLeft.png");
+        //attackAnimationRight = loadAnimation("images/Player/"+characterType+"/"+characterType+"_attackRight.png");
+		attackAnimationRight = loadAnimation("images/Player/"+characterType+"/"+characterType+"_attackRightTest.png");
+		attackAnimationLeft = loadAnimation("images/Player/"+characterType+"/"+characterType+"_attackLeftTest.png");
+		//attackAnimationLeft = loadAnimation("images/Player/"+characterType+"/"+characterType+"_attackLeft.png");
 
         attackAnimation = attackAnimationRight;
     }
 
     private void loadWalkAnimations() {
-		walkAnimationRight = loadAnimation("images/Player/"+characterType+"/"+characterType+"_walkRight.png");
-		walkAnimationLeft = loadAnimation("images/Player/"+characterType+"/"+characterType+"_walkLeft.png");
+		// walkAnimationRight = loadAnimation("images/Player/"+characterType+"/"+characterType+"_walkRight.png");
+		// walkAnimationLeft = loadAnimation("images/Player/"+characterType+"/"+characterType+"_walkLeft.png");
+
+		walkAnimationRight = loadAnimation("images/Player/"+characterType+"/"+characterType+"_walkRightTest.png");
+		walkAnimationLeft = loadAnimation("images/Player/"+characterType+"/"+characterType+"_walkLeftTest.png");
 	
         walkAnimation = walkAnimationRight;
     }
@@ -314,13 +323,15 @@ public class Player {
 	}
 
     private void loadImages(){
-        standImageRight = ImageManager.loadImage("images/Player/"+characterType+"/"+characterType+"_standRight.png");
-		standImageLeft = ImageManager.loadImage("images/Player/"+characterType+"/"+characterType+"_standLeft.png");
+        // standImageRight = ImageManager.loadImage("images/Player/"+characterType+"/"+characterType+"_standRight.png");
+		// standImageLeft = ImageManager.loadImage("images/Player/"+characterType+"/"+characterType+"_standLeft.png");
+		standImageRight = ImageManager.loadImage("images/Player/"+characterType+"/"+characterType+"_standRightTest.png");
+		standImageLeft = ImageManager.loadImage("images/Player/"+characterType+"/"+characterType+"_standLeftTest.png");
 		standImage=standImageRight;
     }
 
     public Rectangle2D.Double getBoundingRectangle() {
-		return new Rectangle2D.Double (x, y, width, height);
+		return new Rectangle2D.Double (x, y, width+10, height);
 	}
 
 	public Rectangle2D.Double getFutureBoundingRectangle(int direction){
