@@ -83,6 +83,13 @@ public class CharacterSelection extends JPanel {
             }
         });
 
+        // Create a label and add it to the panel
+        JLabel label = new JLabel("Select Your Character!");
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 3;
+        add(label, gbc);
+
         // Add characters and labels to the panel
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.gridwidth = 1;
