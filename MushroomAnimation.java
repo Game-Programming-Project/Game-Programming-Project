@@ -16,16 +16,16 @@ public class MushroomAnimation extends Enemy {
 		super(gPanel, mapX, mapY, bg, p);
 
 		walkAnimationAway = new Animation(false);
-		walkAnimationForward = new Animation(false);
+		walkAnimationForward = new Animation(true);
 
 		loadImages();
 		loadWalkAnimations();
 
-		width = 212; //53:26
+		width = 212; // 53:26
 		height = 104;
 
-		dx = 0;
-		dy = 0;
+		dx = 10;
+		dy = 10;
 
 	}
 
@@ -33,7 +33,8 @@ public class MushroomAnimation extends Enemy {
 		int oldMapX = mapX;
 		int oldMapY = mapY;
 
-		mapX += dx;
+		chasePlayer();
+
 		if (oldMapX < mapX) { // moving right
 			walkAnimation = walkAnimationRight;
 			standImage = standImageRight;
@@ -42,22 +43,14 @@ public class MushroomAnimation extends Enemy {
 			standImage = standImageLeft;
 		}
 
-		mapY += dy;
-		if (oldMapY < mapY) { // moving down
-			walkAnimation = walkAnimationForward;
-			standImage = standImageForward;
-		} else if (oldMapY > mapY) { // moving up
-			walkAnimation = walkAnimationAway;
-			standImage = standImageAway;
-		}
-
 	}
 
 	public void loadWalkAnimations() {
 		walkAnimationLeft = loadAnimation("images/Enemies/Level1/Mushroom/mushroomChasingLeft.png");
 		walkAnimationRight = loadAnimation("images/Enemies/Level1/Mushroom/mushroomChasingRight.png");
+		walkAnimationForward.addFrame(standImageForward, 100);
 
-		walkAnimation = walkAnimationRight;
+		walkAnimation = walkAnimationForward;
 	}
 
 	public Animation loadAnimation(String stripFilePath) {
@@ -93,10 +86,44 @@ public class MushroomAnimation extends Enemy {
 	}
 
 	public void loadImages() {
-		standImage = ImageManager.loadImage("images/Enemies/Level1/Mushroom/mushroomStanding.png");
-
+		standImageForward = ImageManager.loadImage("images/Enemies/Level1/Mushroom/mushroomStanding.png");
 		standImageLeft = ImageManager.loadImage("images/Enemies/Level1/Mushroom/mushroomStandingLeft.png");
 		standImageRight = ImageManager.loadImage("images/Enemies/Level1/Mushroom/mushroomStandingRight.png");
+		standImage = standImageForward;
+	}
 
+	public void chasePlayer() {
+		int playerX = player.getX();
+		int playerY = player.getY();
+
+		// Calculate the distance between the mushroom and the player
+		double distance = Math.sqrt(Math.pow(playerX - x, 2) + Math.pow(playerY - y, 2));
+
+		// If the player is within a certain range (e.g., 100 pixels)
+		if (distance <= 300) {
+			if (playerX - 150 > x) { // player is to the right
+				mapX += dx;
+				walkAnimation = walkAnimationRight;
+				standImage = standImageRight;
+			} else if (playerX + 100 < x) { // player is to the left
+				mapX -= dx;
+				walkAnimation = walkAnimationLeft;
+				standImage = standImageLeft;
+			}
+
+			if (playerY - 100 > y) { // player is below
+				mapY += dy;
+				walkAnimation = walkAnimationLeft;
+			} else if (playerY + 100 < y) { // player is above
+				mapY -= dy;
+				walkAnimation = walkAnimationLeft;
+			}
+		} else {
+			// If the player is not within range, the mushroom should be standing
+			// walkAnimation = null;
+			walkAnimation = walkAnimationForward;
+			standImage = standImageForward; // or standImageLeft, depending on the last direction
+
+		}
 	}
 }
