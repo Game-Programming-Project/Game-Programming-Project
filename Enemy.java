@@ -29,7 +29,7 @@ public class Enemy {
 
     protected int aggression; // how aggressive the enemy is, how likely it is to attack the player
 
-    public Enemy(GamePanel gPanel, int mapX, int mapY, Background bg, Player player){
+    public Enemy(GamePanel gPanel, int mapX, int mapY, Background bg, Player player) {
 
         this.mapX = mapX;
         this.mapY = mapY;
@@ -73,7 +73,7 @@ public class Enemy {
 
     }
 
-    public void chasePlayer(){
+    public void chasePlayer() {
         int playerX = player.getX();
         int playerY = player.getY();
 
@@ -82,20 +82,20 @@ public class Enemy {
 
         updateScreenCoordinates();
 
-        if(random == 0){
-            if(playerX > x){ // player is to the right
+        if (random == 0) {
+            if (playerX > x) { // player is to the right
                 mapX += dx;
             }
 
-            if(playerX < x){ // player is to the left
+            if (playerX < x) { // player is to the left
                 mapX -= dx;
             }
 
-            if(playerY > y){ // player is below
+            if (playerY > y) { // player is below
                 mapY += dy;
             }
 
-            if(playerY < y){ // player is above
+            if (playerY < y) { // player is above
                 mapY -= dy;
             }
         }
@@ -137,7 +137,7 @@ public class Enemy {
         return dx;
     }
 
-    public void setAggression(int a){
+    public void setAggression(int a) {
         aggression = a;
     }
 

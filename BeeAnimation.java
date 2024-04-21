@@ -13,7 +13,7 @@ public class BeeAnimation extends Enemy {
 	private Animation walkAnimationForward;
 
 	public BeeAnimation(GamePanel gPanel, int mapX, int mapY, Background bg, Player p) {
-		super(gPanel, mapX, mapY, bg,p);
+		super(gPanel, mapX, mapY, bg, p);
 
 		walkAnimationAway = new Animation(false);
 		walkAnimationForward = new Animation(false);
@@ -23,8 +23,8 @@ public class BeeAnimation extends Enemy {
 
 		width = height = 50;
 
-		dx = -1;
-		dy = 0;
+		dx = 2;
+		dy = 2;
 
 	}
 
@@ -32,7 +32,9 @@ public class BeeAnimation extends Enemy {
 		int oldMapX = mapX;
 		int oldMapY = mapY;
 
-		mapX += dx;
+		chasePlayer();
+
+		// mapX += dx;
 		if (oldMapX < mapX) { // moving right
 			walkAnimation = walkAnimationRight;
 			standImage = standImageRight;
@@ -41,14 +43,7 @@ public class BeeAnimation extends Enemy {
 			standImage = standImageLeft;
 		}
 
-		mapY += dy;
-		if (oldMapY < mapY) { // moving down
-			walkAnimation = walkAnimationForward;
-			standImage = standImageForward;
-		} else if (oldMapY > mapY) { // moving up
-			walkAnimation = walkAnimationAway;
-			standImage = standImageAway;
-		}
+		// mapY += dy;
 
 	}
 

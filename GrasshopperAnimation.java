@@ -13,7 +13,7 @@ public class GrasshopperAnimation extends Enemy {
 	private Animation walkAnimationForward;
 
 	public GrasshopperAnimation(GamePanel gPanel, int mapX, int mapY, Background bg, Player p) {
-		super(gPanel, mapX, mapY, bg,p);
+		super(gPanel, mapX, mapY, bg, p);
 
 		walkAnimationAway = new Animation(false);
 		walkAnimationForward = new Animation(false);
@@ -21,10 +21,10 @@ public class GrasshopperAnimation extends Enemy {
 		loadImages();
 		loadWalkAnimations();
 
-		width = height = 50;
+		width = height = 60;
 
-		dx = 2;
-		dy = 0;
+		dx = 5;
+		dy = 5;
 
 	}
 
@@ -32,22 +32,14 @@ public class GrasshopperAnimation extends Enemy {
 		int oldMapX = mapX;
 		int oldMapY = mapY;
 
-		mapX += dx;
+		chasePlayer();
+
 		if (oldMapX < mapX) { // moving right
 			walkAnimation = walkAnimationRight;
 			standImage = standImageRight;
 		} else if (oldMapX > mapX) { // moving left
 			walkAnimation = walkAnimationLeft;
 			standImage = standImageLeft;
-		}
-
-		mapY += dy;
-		if (oldMapY < mapY) { // moving down
-			walkAnimation = walkAnimationForward;
-			standImage = standImageForward;
-		} else if (oldMapY > mapY) { // moving up
-			walkAnimation = walkAnimationAway;
-			standImage = standImageAway;
 		}
 
 	}
@@ -83,7 +75,7 @@ public class GrasshopperAnimation extends Enemy {
 						(row * imageHeight) + imageHeight,
 						null);
 
-				Animation.addFrame(frameImage, 100);
+				Animation.addFrame(frameImage, 130);
 			}
 
 		}

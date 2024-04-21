@@ -10,13 +10,9 @@ public class CharacterSelection extends JPanel {
     private String selectedCharacter;
 
     public CharacterSelection(GamePanel gamePanel) {
+
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-
-        // Set background image
-        ImageIcon backgroundImage = new ImageIcon("images/MineEntrance.png");
-        JLabel backgroundLabel = new JLabel(backgroundImage);
-        add(backgroundLabel);
 
         // setting images for each button
         ImageIcon character1Icon = new ImageIcon(new ImageIcon("images/Player/1/Woodcutter.png").getImage()
@@ -83,11 +79,17 @@ public class CharacterSelection extends JPanel {
             }
         });
 
+        // Create a label and add it to the panel
+        JLabel label = new JLabel("Select Your Character!");
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 3;
+        add(label, gbc);
+
         // Add characters and labels to the panel
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.gridwidth = 1;
         gbc.gridy = 1;
-        gbc.gridx = 0;
         add(character1Button, gbc);
         gbc.gridx = 1;
         add(character2Button, gbc);
