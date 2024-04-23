@@ -121,6 +121,8 @@ public class GamePanel extends JPanel implements Runnable {
 				rock.destroy();
 				rock.setDestroyed(true);
 				player.setJustAttacked(false);
+
+				//setFX to start the disappearing effect once rock is destroyed
 				rock.setFX(new DisappearFX(rock.getMapX(), rock.getMapY(), rock.getWidth(), rock.getHeight(), rock.getRockImageString(), background, 10));
 			}
 

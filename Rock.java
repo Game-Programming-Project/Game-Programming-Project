@@ -31,7 +31,7 @@ public class Rock {
 
         soundManager = SoundManager.getInstance();
         
-        rockImage = ImageManager.loadImage("images/Rocks/Rock_1.png");
+        rockImage = ImageManager.loadImage("images/Rocks/basicRock.png");
         destroyedRockImage = ImageManager.loadImage("images/Rocks/destroyedRock.png");
 
         disappearFX=null;
@@ -103,7 +103,7 @@ public class Rock {
   
      public String getRockImageString(){ // method to return the current image of the rock(destroyed and alive)
         if(!destroyed)
-            return "images/Rocks/Rock_1.png";
+            return "images/Rocks/basicRock.png";
         else
             return "images/Rocks/destroyedRock.png";
      }
