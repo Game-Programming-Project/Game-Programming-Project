@@ -65,7 +65,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		soManager = new SolidObjectManager(background);
 		soManager.initLevelOne();
-		soManager.setAllObjectsVisible(true);
+		soManager.setAllObjectsVisible(false);
 
 		player = new Player(this, 550, 350, character, soManager);
 
@@ -76,7 +76,11 @@ public class GamePanel extends JPanel implements Runnable {
 		enemies = new ArrayList<>();
 		enemies.add(new Shaman(this, 720, 900, background, player));
 		enemies.add(new Bomber(this, 720, 960, background, player));
+
 		enemies.add(new BeeAnimation(this, 720, 930, background, player));
+		enemies.add(new BeeAnimation(this, 707, 950, background, player));
+		enemies.add(new BeeAnimation(this, 750, 980, background, player));
+
 		enemies.add(new GrasshopperAnimation(this, 720, 990, background, player));
 		enemies.add(new MushroomAnimation(this, 720, 960, background, player));
 
