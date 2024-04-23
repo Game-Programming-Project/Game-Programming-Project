@@ -88,7 +88,7 @@ public class BeeAnimation extends Enemy {
 		double distance = Math.sqrt(Math.pow(playerX - x, 2) + Math.pow(playerY - y, 2));
 
 		// If the player is within a certain range (e.g., 100 pixels)
-		if (distance <= 300) {
+		if (distance <= 100) {
 			if (playerX > x) { // player is to the right
 				mapX += dx;
 				walkAnimation = walkAnimationRight;
