@@ -46,10 +46,10 @@ public class CharacterSelection extends JPanel {
         JLabel character2Label = new JLabel(
                 "<html><center>Path Finder<br>Speed: 8<br>Strength: 6<br>Health: 10</center></html>");
         JLabel character3Label = new JLabel(
-                "<html><center>Trail Blazer<br>Speed: 9<br>Strength: 6<br>Health: 15</center></html>");
+                "<html><center>Trail Blazer<br>Speed: 6<br>Strength: 6<br>Health: 15</center></html>");
 
         // Set font and alignment for character labels
-        Font font = new Font("Arial", Font.PLAIN, 12);
+        Font font = new Font("Arial", Font.PLAIN, 16);
         character1Label.setFont(font);
         character1Label.setHorizontalAlignment(JLabel.CENTER);
         character2Label.setFont(font);
@@ -81,6 +81,7 @@ public class CharacterSelection extends JPanel {
 
         // Create a label and add it to the panel
         JLabel label = new JLabel("Select Your Character!");
+        label.setFont(new Font("Arial", Font.BOLD, 24));
         gbc.gridx = 0;
         gbc.gridy = 0;
         gbc.gridwidth = 3;
