@@ -1,6 +1,7 @@
 import javax.swing.JPanel;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
@@ -65,13 +66,14 @@ public class GamePanel extends JPanel implements Runnable {
 
 		soManager = new SolidObjectManager(background);
 		//soManager.initLevelOne();
+		soManager.addSolidObject(502, 1212, 154, 176, Color.CYAN, true);
 		soManager.setAllObjectsVisible(true);
 
 		player = new Player(this, 550, 350, character, soManager);
 
 		rocks = new ArrayList<>();
 		rocks.add(new Rock(this, 1550, 1321, background));
-		spawnRocks(5,470,679,1170,1401);
+		spawnRocks(10,470,679,1170,1401);
 		// rocks.add(new Rock(this, 87, 134, background));
 
 		enemies = new ArrayList<>();
@@ -87,6 +89,15 @@ public class GamePanel extends JPanel implements Runnable {
 		for(int i = 0; i < num; i++){
 			int x = (int)(Math.random() * (x2 - x1 + 1) + x1); // random x coordinate within the range
 			int y = (int)(Math.random() * (y2 - y1 + 1) + y1); // random y coordinate within the range
+
+			boolean onSolid = soManager.onSolidObject(x, y, 30, 30);
+
+			while(onSolid){ // if the rock is on a solid object then keep generating new coordinates until it's not on a solid object
+				x = (int)(Math.random() * (x2 - x1 + 1) + x1); 
+				y = (int)(Math.random() * (y2 - y1 + 1) + y1); 
+				onSolid = soManager.onSolidObject(x, y, 30, 30);
+			}
+
 			rocks.add(new Rock(this, x, y, background));
 		}
 	}

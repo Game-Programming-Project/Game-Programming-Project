@@ -56,22 +56,24 @@ public class SolidObjectManager {
 
     return false;
 
- }
+   }
 
-
-   public boolean onSolidObject(int x, int width) {
-
+   //given coordinates, tells if the object is on a solid object
+   public boolean onSolidObject(int mapX, int mapY, int width, int height) {
       for (int i=0; i<solidObjects.size(); i++) {
          SolidObject solidObject = solidObjects.get(i);
-         int solidRight = solidObject.getX() + solidObject.getWidth() - 1;
+         
+         int solidLeft = solidObject.getMapX();
+         int solidRight = solidObject.getMapX() + solidObject.getWidth() - 1;
 
-         if (x + width > solidObject.getX() && x <= solidRight) {
+         int solidTop = solidObject.getMapY();
+         int solidBottom = solidObject.getMapY() + solidObject.getHeight() - 1;
+
+         if(mapX + width > solidLeft && mapX <= solidRight && mapY + height > solidTop && mapY <= solidBottom)
             return true;
-         }
       }
 
       return false;
-
    }
 
    public void setAllObjectsVisible(boolean v) {
@@ -83,6 +85,10 @@ public class SolidObjectManager {
 
    public void addSolidObject(SolidObject solidObject) {
         solidObjects.add(solidObject);
+   }
+
+   public void addSolidObject(int mapX, int mapY, int width, int height, Color colour, boolean visible) {
+      solidObjects.add(new SolidObject(mapX, mapY, width, height, colour, visible, bg));
    }
 
    public void initLevelOne(){

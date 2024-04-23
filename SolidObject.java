@@ -73,6 +73,13 @@ public class SolidObject {
 		return y;
 	}
 
+	public int getMapX() {
+		return mapX;
+	}
+
+	public int getMapY() {
+		return mapY;
+	}
 
 	public int getWidth() {
 		return width;
