@@ -66,7 +66,6 @@ public class GamePanel extends JPanel implements Runnable {
 
 		soManager = new SolidObjectManager(background);
 		//soManager.initLevelOne();
-		//soManager.addSolidObject(502, 1212, 154, 176, Color.CYAN, true);
 		//soManager.setAllObjectsVisible(true);
 
 		player = new Player(this, 550, 350, character, soManager);
@@ -74,7 +73,6 @@ public class GamePanel extends JPanel implements Runnable {
 		rocks = new ArrayList<>();
 		rocks.add(new Rock(this, 1550, 1321, background));
 		spawnRocks(10,470,679,1170,1401);
-		// rocks.add(new Rock(this, 87, 134, background));
 
 		enemies = new ArrayList<>();
 		// enemies.add(new Shaman(this, 720, 900, background, player));

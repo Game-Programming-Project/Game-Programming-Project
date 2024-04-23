@@ -82,11 +82,12 @@ public class SolidObjectManager {
       }
    }
 
+   //checks if any rocks associated with solid objects are destroyed and deletes the solid if the rock was destroyed
    public void removeDestroyedRocks(){
       for (int i=0; i<solidObjects.size(); i++) {
 
          SolidObject solidObject = solidObjects.get(i);
-         
+
          Rock r = solidObject.getRock();
 
          if(r != null && r.isDestroyed()){

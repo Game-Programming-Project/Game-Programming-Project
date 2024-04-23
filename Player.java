@@ -278,18 +278,12 @@ public class Player {
         attackAnimationRight = loadAnimation("images/Player/"+characterType+"/"+characterType+"_attackRight.png");
 		attackAnimationLeft = loadAnimation("images/Player/"+characterType+"/"+characterType+"_attackLeft.png");
 
-		// attackAnimationRight = loadAnimation("images/Player/"+characterType+"/"+characterType+"_attackRightTest.png");
-		// attackAnimationLeft = loadAnimation("images/Player/"+characterType+"/"+characterType+"_attackLeftTest.png");
-
         attackAnimation = attackAnimationRight;
     }
 
     private void loadWalkAnimations() {
 		walkAnimationRight = loadAnimation("images/Player/"+characterType+"/"+characterType+"_walkRight.png");
 		walkAnimationLeft = loadAnimation("images/Player/"+characterType+"/"+characterType+"_walkLeft.png");
-
-		// walkAnimationRight = loadAnimation("images/Player/"+characterType+"/"+characterType+"_walkRightTest.png");
-		// walkAnimationLeft = loadAnimation("images/Player/"+characterType+"/"+characterType+"_walkLeftTest.png");
 	
         walkAnimation = walkAnimationRight;
     }
@@ -327,8 +321,7 @@ public class Player {
     private void loadImages(){
         standImageRight = ImageManager.loadImage("images/Player/"+characterType+"/"+characterType+"_standRight.png");
 		standImageLeft = ImageManager.loadImage("images/Player/"+characterType+"/"+characterType+"_standLeft.png");
-		// standImageRight = ImageManager.loadImage("images/Player/"+characterType+"/"+characterType+"_standRightTest.png");
-		// standImageLeft = ImageManager.loadImage("images/Player/"+characterType+"/"+characterType+"_standLeftTest.png");
+
 		standImage=standImageRight;
     }
 
@@ -365,7 +358,7 @@ public class Player {
 	}
 
     public Rectangle2D.Double getBoundingRectangle() {
-		int offset = 10;
+		int offset = 10; // used to make player range bigger, needed for collision detection
 
 		// if(characterType=="1" || characterType=="3")
 		// 	offset = 10;
@@ -375,6 +368,7 @@ public class Player {
 		return new Rectangle2D.Double (x, y, width+offset, height);
 	}
 
+	//method used in detecting if player will collide with a solid object
 	public Rectangle2D.Double getFutureBoundingRectangle(int direction){
 
 		int futureX = x , futureY = y;
