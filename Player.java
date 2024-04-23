@@ -20,6 +20,7 @@ public class Player {
     private int x,y;			
 
 	private int width, height;
+	private int attackWidth, attackHeight;
 
 
     private GamePanel panel;
@@ -59,20 +60,8 @@ public class Player {
         characterType = cType;
 
         panel = p;
-
-		//player 1 is 27x38 walking and standing
-		//and 38x38 attacking
-		if(characterType=="1"){
-			width=57;
-			height=80;
-		}
-
-		//player 2 is 32x38 walking and standing
-		// and 38x38 attacking
-		if(characterType=="2"){
-			width=68;
-			height=80;
-		}
+		
+		setDimensions();
         
 		this.soManager = soManager;
 
@@ -270,12 +259,7 @@ public class Player {
 
 	public void draw(Graphics2D g2) {
 
-		int attackWidth = 0;
-		if(characterType=="1")
-			attackWidth = x - (80 - width) / 2;
-		else
-			attackWidth = x;
-		
+
 		if(!walkAnimation.isStillActive() && !attackAnimation.isStillActive()) // if animations are not active then draw standing image instead
 			g2.drawImage(standImage, x, y, width, height, null);
 
@@ -283,7 +267,7 @@ public class Player {
 		// 	g2.drawImage(attackAnimation.getImage(), x, y, width, height, null);
 
 		if(attackAnimation.isStillActive())
-        	g2.drawImage(attackAnimation.getImage(), attackWidth, y, 80, height, null);
+        	g2.drawImage(attackAnimation.getImage(), x, y, attackWidth, attackHeight, null);
 
 		if (walkAnimation.isStillActive())
 			g2.drawImage(walkAnimation.getImage(), x, y, width, height, null);
@@ -348,10 +332,42 @@ public class Player {
 		standImage=standImageRight;
     }
 
+	private void setDimensions(){
+		//player 1 is 27x38 walking and standing
+		// and 38x38 attacking
+		if(characterType=="1"){
+			width=57;
+			height=80;
+
+			attackWidth = 76;
+			attackHeight = 80;
+		}
+
+		//player 2 is 32x38 walking and standing
+		// and 38x38 attacking
+		if(characterType=="2"){
+			width=68;
+			height=80;
+
+			attackWidth = 76;
+			attackHeight = 80;
+		}
+
+		//player 3 is 27x38 walking and standing
+		// and 33x38 attacking
+		if(characterType=="3"){
+			width=57;
+			height=80;
+
+			attackWidth = 66;
+			attackHeight = 80;
+		}
+	}
+
     public Rectangle2D.Double getBoundingRectangle() {
 		int offset;
 
-		if(characterType=="1")
+		if(characterType=="1" || characterType=="3")
 			offset = 10;
 		else
 			offset = 0;
