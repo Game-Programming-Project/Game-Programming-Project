@@ -65,7 +65,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		soManager = new SolidObjectManager(background);
 		soManager.initLevelOne();
-		soManager.setAllObjectsVisible(false);
+		soManager.setAllObjectsVisible(true);
 
 		player = new Player(this, 550, 350, character, soManager);
 
