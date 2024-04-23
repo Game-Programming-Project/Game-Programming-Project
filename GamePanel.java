@@ -75,11 +75,11 @@ public class GamePanel extends JPanel implements Runnable {
 		// rocks.add(new Rock(this, 87, 134, background));
 
 		enemies = new ArrayList<>();
-		//enemies.add(new Shaman(this, 720, 900, background, player));
-		//enemies.add(new Bomber(this, 720, 960, background, player));
-		//enemies.add(new BeeAnimation(this, 720, 930, background, player));
-		//enemies.add(new GrasshopperAnimation(this, 720, 990, background, player));
-		//enemies.add(new MushroomAnimation(this, 720, 960, background, player));
+		// enemies.add(new Shaman(this, 720, 900, background, player));
+		// enemies.add(new Bomber(this, 720, 960, background, player));
+		// enemies.add(new BeeAnimation(this, 720, 930, background, player));
+		// enemies.add(new GrasshopperAnimation(this, 720, 990, background, player));
+		// enemies.add(new MushroomAnimation(this, 720, 960, background, player));
 
 	}
 
@@ -115,14 +115,19 @@ public class GamePanel extends JPanel implements Runnable {
 
 			Rock rock = rockIterator.next();
 
+			//if a player left clicks on a rock to destroy it
 			if (rock.collidesWithPlayer(player) && player.justAttacked() && !rock.isDestroyed()) {
 
 				rock.destroy();
 				rock.setDestroyed(true);
-				rockIterator.remove(); // Use iterator's remove method to remove the destroyed rock from the list
 				player.setJustAttacked(false);
+				rock.setFX(new DisappearFX(rock.getMapX(), rock.getMapY(), rock.getWidth(), rock.getHeight(), rock.getRockImageString(), background, 10));
 			}
 
+			rock.updateFX(); // update rock FX if any going on
+			if(rock.isDisappearCompleted()){ // if rock is destroyed and the effect is completed
+				rockIterator.remove();	// then remove it from the game since it's no longer needed
+			}
 		}
 
 		Iterator<Enemy> enemyIterator = enemies.iterator();
