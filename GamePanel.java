@@ -60,26 +60,35 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	public void createGameEntities() {
-
-		background = new Background(this, "images/Level1MapTest.png", 96, 360, 80);
+		//note for level 3 offsetX: -90, offsetY: 400
+		background = new Background(this, "images/Maps/Testing/Level3MapTest.png", 96, -90, 400);
 
 		soManager = new SolidObjectManager(background);
-		soManager.initLevelOne();
+		//soManager.initLevelOne();
 		soManager.setAllObjectsVisible(true);
 
 		player = new Player(this, 550, 350, character, soManager);
 
 		rocks = new ArrayList<>();
-		rocks.add(new Rock(this, 823, 960, background));
+		rocks.add(new Rock(this, 1550, 1321, background));
+		spawnRocks(5,470,679,1170,1401);
 		// rocks.add(new Rock(this, 87, 134, background));
 
 		enemies = new ArrayList<>();
-		enemies.add(new Shaman(this, 720, 900, background, player));
-		enemies.add(new Bomber(this, 720, 960, background, player));
-		enemies.add(new BeeAnimation(this, 720, 930, background, player));
-		enemies.add(new GrasshopperAnimation(this, 720, 990, background, player));
-		enemies.add(new MushroomAnimation(this, 720, 960, background, player));
+		//enemies.add(new Shaman(this, 720, 900, background, player));
+		//enemies.add(new Bomber(this, 720, 960, background, player));
+		//enemies.add(new BeeAnimation(this, 720, 930, background, player));
+		//enemies.add(new GrasshopperAnimation(this, 720, 990, background, player));
+		//enemies.add(new MushroomAnimation(this, 720, 960, background, player));
 
+	}
+
+	public void spawnRocks(int num, int x1, int x2, int y1, int y2){
+		for(int i = 0; i < num; i++){
+			int x = (int)(Math.random() * (x2 - x1 + 1) + x1); // random x coordinate within the range
+			int y = (int)(Math.random() * (y2 - y1 + 1) + y1); // random y coordinate within the range
+			rocks.add(new Rock(this, x, y, background));
+		}
 	}
 
 	public void run() {
