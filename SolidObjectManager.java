@@ -16,7 +16,6 @@ public class SolidObjectManager {
 
    }
 
-
    public void draw (Graphics2D g2) {
    
       for (int i=0; i<solidObjects.size(); i++) {
@@ -62,7 +61,7 @@ public class SolidObjectManager {
    public boolean onSolidObject(int mapX, int mapY, int width, int height) {
       for (int i=0; i<solidObjects.size(); i++) {
          SolidObject solidObject = solidObjects.get(i);
-         
+
          int solidLeft = solidObject.getMapX();
          int solidRight = solidObject.getMapX() + solidObject.getWidth() - 1;
 
@@ -80,6 +79,21 @@ public class SolidObjectManager {
       for (int i=0; i<solidObjects.size(); i++) {
          SolidObject solidObject = solidObjects.get(i);
          solidObject.setVisible(v);
+      }
+   }
+
+   public void removeDestroyedRocks(){
+      for (int i=0; i<solidObjects.size(); i++) {
+
+         SolidObject solidObject = solidObjects.get(i);
+         
+         Rock r = solidObject.getRock();
+
+         if(r != null && r.isDestroyed()){
+            solidObjects.remove(i);
+            i--;
+         }
+
       }
    }
 

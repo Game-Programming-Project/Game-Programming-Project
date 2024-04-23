@@ -365,12 +365,12 @@ public class Player {
 	}
 
     public Rectangle2D.Double getBoundingRectangle() {
-		int offset;
+		int offset = 10;
 
-		if(characterType=="1" || characterType=="3")
-			offset = 10;
-		else
-			offset = 0;
+		// if(characterType=="1" || characterType=="3")
+		// 	offset = 10;
+		// else
+		// 	offset = 0;
 
 		return new Rectangle2D.Double (x, y, width+offset, height);
 	}

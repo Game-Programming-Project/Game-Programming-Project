@@ -66,8 +66,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 		soManager = new SolidObjectManager(background);
 		//soManager.initLevelOne();
-		soManager.addSolidObject(502, 1212, 154, 176, Color.CYAN, true);
-		soManager.setAllObjectsVisible(true);
+		//soManager.addSolidObject(502, 1212, 154, 176, Color.CYAN, true);
+		//soManager.setAllObjectsVisible(true);
 
 		player = new Player(this, 550, 350, character, soManager);
 
@@ -97,8 +97,13 @@ public class GamePanel extends JPanel implements Runnable {
 				y = (int)(Math.random() * (y2 - y1 + 1) + y1); 
 				onSolid = soManager.onSolidObject(x, y, 30, 30);
 			}
+			Rock rock = new Rock(this, x, y, background);
+			rocks.add(rock);
 
-			rocks.add(new Rock(this, x, y, background));
+			//adds a solid object for each rock and associates the rock with the object
+			//this is so rocks don't spawn on each other and so that players can't walk through rocks
+			SolidObject s = new SolidObject(x, y, i, i, getBackground(), onSolid, background, rock);
+			soManager.addSolidObject(s);
 		}
 	}
 
@@ -154,6 +159,9 @@ public class GamePanel extends JPanel implements Runnable {
 			enemy.update();
 
 		}
+
+		// remove solid objects associated with rocks, if their rock was destroyed
+		soManager.removeDestroyedRocks(); 
 
 	}
 
