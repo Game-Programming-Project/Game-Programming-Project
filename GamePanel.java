@@ -66,13 +66,14 @@ public class GamePanel extends JPanel implements Runnable {
 
 		soManager = new SolidObjectManager(background);
 		//soManager.initLevelOne();
-		//soManager.setAllObjectsVisible(true);
+		soManager.initLevelThree();
+		soManager.setAllObjectsVisible(false);
 
 		player = new Player(this, 550, 350, character, soManager);
 
 		rocks = new ArrayList<>();
 		rocks.add(new Rock(this, 1550, 1321, background));
-		spawnRocks(10,470,679,1170,1401);
+		//spawnRocks(10,470,679,1170,1401);
 
 		enemies = new ArrayList<>();
 		enemies.add(new Shaman(this, 460, 1489, background, player, soManager));
@@ -154,6 +155,9 @@ public class GamePanel extends JPanel implements Runnable {
 
 		//checking if the player would hit a solid if they moved in the direction
 		Boolean wouldCollide = soManager.collidesWithSolid(futurePosition);
+
+		//this makes the player walk through any solid object
+		//wouldCollide = false; // for testing purposes, comment out when done
 
 		if (player != null && !isPaused) {
 			if (direction != 99) { 
