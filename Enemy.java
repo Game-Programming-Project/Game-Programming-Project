@@ -80,6 +80,10 @@ public class Enemy {
         int playerX = player.getX();
         int playerY = player.getY();
 
+        //this code makes the enemy target the middle of the player sprite instead of the top left
+        playerX += player.getWidth()/2;
+        playerY += player.getHeight()/2;
+
         Random rand = new Random();
         int random = rand.nextInt(aggression);
 

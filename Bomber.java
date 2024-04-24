@@ -3,6 +3,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.Random;
 
 public class Bomber extends Enemy {
 
@@ -14,9 +15,12 @@ public class Bomber extends Enemy {
 
     private Player player;
 
-    public Bomber(GamePanel gPanel, int mapX, int mapY, Background bg, Player p) {
+    private SolidObjectManager soManager;
+
+    public Bomber(GamePanel gPanel, int mapX, int mapY, Background bg, Player p, SolidObjectManager soManager) {
         super(gPanel,mapX,mapY,bg,p);
         player = p;
+        this.soManager = soManager;
 
         walkAnimationUp= new Animation(false);
         walkAnimationDown= new Animation(false);
@@ -27,17 +31,19 @@ public class Bomber extends Enemy {
         width=height=30;
 
         dx=5;
-        dy=0;
+        dy=3;
     }
 
     public void move() {
         int oldMapX = mapX;
         int oldMapY = mapY;
 
-        int playerX = player.getX();
-        int playerY = player.getY();
+        double distance = Math.sqrt(Math.pow(player.getX() - x, 2) + Math.pow(player.getY() - y, 2));
 
-        mapX+=dx;
+        Boolean wouldCollide = soManager.collidesWithSolid(getFutureBoundingRectangle());
+        if(!wouldCollide && distance < 400) // only move if Shaman won't collide with a solid and if the player is within range
+            chasePlayer();
+
         if(oldMapX<mapX){ //moving right
 
             walkAnimation = walkAnimationRight;
@@ -47,7 +53,6 @@ public class Bomber extends Enemy {
             standImage = standImageLeft;
         }
 
-        mapY += dy;
         if (oldMapY < mapY) { // moving down
             walkAnimation = walkAnimationDown;
             standImage = standImageForward;
@@ -56,6 +61,47 @@ public class Bomber extends Enemy {
             standImage = standImageAway;
         }
 
+        //stop animation if enemy is blocked or not moving
+        if(oldMapX == mapX && oldMapY == mapY){
+            walkAnimation.stop();
+        } 
+
+    }
+
+    public void chasePlayer() {
+        int playerX = player.getX();
+        int playerY = player.getY();
+
+        //this code makes the enemy target the middle of the player sprite instead of the top left
+        playerX += player.getWidth()/2;
+        playerY += player.getHeight()/2;
+
+        Random rand = new Random();
+        int random = rand.nextInt(aggression);
+
+        updateScreenCoordinates();
+
+        if(random == 0){
+
+            // check if the difference is more than 10 pixels
+            if(Math.abs(playerY - y) > 50){ // this makes it so that the enemy does not just target the top left of the player, but the entire height of the player
+                if(playerY > y){ // player is below
+                    mapY += dy;
+                }
+    
+                if(playerY < y){ // player is above
+                    mapY -= dy;
+                }
+            }
+            else if(Math.abs(playerX - x) > 20){
+                if(playerX > x){ // player is to the right
+                    mapX += dx;
+                }
+                if(playerX < x){ // player is to the left
+                    mapX -= dx;
+                }
+            }
+        }
     }
 
     public void loadWalkAnimations() {

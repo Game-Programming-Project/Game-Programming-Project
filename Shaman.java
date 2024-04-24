@@ -73,6 +73,10 @@ public class Shaman extends Enemy {
         int playerX = player.getX();
         int playerY = player.getY();
 
+        //this code makes the enemy target the middle of the player sprite instead of the top left
+        playerX += player.getWidth()/2;
+        playerY += player.getHeight()/2;
+
         Random rand = new Random();
         int random = rand.nextInt(aggression);
 
@@ -80,7 +84,7 @@ public class Shaman extends Enemy {
 
         if(random == 0){
 
-            if(Math.abs(playerX - x) > 10){ // check if the difference is more than 10 pixels
+            if(Math.abs(playerX - x) > 35){ // check if the difference is more than 10 pixels
                 if(playerX > x){ // player is to the right
                     mapX += dx;
                 }
@@ -89,7 +93,6 @@ public class Shaman extends Enemy {
                 }
             }
             else{
-                //System.out.println("Shaman x equal player x");
                 if(playerY > y){ // player is below
                     mapY += dy;
                 }
@@ -98,11 +101,8 @@ public class Shaman extends Enemy {
                     mapY -= dy;
                 }
             }
-            
         }
-
     }
-
 
     public void loadWalkAnimations() {
         walkAnimationUp = loadAnimation("images/Enemies/Level3/Shaman/shamanWalkAway.png");
