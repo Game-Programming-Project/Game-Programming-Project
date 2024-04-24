@@ -123,20 +123,20 @@ public class SolidObjectManager {
    public void initLevelThree(){
       solidObjects.clear();
 
-      solidObjects.add(new SolidObject (1359, 1094, 353, 136, Color.YELLOW,true, bg));
-      solidObjects.add(new SolidObject (1380, 1071, 313, 27, Color.BLUE,true, bg));
-      solidObjects.add(new SolidObject (1416, 1032, 242, 43, Color.ORANGE,true, bg));
-      solidObjects.add(new SolidObject (1448, 998, 172, 34, Color.RED,true, bg));
-      solidObjects.add(new SolidObject (1469, 982, 133, 17, Color.PINK,true, bg));
-      solidObjects.add(new SolidObject (296, 233, 2414,107, Color.GREEN,true, bg));
-      solidObjects.add(new SolidObject (98,227,139,1406, Color.PINK,true, bg));
-      solidObjects.add(new SolidObject (2625,340,123,371, Color.MAGENTA,true, bg));
-      solidObjects.add(new SolidObject (2716,707,42,135, Color.GRAY,true, bg));
-      solidObjects.add(new SolidObject (2461,813,257,30, Color.ORANGE,true, bg));
-      solidObjects.add(new SolidObject (1850,338,626,74, Color.YELLOW,true, bg));
-      solidObjects.add(new SolidObject (2041,404,317,179, Color.BLUE,true, bg));
-      solidObjects.add(new SolidObject (2354,408,92,81, Color.LIGHT_GRAY,true, bg));
-      solidObjects.add(new SolidObject (1913,407,133,99, Color.GREEN,true, bg));
+      solidObjects.add(new SolidObject (1359, 1094, 353, 136, Color.YELLOW,false, bg));
+      solidObjects.add(new SolidObject (1380, 1071, 313, 27, Color.BLUE,false, bg));
+      solidObjects.add(new SolidObject (1416, 1032, 242, 43, Color.ORANGE,false, bg));
+      solidObjects.add(new SolidObject (1448, 998, 172, 34, Color.RED,false, bg));
+      solidObjects.add(new SolidObject (1469, 982, 133, 17, Color.PINK,false, bg));
+      solidObjects.add(new SolidObject (296, 233, 2414,107, Color.GREEN,false, bg));
+      solidObjects.add(new SolidObject (98,227,139,1406, Color.PINK,false, bg));
+      solidObjects.add(new SolidObject (2625,340,123,371, Color.MAGENTA,false, bg));
+      solidObjects.add(new SolidObject (2716,707,42,135, Color.GRAY,false, bg));
+      solidObjects.add(new SolidObject (2461,813,257,30, Color.ORANGE,false, bg));
+      solidObjects.add(new SolidObject (1850,338,626,74, Color.YELLOW,false, bg));
+      solidObjects.add(new SolidObject (2041,404,317,179, Color.BLUE,false, bg));
+      solidObjects.add(new SolidObject (2354,408,92,81, Color.LIGHT_GRAY,false, bg));
+      solidObjects.add(new SolidObject (1913,407,133,99, Color.GREEN,false, bg));
 
  }
 
