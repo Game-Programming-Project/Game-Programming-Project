@@ -9,14 +9,14 @@ public class GrasshopperAnimation extends Enemy {
 	private Image standImageForward;
 	private Image standImageAway;
 
-	private Animation walkAnimationAway;
-	private Animation walkAnimationForward;
+	private Animation walkAnimationUp;
+	private Animation walkAnimationDown;
 
 	public GrasshopperAnimation(GamePanel gPanel, int mapX, int mapY, Background bg, Player p) {
 		super(gPanel, mapX, mapY, bg, p);
 
-		walkAnimationAway = new Animation(false);
-		walkAnimationForward = new Animation(false);
+		walkAnimationUp = new Animation(false);
+		walkAnimationDown = new Animation(false);
 
 		loadImages();
 		loadWalkAnimations();

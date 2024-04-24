@@ -75,34 +75,12 @@ public class GamePanel extends JPanel implements Runnable {
 		spawnRocks(10,470,679,1170,1401);
 
 		enemies = new ArrayList<>();
-		// enemies.add(new Shaman(this, 720, 900, background, player));
+		enemies.add(new Shaman(this, 460, 1489, background, player, soManager));
 		// enemies.add(new Bomber(this, 720, 960, background, player));
 		// enemies.add(new BeeAnimation(this, 720, 930, background, player));
 		// enemies.add(new GrasshopperAnimation(this, 720, 990, background, player));
 		// enemies.add(new MushroomAnimation(this, 720, 960, background, player));
 
-	}
-
-	public void spawnRocks(int num, int x1, int x2, int y1, int y2){
-		for(int i = 0; i < num; i++){
-			int x = (int)(Math.random() * (x2 - x1 + 1) + x1); // random x coordinate within the range
-			int y = (int)(Math.random() * (y2 - y1 + 1) + y1); // random y coordinate within the range
-
-			boolean onSolid = soManager.onSolidObject(x, y, 30, 30);
-
-			while(onSolid){ // if the rock is on a solid object then keep generating new coordinates until it's not on a solid object
-				x = (int)(Math.random() * (x2 - x1 + 1) + x1); 
-				y = (int)(Math.random() * (y2 - y1 + 1) + y1); 
-				onSolid = soManager.onSolidObject(x, y, 30, 30);
-			}
-			Rock rock = new Rock(this, x, y, background);
-			rocks.add(rock);
-
-			//adds a solid object for each rock and associates the rock with the object
-			//this is so rocks don't spawn on each other and so that players can't walk through rocks
-			SolidObject s = new SolidObject(x, y, i, i, getBackground(), onSolid, background, rock);
-			soManager.addSolidObject(s);
-		}
 	}
 
 	public void run() {
@@ -150,11 +128,17 @@ public class GamePanel extends JPanel implements Runnable {
 		while (enemyIterator.hasNext()) { // loop through all enemies in the arrayList
 
 			Enemy enemy = enemyIterator.next();
+
 			enemy.move();
 
 			if (enemy.getDX() != 0)
 				enemy.start();
 			enemy.update();
+
+
+			if(enemy instanceof Shaman){ // if enemy is a Shaman
+
+			}
 
 		}
 
@@ -165,13 +149,14 @@ public class GamePanel extends JPanel implements Runnable {
 
 	public void updatePlayer(int direction) {
 
+		//get rectangle of player if they were to move in the direction
 		Rectangle2D.Double futurePosition = player.getFutureBoundingRectangle(direction);
 
+		//checking if the player would hit a solid if they moved in the direction
 		Boolean wouldCollide = soManager.collidesWithSolid(futurePosition);
-		System.out.println("Would collide: " + wouldCollide);
 
 		if (player != null && !isPaused) {
-			if (direction != 99) { // if not colliding with a solid then move
+			if (direction != 99) { 
 
 				if (!wouldCollide) { // if would not collide in the next move then move
 					player.start();
@@ -186,12 +171,10 @@ public class GamePanel extends JPanel implements Runnable {
 
 		if (background != null && player != null && !isPaused && direction != 99) {
 			if (!wouldCollide) { // if wouldn't collide with solid then move in the direction
-				int batMovement = background.move(direction); // check whether the bat can start/stop moving in a new
-																// direction
+				int batMovement = background.move(direction); // check whether the bat can start/stop moving in a new direction
 
 				player.setDirections(batMovement);
-				background.setDirections(player.move(direction)); // check if the bat is centred so the background can
-																	// move
+				background.setDirections(player.move(direction)); // check if the bat is centred so the background can move
 			}
 		}
 	}
@@ -199,7 +182,6 @@ public class GamePanel extends JPanel implements Runnable {
 	public void gameRender() {
 
 		// draw the game objects on the image
-
 		Graphics2D imageContext = (Graphics2D) image.getGraphics();
 
 		background.draw(imageContext);
@@ -269,8 +251,26 @@ public class GamePanel extends JPanel implements Runnable {
 		// soundManager.stopClip ("background");
 	}
 
-	public void shootCat() {
-		// animation3.start();
+	public void spawnRocks(int num, int x1, int x2, int y1, int y2){
+		for(int i = 0; i < num; i++){
+			int x = (int)(Math.random() * (x2 - x1 + 1) + x1); // random x coordinate within the range
+			int y = (int)(Math.random() * (y2 - y1 + 1) + y1); // random y coordinate within the range
+
+			boolean onSolid = soManager.onSolidObject(x, y, 30, 30);
+
+			while(onSolid){ // if the rock is on a solid object then keep generating new coordinates until it's not on a solid object
+				x = (int)(Math.random() * (x2 - x1 + 1) + x1); 
+				y = (int)(Math.random() * (y2 - y1 + 1) + y1); 
+				onSolid = soManager.onSolidObject(x, y, 30, 30);
+			}
+			Rock rock = new Rock(this, x, y, background);
+			rocks.add(rock);
+
+			//adds a solid object for each rock and associates the rock with the object
+			//this is so rocks don't spawn on each other and so that players can't walk through rocks
+			SolidObject s = new SolidObject(x, y, i, i, getBackground(), onSolid, background, rock);
+			soManager.addSolidObject(s);
+		}
 	}
 
 	// method sets which character the player will be using

@@ -9,8 +9,8 @@ public class Bomber extends Enemy {
     private Image standImageForward;
     private Image standImageAway;
 
-    private Animation walkAnimationAway;
-    private Animation walkAnimationForward;
+    private Animation walkAnimationUp;
+    private Animation walkAnimationDown;
 
     private Player player;
 
@@ -18,8 +18,8 @@ public class Bomber extends Enemy {
         super(gPanel,mapX,mapY,bg,p);
         player = p;
 
-        walkAnimationAway= new Animation(false);
-        walkAnimationForward= new Animation(false);
+        walkAnimationUp= new Animation(false);
+        walkAnimationDown= new Animation(false);
         
         loadImages();
         loadWalkAnimations();
@@ -49,22 +49,22 @@ public class Bomber extends Enemy {
 
         mapY += dy;
         if (oldMapY < mapY) { // moving down
-            walkAnimation = walkAnimationForward;
+            walkAnimation = walkAnimationDown;
             standImage = standImageForward;
         } else if (oldMapY > mapY) { // moving up
-            walkAnimation = walkAnimationAway;
+            walkAnimation = walkAnimationUp;
             standImage = standImageAway;
         }
 
     }
 
     public void loadWalkAnimations() {
-        walkAnimationAway = loadAnimation("images/Enemies/Level3/Bomber/bomberWalkAway.png");
-        walkAnimationForward = loadAnimation("images/Enemies/Level3/Bomber/bomberWalkForward.png");
+        walkAnimationUp = loadAnimation("images/Enemies/Level3/Bomber/bomberWalkAway.png");
+        walkAnimationDown = loadAnimation("images/Enemies/Level3/Bomber/bomberWalkForward.png");
         walkAnimationLeft = loadAnimation("images/Enemies/Level3/Bomber/bomberWalkLeft.png");
         walkAnimationRight = loadAnimation("images/Enemies/Level3/Bomber/bomberWalkRight.png");
 
-        walkAnimation = walkAnimationForward;
+        walkAnimation = walkAnimationDown;
     }
 
     public Animation loadAnimation(String stripFilePath) {

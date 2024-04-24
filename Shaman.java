@@ -10,17 +10,20 @@ public class Shaman extends Enemy {
     private Image standImageForward;
     private Image standImageAway;
 
-    private Animation walkAnimationAway;
-    private Animation walkAnimationForward;
+    private Animation walkAnimationUp;
+    private Animation walkAnimationDown;
 
     private Player player;
 
-    public Shaman(GamePanel gPanel, int mapX, int mapY, Background bg, Player p) {
+    private SolidObjectManager soManager;
+
+    public Shaman(GamePanel gPanel, int mapX, int mapY, Background bg, Player p, SolidObjectManager soManager) {
         super(gPanel,mapX,mapY,bg,p);
         player = p;
+        this.soManager = soManager;
 
-        walkAnimationAway= new Animation(false);
-        walkAnimationForward= new Animation(false);
+        walkAnimationUp= new Animation(false);
+        walkAnimationDown= new Animation(false);
         
         loadImages();
         loadWalkAnimations();
@@ -30,16 +33,18 @@ public class Shaman extends Enemy {
 
         dx=4;
         dy=4;
+        direction = 0;
     }
 
     public void move() {
         int oldMapX = mapX;
         int oldMapY = mapY;
 
-        chasePlayer();
+        Boolean wouldCollide = soManager.collidesWithSolid(getFutureBoundingRectangle());
+        if(!wouldCollide) // if the enemy would collide with a solid object, don't move
+            chasePlayer();
 
         if(oldMapX<mapX){ //moving right
-
             walkAnimation = walkAnimationRight;
             standImage = standImageRight;
         } else if (oldMapX > mapX) { // moving left
@@ -47,14 +52,18 @@ public class Shaman extends Enemy {
             standImage = standImageLeft;
         }
 
-
         if (oldMapY < mapY) { // moving down
-            walkAnimation = walkAnimationForward;
+            walkAnimation = walkAnimationDown;
             standImage = standImageForward;
         } else if (oldMapY > mapY) { // moving up
-            walkAnimation = walkAnimationAway;
+            walkAnimation = walkAnimationUp;
             standImage = standImageAway;
         }
+
+        //stop animation if enemy is blocked or not moving
+        if(oldMapX == mapX && oldMapY == mapY){
+            walkAnimation.stop();
+        } 
 
     }
 
@@ -78,7 +87,7 @@ public class Shaman extends Enemy {
                 }
             }
             else{
-                System.out.println("Shaman x equal player x");
+                //System.out.println("Shaman x equal player x");
                 if(playerY > y){ // player is below
                     mapY += dy;
                 }
@@ -92,13 +101,14 @@ public class Shaman extends Enemy {
 
     }
 
+
     public void loadWalkAnimations() {
-        walkAnimationAway = loadAnimation("images/Enemies/Level3/Shaman/shamanWalkAway.png");
-        walkAnimationForward = loadAnimation("images/Enemies/Level3/Shaman/shamanWalkForward.png");
+        walkAnimationUp = loadAnimation("images/Enemies/Level3/Shaman/shamanWalkAway.png");
+        walkAnimationDown = loadAnimation("images/Enemies/Level3/Shaman/shamanWalkForward.png");
         walkAnimationLeft = loadAnimation("images/Enemies/Level3/Shaman/shamanWalkLeft.png");
         walkAnimationRight = loadAnimation("images/Enemies/Level3/Shaman/shamanWalkRight.png");
 
-        walkAnimation = walkAnimationForward;
+        walkAnimation = walkAnimationDown;
     }
 
     public Animation loadAnimation(String stripFilePath) {
