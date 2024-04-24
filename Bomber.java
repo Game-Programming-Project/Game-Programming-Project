@@ -41,7 +41,7 @@ public class Bomber extends Enemy {
         double distance = Math.sqrt(Math.pow(player.getX() - x, 2) + Math.pow(player.getY() - y, 2));
 
         Boolean wouldCollide = soManager.collidesWithSolid(getFutureBoundingRectangle());
-        if(!wouldCollide && distance < 400) // only move if Shaman won't collide with a solid and if the player is within range
+        if(!wouldCollide && distance < 400) // only move if Bomber won't collide with a solid and if the player is within range
             chasePlayer();
 
         if(oldMapX<mapX){ //moving right

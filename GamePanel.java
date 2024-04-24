@@ -77,8 +77,9 @@ public class GamePanel extends JPanel implements Runnable {
 
 		enemies = new ArrayList<>();
 		enemies.add(new Shaman(this, 460, 1489, background, player, soManager));
-		enemies.add(new Bomber(this, 1425, 501, background, player, soManager));
-		enemies.add(new FireBat(this, 1425, 501, background, player));
+		//enemies.add(new Bomber(this, 1425, 501, background, player, soManager));
+		//enemies.add(new FireBat(this, 1425, 501, background, player));
+		enemies.add(new RedBee(this, 1425, 501, background, player));
 		// enemies.add(new BeeAnimation(this, 720, 930, background, player));
 		// enemies.add(new GrasshopperAnimation(this, 720, 990, background, player));
 		// enemies.add(new MushroomAnimation(this, 720, 960, background, player));
