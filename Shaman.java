@@ -40,8 +40,10 @@ public class Shaman extends Enemy {
         int oldMapX = mapX;
         int oldMapY = mapY;
 
+        double distance = Math.sqrt(Math.pow(player.getX() - x, 2) + Math.pow(player.getY() - y, 2));
+
         Boolean wouldCollide = soManager.collidesWithSolid(getFutureBoundingRectangle());
-        if(!wouldCollide) // if the enemy would collide with a solid object, don't move
+        if(!wouldCollide && distance < 400) // only move if Shaman won't collide with a solid and if the player is within range
             chasePlayer();
 
         if(oldMapX<mapX){ //moving right
