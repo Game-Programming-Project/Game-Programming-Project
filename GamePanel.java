@@ -206,7 +206,8 @@ public class GamePanel extends JPanel implements Runnable {
 	public void startGame() { // initialise and start the game thread
 
 		if (gameThread == null && characterSelected) {
-			// soundManager.playClip ("background", true);
+			soundManager.playClip("background", true);
+			soundManager.setVolume("background", 0.7f);
 			createGameEntities();
 			gameThread = new Thread(this);
 			gameThread.start();

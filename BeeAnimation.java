@@ -89,6 +89,8 @@ public class BeeAnimation extends Enemy {
 
 		// If the player is within a certain range (e.g., 100 pixels)
 		if (distance <= 100) {
+			soundManager.playClip("beeSound", true);
+
 			if (playerX > x) { // player is to the right
 				mapX += dx;
 				walkAnimation = walkAnimationRight;
