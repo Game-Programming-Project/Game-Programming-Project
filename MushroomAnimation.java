@@ -9,14 +9,14 @@ public class MushroomAnimation extends Enemy {
 	private Image standImageForward;
 	private Image standImageAway;
 
-	private Animation walkAnimationAway;
-	private Animation walkAnimationForward;
+	private Animation walkAnimationUp;
+	private Animation walkAnimationDown;
 
 	public MushroomAnimation(GamePanel gPanel, int mapX, int mapY, Background bg, Player p) {
 		super(gPanel, mapX, mapY, bg, p);
 
-		walkAnimationAway = new Animation(false);
-		walkAnimationForward = new Animation(true);
+		walkAnimationUp = new Animation(false);
+		walkAnimationDown = new Animation(true);
 
 		loadImages();
 		loadWalkAnimations();
@@ -48,9 +48,9 @@ public class MushroomAnimation extends Enemy {
 	public void loadWalkAnimations() {
 		walkAnimationLeft = loadAnimation("images/Enemies/Level1/Mushroom/mushroomChasingLeft.png");
 		walkAnimationRight = loadAnimation("images/Enemies/Level1/Mushroom/mushroomChasingRight.png");
-		walkAnimationForward.addFrame(standImageForward, 100);
+		walkAnimationDown.addFrame(standImageForward, 100);
 
-		walkAnimation = walkAnimationForward;
+		walkAnimation = walkAnimationDown;
 	}
 
 	public Animation loadAnimation(String stripFilePath) {
@@ -121,7 +121,7 @@ public class MushroomAnimation extends Enemy {
 		} else {
 			// If the player is not within range, the mushroom should be standing
 			// walkAnimation = null;
-			walkAnimation = walkAnimationForward;
+			walkAnimation = walkAnimationDown;
 			standImage = standImageForward; // or standImageLeft, depending on the last direction
 
 		}

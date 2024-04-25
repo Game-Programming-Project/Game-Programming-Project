@@ -14,6 +14,8 @@ public class SolidObject {
 
     private Background bg;
 
+	private Rock rock;
+
 	public SolidObject (int mapX, int mapY, int width, int height, Color c, boolean isVisible, Background bg) { 
 		this.mapX = mapX;
 		this.mapY = mapY;
@@ -25,6 +27,10 @@ public class SolidObject {
 		visible = isVisible;
 	}
 
+	public SolidObject (int mapX, int mapY, int width, int height, Color c, boolean isVisible, Background bg, Rock r){
+		this(mapX, mapY, width, height, c, isVisible, bg);
+		rock = r;
+	}
 
 	public void draw (Graphics2D g2) {
 
@@ -59,6 +65,10 @@ public class SolidObject {
         y = mapY - bgY;
     }
 
+	public Rock getRock(){
+		return rock;
+	}
+
     public void setVisible(Boolean v){
         visible = v;
     }
@@ -73,6 +83,13 @@ public class SolidObject {
 		return y;
 	}
 
+	public int getMapX() {
+		return mapX;
+	}
+
+	public int getMapY() {
+		return mapY;
+	}
 
 	public int getWidth() {
 		return width;

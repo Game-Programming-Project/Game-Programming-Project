@@ -275,20 +275,15 @@ public class Player {
 		// attackAnimationLeft =
 		// loadAnimation("images/Player/"+characterType+"/"+characterType+"_attackLeftTest.png");
 
-		attackAnimation = attackAnimationRight;
-	}
+        attackAnimation = attackAnimationRight;
+    }
 
-	private void loadWalkAnimations() {
-		walkAnimationRight = loadAnimation("images/Player/" + characterType + "/" + characterType + "_walkRight.png");
-		walkAnimationLeft = loadAnimation("images/Player/" + characterType + "/" + characterType + "_walkLeft.png");
-
-		// walkAnimationRight =
-		// loadAnimation("images/Player/"+characterType+"/"+characterType+"_walkRightTest.png");
-		// walkAnimationLeft =
-		// loadAnimation("images/Player/"+characterType+"/"+characterType+"_walkLeftTest.png");
-
-		walkAnimation = walkAnimationRight;
-	}
+    private void loadWalkAnimations() {
+		walkAnimationRight = loadAnimation("images/Player/"+characterType+"/"+characterType+"_walkRight.png");
+		walkAnimationLeft = loadAnimation("images/Player/"+characterType+"/"+characterType+"_walkLeft.png");
+	
+        walkAnimation = walkAnimationRight;
+    }
 
 	private void loadAllAnimations() {
 		loadWalkAnimations();
@@ -320,17 +315,12 @@ public class Player {
 		return Animation;
 	}
 
-	private void loadImages() {
-		standImageRight = ImageManager
-				.loadImage("images/Player/" + characterType + "/" + characterType + "_standRight.png");
-		standImageLeft = ImageManager
-				.loadImage("images/Player/" + characterType + "/" + characterType + "_standLeft.png");
-		// standImageRight =
-		// ImageManager.loadImage("images/Player/"+characterType+"/"+characterType+"_standRightTest.png");
-		// standImageLeft =
-		// ImageManager.loadImage("images/Player/"+characterType+"/"+characterType+"_standLeftTest.png");
-		standImage = standImageRight;
-	}
+    private void loadImages(){
+        standImageRight = ImageManager.loadImage("images/Player/"+characterType+"/"+characterType+"_standRight.png");
+		standImageLeft = ImageManager.loadImage("images/Player/"+characterType+"/"+characterType+"_standLeft.png");
+
+		standImage=standImageRight;
+    }
 
 	private void setDimensions() {
 		// player 1 is 27x38 walking and standing
@@ -364,18 +354,19 @@ public class Player {
 		}
 	}
 
-	public Rectangle2D.Double getBoundingRectangle() {
-		int offset;
+    public Rectangle2D.Double getBoundingRectangle() {
+		int offset = 10; // used to make player range bigger, needed for collision detection
 
-		if (characterType == "1" || characterType == "3")
-			offset = 10;
-		else
-			offset = 0;
+		// if(characterType=="1" || characterType=="3")
+		// 	offset = 10;
+		// else
+		// 	offset = 0;
 
 		return new Rectangle2D.Double(x, y, width + offset, height);
 	}
 
-	public Rectangle2D.Double getFutureBoundingRectangle(int direction) {
+	//method used in detecting if player will collide with a solid object
+	public Rectangle2D.Double getFutureBoundingRectangle(int direction){
 
 		int futureX = x, futureY = y;
 
@@ -416,11 +407,12 @@ public class Player {
 		return y;
 	}
 
-	public int getHeight() {
-		return height;
+	public int getWidth(){
+		return width;
 	}
 
-	public int getWidth() {
-		return width;
+	public int getHeight(){
+		return height;
+
 	}
 }

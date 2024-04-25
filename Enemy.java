@@ -1,6 +1,8 @@
 import java.awt.Image;
 import java.awt.Graphics2D;
 import java.util.Random;
+import java.awt.geom.Rectangle2D;
+
 
 public class Enemy {
 
@@ -17,6 +19,7 @@ public class Enemy {
 
     protected int x, y; // these are the coordinates of the enemy on the screen
     protected int dx, dy;
+    protected int direction;
 
     protected int mapX, mapY; // these are the coordinates of the enemy on the map coordinates
     protected GamePanel gPanel;
@@ -76,6 +79,10 @@ public class Enemy {
     public void chasePlayer() {
         int playerX = player.getX();
         int playerY = player.getY();
+
+        //this code makes the enemy target the middle of the player sprite instead of the top left
+        playerX += player.getWidth()/2;
+        playerY += player.getHeight()/2;
 
         Random rand = new Random();
         int random = rand.nextInt(aggression);
@@ -140,5 +147,49 @@ public class Enemy {
     public void setAggression(int a) {
         aggression = a;
     }
+
+    public boolean collidesWithPlayer(Player p) {
+        Rectangle2D.Double myRect = getBoundingRectangle();
+        Rectangle2D.Double playerRect = p.getBoundingRectangle();
+        
+        return myRect.intersects(playerRect); 
+    }
+
+    public Rectangle2D.Double getBoundingRectangle() {
+		return new Rectangle2D.Double (x, y, width, height);
+	}
+
+    //method used in detecting if player will collide with a solid object
+	public Rectangle2D.Double getFutureBoundingRectangle(){
+
+		int futureX = x , futureY = y;
+
+		if(direction==1) // walking left
+			futureX = x - dx;
+		else if(direction==2) // walking right
+			futureX = x + dx;
+		else if(direction==4) // walking down
+			futureY = y + dy;
+		else if(direction==3) // walking up
+			futureY = y - dy;
+
+		return new Rectangle2D.Double (futureX, futureY, width, height);
+	}
+
+    public Rectangle2D.Double getFutureBoundingRectangle(int direction){
+
+		int futureX = x , futureY = y;
+
+		if(direction == 1)
+			futureX = x - dx;
+		else if(direction == 2)
+			futureX = x + dx;
+		else if(direction == 3)
+			futureY = y - dy;
+		else if(direction == 4)
+			futureY = y + dy;
+
+		return new Rectangle2D.Double (futureX, futureY, width, height);
+	}
 
 }
