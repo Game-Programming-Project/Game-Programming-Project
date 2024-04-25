@@ -89,4 +89,39 @@ public class GrasshopperAnimation extends Enemy {
 
 		standImage = standImageForward;
 	}
+
+	public void chasePlayer() {
+		int playerX = player.getX();
+		int playerY = player.getY();
+
+		// Calculate the distance between the bee and the player
+		double distance = Math.sqrt(Math.pow(playerX - x, 2) + Math.pow(playerY - y, 2));
+
+		// If the player is within a certain range (e.g., 100 pixels)
+		if (distance <= 200) {
+			if (playerX > x) { // player is to the right
+				mapX += dx;
+				walkAnimation = walkAnimationRight;
+				standImage = standImageRight;
+			} else if (playerX - player.getWidth() < x) { // player is to the left
+				mapX -= dx;
+				walkAnimation = walkAnimationLeft;
+				standImage = standImageLeft;
+			}
+
+			if (playerY - player.getHeight() > y) { // player is below
+				mapY += dy;
+				walkAnimation = walkAnimationLeft;
+			} else if (playerY + player.getHeight() < y) { // player is above
+				mapY -= dy;
+				walkAnimation = walkAnimationLeft;
+			}
+		} else {
+			// If the player is not within range, the bee should be standing
+			// walkAnimation = null;
+			walkAnimation = walkAnimationRight;
+			standImage = standImageRight;
+
+		}
+	}
 }

@@ -65,8 +65,10 @@ public class GamePanel extends JPanel implements Runnable {
 		background = new Background(this, "images/Maps/Testing/Level3MapTest.png", 96, -90, 400);
 
 		soManager = new SolidObjectManager(background);
-		//soManager.initLevelOne();
-		soManager.initLevelThree();
+
+		soManager.initLevelOne();
+		//soManager.initLevelThree();
+
 		soManager.setAllObjectsVisible(false);
 
 		player = new Player(this, 550, 350, character, soManager);
@@ -76,13 +78,25 @@ public class GamePanel extends JPanel implements Runnable {
 		//spawnRocks(10,470,679,1170,1401);
 
 		enemies = new ArrayList<>();
-		enemies.add(new Shaman(this, 460, 1489, background, player, soManager));
-		//enemies.add(new Bomber(this, 1425, 501, background, player, soManager));
-		//enemies.add(new FireBat(this, 1425, 501, background, player));
-		enemies.add(new TinyBee(this, 1425, 501, background, player));
+
+		// enemies.add(new Shaman(this, 460, 1489, background, player, soManager));
+		// enemies.add(new Bomber(this, 1425, 501, background, player, soManager));
+		// enemies.add(new FireBat(this, 1425, 501, background, player));
+		// enemies.add(new TinyBee(this, 1425, 501, background, player));
 		// enemies.add(new BeeAnimation(this, 1425, 501, background, player));
 		// enemies.add(new GrasshopperAnimation(this, 720, 990, background, player));
 		// enemies.add(new MushroomAnimation(this, 720, 960, background, player));
+
+		enemies.add(new BeeAnimation(this, 620, 930, background, player));
+		enemies.add(new BeeAnimation(this, 680, 950, background, player));
+		enemies.add(new BeeAnimation(this, 780, 980, background, player));
+
+		enemies.add(new GrasshopperAnimation(this, 999, 900, background, player));
+		enemies.add(new GrasshopperAnimation(this, 1200, 950, background, player));
+		enemies.add(new GrasshopperAnimation(this, 1500, 980, background, player));
+
+		enemies.add(new MushroomAnimation(this, 1700, 900, background, player));
+		enemies.add(new MushroomAnimation(this, 1900, 960, background, player));
 
 	}
 
@@ -221,7 +235,8 @@ public class GamePanel extends JPanel implements Runnable {
 	public void startGame() { // initialise and start the game thread
 
 		if (gameThread == null && characterSelected) {
-			// soundManager.playClip ("background", true);
+			soundManager.playClip("background", true);
+			soundManager.setVolume("background", 0.7f);
 			createGameEntities();
 			gameThread = new Thread(this);
 			gameThread.start();
