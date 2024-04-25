@@ -3,9 +3,9 @@ import java.awt.image.BufferedImage;
 import java.awt.Graphics2D;
 import java.util.Random;
 
-public class RedBee extends BeeAnimation{
+public class TinyBee extends RedBee{
     
-    public RedBee(GamePanel gPanel, int mapX, int mapY, Background bg, Player p) {
+    public TinyBee(GamePanel gPanel, int mapX, int mapY, Background bg, Player p) {
 		super(gPanel, mapX, mapY, bg, p);
 
         walkAnimationLeft.setLoop(true);
@@ -14,9 +14,9 @@ public class RedBee extends BeeAnimation{
 		loadImages();
 		loadWalkAnimations();
 
-        //bee image is 132 x 144
-		width = 50;
-        height = 55;
+        //bee image is 21 x 16
+		width = 21;
+        height = 16;
 
 		dx = 2;
 		dy = 2;
@@ -33,6 +33,7 @@ public class RedBee extends BeeAnimation{
             chasePlayer();
 
         if(oldMapX<mapX){ //moving right
+
             walkAnimation = walkAnimationRight;
             standImage = standImageRight;
         } else if (oldMapX > mapX) { // moving left
@@ -92,18 +93,43 @@ public class RedBee extends BeeAnimation{
     }
 
     public void loadWalkAnimations() {
-		walkAnimationLeft = loadAnimation("images/Enemies/Level3/RedBee/redBeeWalkLeft.png");
-		walkAnimationRight = loadAnimation("images/Enemies/Level3/RedBee/redBeeWalkRight.png");
+		walkAnimationLeft = loadAnimation("images/Enemies/Level3/RedBee/TinyBee/tinyBeeWalkLeft.png");
+		walkAnimationRight = loadAnimation("images/Enemies/Level3/RedBee/TinyBee/tinyBeeWalkRight.png");
 
 		walkAnimation = walkAnimationRight;
 	}
 
 	public void loadImages() {
-		standImageLeft = ImageManager.loadImage("images/Enemies/Level3/RedBee/redBeeStandingLeft.png");
-		standImageRight = ImageManager.loadImage("images/Enemies/Level3/RedBee/redBeeStandingRight.png");
+		standImageLeft = ImageManager.loadImage("images/Enemies/Level3/RedBee/TinyBee/tinyBeeStandingLeft.png");
+		standImageRight = ImageManager.loadImage("images/Enemies/Level3/RedBee/TinyBee/tinyBeeStandingRight.png");
 
 		standImage = standImageRight;
 	}
+
+    public Animation loadAnimation(String stripFilePath) {
+
+        Animation Animation = new Animation(false);
+
+        Image stripImage = ImageManager.loadImage(stripFilePath);
+
+        int imageWidth = (int) stripImage.getWidth(null) / 4;
+        int imageHeight = stripImage.getHeight(null);
+
+        for (int i = 0; i < 4; i++) {
+
+            BufferedImage frameImage = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
+            Graphics2D g = (Graphics2D) frameImage.getGraphics();
+
+            g.drawImage(stripImage,
+                    0, 0, imageWidth, imageHeight,
+                    i * imageWidth, 0, (i * imageWidth) + imageWidth, imageHeight,
+                    null);
+
+            Animation.addFrame(frameImage, 100);
+        }
+
+        return Animation;
+    }
 
 }
 
