@@ -62,7 +62,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 	public void createGameEntities() {
 		//note for level 3 offsetX: -90, offsetY: 400
-		background = new Background(this, "images/Maps/Testing/Level3MapTest.png", 96, -90, 400);
+		// for level 1 offsetX: 360, offsetY: 80
+		background = new Background(this, "images/Maps/Testing/Level1MapTest.png", 96, 360, 80);
 
 		soManager = new SolidObjectManager(background);
 
