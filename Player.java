@@ -125,7 +125,8 @@ public class Player {
 
 	public int move(int direction) {
 
-		solidObject = collidesWithSolid(); // if the player collides with a solid object (map boundary) this will be
+		if(soManager!=null)
+			solidObject = collidesWithSolid(); // if the player collides with a solid object (map boundary) this will be
 											// !=null
 
 		if (!walkAnimation.isStillActive())
