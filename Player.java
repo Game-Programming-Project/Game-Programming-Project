@@ -241,7 +241,7 @@ public class Player {
 	public void setDirections(int direction) {
 		if (direction == 1 && directions.contains(Integer.valueOf(1))) // already moved left so can move right (back to centre)
 			directions.add(Integer.valueOf(2));
-			
+
 		else if (direction == 2 && directions.contains(Integer.valueOf(2))) // already moved right so can move left (back to centre)
 			directions.add(Integer.valueOf(1));
 
@@ -395,6 +395,14 @@ public class Player {
 		Rectangle2D.Double myRect = getBoundingRectangle();
 		return soManager.collidesWith(myRect);
 	}
+
+	public void takeDamage(int damage) {
+		health -= damage;
+		
+		if(health<0)
+			health = 0;
+	}
+
 
 	public void setAttackDamage(int a){
 		attackDamage = a;

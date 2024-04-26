@@ -324,4 +324,5 @@ public class GamePanel extends JPanel implements Runnable {
 	public void setBackground(Background bg) {
 		background = bg;
 	}
+
 }
