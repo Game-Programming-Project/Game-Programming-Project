@@ -20,6 +20,12 @@ public class SoundManager { // a Singleton class
 
 		clip = loadClip("sounds/Level1/bee.wav"); // played when a fireball is shot
 		clips.put("beeSound", clip);
+
+		clip = loadClip("sounds/Level1/mushroomWalk.wav"); // played when a mushroom walks
+		clips.put("mushroomWalk", clip);
+
+		clip = loadClip("sounds/Level1/grasshopperJump.wav"); // played when a grasshopper jumps
+		clips.put("grasshopperJump", clip);
 	}
 
 	public static SoundManager getInstance() { // class method to retrieve instance of Singleton
@@ -67,7 +73,7 @@ public class SoundManager { // a Singleton class
 		}
 	}
 
-	public void stopAllClips(){
+	public void stopAllClips() {
 		for (Clip clip : clips.values()) {
 			clip.stop();
 		}
