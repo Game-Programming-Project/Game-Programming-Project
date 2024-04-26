@@ -39,9 +39,11 @@ public class MushroomAnimation extends Enemy {
 		if (oldMapX < mapX) { // moving right
 			walkAnimation = walkAnimationRight;
 			standImage = standImageRight;
+			playWalkSound();
 		} else if (oldMapX > mapX) { // moving left
 			walkAnimation = walkAnimationLeft;
 			standImage = standImageLeft;
+			playWalkSound();
 		}
 
 	}
@@ -104,6 +106,9 @@ public class MushroomAnimation extends Enemy {
 
 		// If the player is within a certain range (e.g., 100 pixels)
 		if (distance <= 300) {
+			if (walkAnimation.isStillActive() && !soundManager.isStillPlaying("mushroomWalk")) {
+				playWalkSound();
+			}
 			if (distance <= 50) {
 				blowUp();
 				playBoomSound();
@@ -112,24 +117,24 @@ public class MushroomAnimation extends Enemy {
 				mapX += dx;
 				walkAnimation = walkAnimationRight;
 				standImage = standImageRight;
-				playWalkSound();
+				// playWalkSound();
 
 			} else if (playerX + 100 < x) { // player is to the left
 				mapX -= dx;
 				walkAnimation = walkAnimationLeft;
 				standImage = standImageLeft;
-				playWalkSound();
+				// playWalkSound();
 			}
 
 			if (playerY - 100 > y) { // player is below
 				mapY += dy;
 				walkAnimation = walkAnimationLeft;
-				playWalkSound();
+				// playWalkSound();
 
 			} else if (playerY + 100 < y) { // player is above
 				mapY -= dy;
 				walkAnimation = walkAnimationLeft;
-				playWalkSound();
+				// playWalkSound();
 			}
 		} else {
 			// If the player is not within range, the mushroom should be standing

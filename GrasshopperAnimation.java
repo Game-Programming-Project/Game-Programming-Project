@@ -103,6 +103,9 @@ public class GrasshopperAnimation extends Enemy {
 
 		// If the player is within a certain range (e.g., 100 pixels)
 		if (distance <= 200) {
+			if (walkAnimation.isStillActive() && !soundManager.isStillPlaying("grasshopperJump")) {
+				playJumpSound();
+			}
 			if (playerX > x) { // player is to the right
 				mapX += dx;
 				walkAnimation = walkAnimationRight;
@@ -127,5 +130,9 @@ public class GrasshopperAnimation extends Enemy {
 			// standImage = standImageRight;
 
 		}
+	}
+
+	private void playJumpSound() {
+		soundManager.playClip("grasshopperJump", false);
 	}
 }

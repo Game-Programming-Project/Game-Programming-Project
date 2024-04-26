@@ -3,7 +3,6 @@ import java.awt.Graphics2D;
 import java.util.Random;
 import java.awt.geom.Rectangle2D;
 
-
 public class Enemy {
 
     protected Animation walkAnimationLeft;
@@ -73,8 +72,8 @@ public class Enemy {
             return;
 
         walkAnimation.update();
-        
-        if(health <=0)
+
+        if (health <= 0)
             isAlive = false;
     }
 
@@ -88,9 +87,10 @@ public class Enemy {
         int playerX = player.getX();
         int playerY = player.getY();
 
-        //this code makes the enemy target the middle of the player sprite instead of the top left
-        playerX += player.getWidth()/2;
-        playerY += player.getHeight()/2;
+        // this code makes the enemy target the middle of the player sprite instead of
+        // the top left
+        playerX += player.getWidth() / 2;
+        playerY += player.getHeight() / 2;
 
         Random rand = new Random();
         int random = rand.nextInt(aggression);
@@ -156,58 +156,59 @@ public class Enemy {
         aggression = a;
     }
 
-    public boolean isAlive(){
+    public boolean isAlive() {
         return isAlive;
     }
 
     public boolean collidesWithPlayer(Player p) {
         Rectangle2D.Double myRect = getBoundingRectangle();
         Rectangle2D.Double playerRect = p.getBoundingRectangle();
-        
-        return myRect.intersects(playerRect); 
+
+        return myRect.intersects(playerRect);
     }
 
     public Rectangle2D.Double getBoundingRectangle() {
-		return new Rectangle2D.Double (x, y, width, height);
-	}
+        return new Rectangle2D.Double(x, y, width, height);
+    }
 
     public void takeDamage(int damage) {
         health -= damage;
-        if(health<0)
-            health=0;
+        if (health < 0) {
+            health = 0;
+        }
     }
 
-    //method used in detecting if player will collide with a solid object
-	public Rectangle2D.Double getFutureBoundingRectangle(){
+    // method used in detecting if player will collide with a solid object
+    public Rectangle2D.Double getFutureBoundingRectangle() {
 
-		int futureX = x , futureY = y;
+        int futureX = x, futureY = y;
 
-		if(direction==1) // walking left
-			futureX = x - dx;
-		else if(direction==2) // walking right
-			futureX = x + dx;
-		else if(direction==4) // walking down
-			futureY = y + dy;
-		else if(direction==3) // walking up
-			futureY = y - dy;
+        if (direction == 1) // walking left
+            futureX = x - dx;
+        else if (direction == 2) // walking right
+            futureX = x + dx;
+        else if (direction == 4) // walking down
+            futureY = y + dy;
+        else if (direction == 3) // walking up
+            futureY = y - dy;
 
-		return new Rectangle2D.Double (futureX, futureY, width, height);
-	}
+        return new Rectangle2D.Double(futureX, futureY, width, height);
+    }
 
-    public Rectangle2D.Double getFutureBoundingRectangle(int direction){
+    public Rectangle2D.Double getFutureBoundingRectangle(int direction) {
 
-		int futureX = x , futureY = y;
+        int futureX = x, futureY = y;
 
-		if(direction == 1)
-			futureX = x - dx;
-		else if(direction == 2)
-			futureX = x + dx;
-		else if(direction == 3)
-			futureY = y - dy;
-		else if(direction == 4)
-			futureY = y + dy;
+        if (direction == 1)
+            futureX = x - dx;
+        else if (direction == 2)
+            futureX = x + dx;
+        else if (direction == 3)
+            futureY = y - dy;
+        else if (direction == 4)
+            futureY = y + dy;
 
-		return new Rectangle2D.Double (futureX, futureY, width, height);
-	}
+        return new Rectangle2D.Double(futureX, futureY, width, height);
+    }
 
 }

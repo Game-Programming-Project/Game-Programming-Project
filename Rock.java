@@ -4,7 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
 public class Rock {
-    private Image rockImage, destroyedRockImage;
+    protected Image rockImage, destroyedRockImage;
     private int width, height;
     private int x, y;
 
@@ -20,7 +20,7 @@ public class Rock {
 
     private DisappearFX disappearFX;
 
-    public Rock (GamePanel gPanel, int mapX, int mapY, Background bg) {
+    public Rock(GamePanel gPanel, int mapX, int mapY, Background bg) {
 
         this.mapX = mapX;
         this.mapY = mapY;
@@ -30,11 +30,11 @@ public class Rock {
         width = height = 30;
 
         soundManager = SoundManager.getInstance();
-        
+
         rockImage = ImageManager.loadImage("images/Rocks/basicRock.png");
         destroyedRockImage = ImageManager.loadImage("images/Rocks/destroyedRock.png");
 
-        disappearFX=null;
+        disappearFX = null;
         destroyed = false;
         disappearCompleted = false;
     }
@@ -42,34 +42,35 @@ public class Rock {
     public void draw(Graphics2D g2) {
 
         updateScreenCoordinates();
-        
-        if(destroyed){ // draw if rock is NOT destroyed
-            //g2.drawImage(destroyedRockImage, x, y, width, height, null);
-            if(disappearFX!=null){
+
+        if (destroyed) { // draw if rock is NOT destroyed
+            // g2.drawImage(destroyedRockImage, x, y, width, height, null);
+            if (disappearFX != null) {
                 disappearFX.draw(g2);
-                if(disappearFX.isCompleted())
+                if (disappearFX.isCompleted())
                     disappearCompleted = true;
             }
-        }
-        else
+        } else
             g2.drawImage(rockImage, x, y, width, height, null);
 
     }
 
-    //this method is needed to ensure the entity stays where you want it to on the background map coordinates
-    //the x and y that is updated are the coordinates to be drawn to the screen
-    public void updateScreenCoordinates(){ //meant to be called right before the entity is drawn to the screen
+    // this method is needed to ensure the entity stays where you want it to on the
+    // background map coordinates
+    // the x and y that is updated are the coordinates to be drawn to the screen
+    public void updateScreenCoordinates() { // meant to be called right before the entity is drawn to the screen
         int bgX = bg.getbg1X();
         int bgY = bg.getbg1Y();
 
-        //if bgX or bgY are negative then make them positive
-        if(bgX <0)
+        // if bgX or bgY are negative then make them positive
+        if (bgX < 0)
             bgX *= -1;
-        if(bgY <0)
+        if (bgY < 0)
             bgY *= -1;
 
-        //positioning the entity on the screen relative to the background
-        //this calculation makes it so that the entity stays on the map where it needs to be
+        // positioning the entity on the screen relative to the background
+        // this calculation makes it so that the entity stays on the map where it needs
+        // to be
         x = mapX - bgX;
         y = mapY - bgY;
     }
@@ -79,14 +80,14 @@ public class Rock {
     }
 
     public Rectangle2D.Double getBoundingRectangle() {
-		return new Rectangle2D.Double (x, y, width, height);
-	}
+        return new Rectangle2D.Double(x, y, width, height);
+    }
 
     public boolean collidesWithPlayer(Player p) {
         Rectangle2D.Double myRect = getBoundingRectangle();
         Rectangle2D.Double playerRect = p.getBoundingRectangle();
-        
-        return myRect.intersects(playerRect); 
+
+        return myRect.intersects(playerRect);
     }
 
     public boolean isDestroyed() {
@@ -97,16 +98,16 @@ public class Rock {
         this.destroyed = destroyed;
     }
 
-    public void setFX(DisappearFX fx){
+    public void setFX(DisappearFX fx) {
         disappearFX = fx;
-     }
-  
-     public String getRockImageString(){ // method to return the current image of the rock(destroyed and alive)
-        if(!destroyed)
+    }
+
+    public String getRockImageString() { // method to return the current image of the rock(destroyed and alive)
+        if (!destroyed)
             return "images/Rocks/basicRock.png";
         else
             return "images/Rocks/destroyedRock.png";
-     }
+    }
 
     public int getX() {
         updateScreenCoordinates();
@@ -138,12 +139,12 @@ public class Rock {
         return disappearCompleted;
     }
 
-    public void updateFX(){
-        if(disappearFX != null){
+    public void updateFX() {
+        if (disappearFX != null) {
             disappearFX.update();
-           if(disappearFX.isCompleted()){
+            if (disappearFX.isCompleted()) {
                 disappearFX = null;
-           }
+            }
         }
     }
 

@@ -9,6 +9,7 @@ import java.awt.GridBagLayout;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.awt.geom.Rectangle2D;
+import java.util.Random;
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -125,14 +126,13 @@ public class GamePanel extends JPanel implements Runnable {
 				enemy.start();
 			enemy.update();
 
-
-			if(enemy.collidesWithPlayer(player) && player.attackRegistered() && enemy.isAlive()){
+			if (enemy.collidesWithPlayer(player) && player.attackRegistered() && enemy.isAlive()) {
 				System.out.println("enemy HIT for " + player.getAttackDamage() + " damage");
 				enemy.takeDamage(player.getAttackDamage());
 			}
 
-			//if enemy is dead then remove it from the game
-			if(!enemy.isAlive()){
+			// if enemy is dead then remove it from the game
+			if (!enemy.isAlive()) {
 				enemyIterator.remove();
 			}
 		}
@@ -215,7 +215,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		if (gameThread == null && characterSelected) {
 			createGameEntities();
-			levelInitializer.initLevelThree();
+			levelInitializer.initLevelOne();
 			gameThread = new Thread(this);
 			gameThread.start();
 
@@ -277,7 +277,21 @@ public class GamePanel extends JPanel implements Runnable {
 			numTries = 0;
 
 			if (spawn) { // spawn will be false if there are too many solid objects to spawn the rock
-				Rock rock = new Rock(this, x, y, background);
+				Rock rock;
+				int randomValue = new Random().nextInt(100); // Generate a random number between 0 and 99
+
+				if (randomValue < 75) { // 75% chance
+					rock = new Rock(this, x, y, background);
+				} else if (randomValue < 88) { // 13% chance
+					rock = new CopperRock(this, x, y, background);
+				} else if (randomValue < 96) { // 8% chance
+					rock = new IronRock(this, x, y, background);
+				} else if (randomValue < 99) { // 3% chance
+					rock = new GoldRock(this, x, y, background);
+				} else { // 1% chance
+					rock = new DiamondRock(this, x, y, background);
+				}
+
 				rocks.add(rock);
 
 				// adds a solid object for each rock and associates the rock with the object
