@@ -10,10 +10,13 @@ public class SolidObjectManager {
    private ArrayList<SolidObject> solidObjects;
    private Background bg;
   
-   public SolidObjectManager (Background bg) {
-        this.bg = bg;
-        solidObjects = new ArrayList<SolidObject>();
+   public SolidObjectManager () {
+      solidObjects = new ArrayList<SolidObject>();
+ }
 
+   public SolidObjectManager (Background bg) {
+        this();
+        solidObjects = new ArrayList<SolidObject>();
    }
 
    public void draw (Graphics2D g2) {
@@ -104,6 +107,10 @@ public class SolidObjectManager {
 
    public void addSolidObject(int mapX, int mapY, int width, int height, Color colour, boolean visible) {
       solidObjects.add(new SolidObject(mapX, mapY, width, height, colour, visible, bg));
+   }
+
+   public void setBg(Background bg) {
+      this.bg = bg;
    }
 
    public void initLevelOne(){
