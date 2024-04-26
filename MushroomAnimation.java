@@ -104,7 +104,7 @@ public class MushroomAnimation extends Enemy {
 
 		// If the player is within a certain range (e.g., 100 pixels)
 		if (distance <= 300) {
-			soundManager.playClip("mushroomWalk", true);
+			soundManager.playClip("mushroomWalk", false);
 			if (distance <= 50) {
 				blowUp();
 			}
