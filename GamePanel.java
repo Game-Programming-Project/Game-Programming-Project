@@ -61,44 +61,9 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	public void createGameEntities() {
-		//note for level 3 offsetX: -90, offsetY: 400
-		background = new Background(this, "images/Maps/Testing/Level3MapTest.png", 96, -90, 400);
-
-		soManager = new SolidObjectManager(background);
-
-		//soManager.initLevelOne();
-		soManager.initLevelThree();
-
-		soManager.setAllObjectsVisible(false);
-
 		player = new Player(this, 550, 350, character, soManager);
-
 		rocks = new ArrayList<>();
-		rocks.add(new Rock(this, 1550, 1321, background));
-		//spawnRocks(10,470,679,1170,1401);
-
 		enemies = new ArrayList<>();
-
-		// enemies.add(new Shaman(this, 460, 1489, background, player, soManager));
-		// enemies.add(new Bomber(this, 1425, 501, background, player, soManager));
-		// enemies.add(new FireBat(this, 1425, 501, background, player));
-		// enemies.add(new TinyBee(this, 1425, 501, background, player));
-		// enemies.add(new BeeAnimation(this, 1425, 501, background, player));
-		// enemies.add(new GrasshopperAnimation(this, 720, 990, background, player));
-		// enemies.add(new MushroomAnimation(this, 720, 960, background, player));
-		enemies.add(new BeeAnimation(this, 1425, 501, background, player));
-
-		enemies.add(new BeeAnimation(this, 620, 930, background, player));
-		enemies.add(new BeeAnimation(this, 680, 950, background, player));
-		enemies.add(new BeeAnimation(this, 780, 980, background, player));
-
-		enemies.add(new GrasshopperAnimation(this, 999, 900, background, player));
-		enemies.add(new GrasshopperAnimation(this, 1200, 950, background, player));
-		enemies.add(new GrasshopperAnimation(this, 1500, 980, background, player));
-
-		enemies.add(new MushroomAnimation(this, 1700, 900, background, player));
-		enemies.add(new MushroomAnimation(this, 1900, 960, background, player));
-
 	}
 
 	public void run() {
@@ -236,9 +201,8 @@ public class GamePanel extends JPanel implements Runnable {
 	public void startGame() { // initialise and start the game thread
 
 		if (gameThread == null && characterSelected) {
-			soundManager.playClip("background", true);
-			soundManager.setVolume("background", 0.7f);
 			createGameEntities();
+			initLevelThree();
 			gameThread = new Thread(this);
 			gameThread.start();
 
@@ -253,6 +217,7 @@ public class GamePanel extends JPanel implements Runnable {
 		if (gameThread == null || !isRunning) {
 			// soundManager.playClip ("background", true);
 			createGameEntities();
+			initLevelThree();
 			gameThread = new Thread(this);
 			gameThread.start();
 
@@ -271,6 +236,75 @@ public class GamePanel extends JPanel implements Runnable {
 	public void endGame() { // end the game thread
 		isRunning = false;
 		// soundManager.stopClip ("background");
+	}
+
+	public void initLevelOne(){
+		soundManager.stopAllClips();
+		rocks.clear();
+		enemies.clear();
+
+		background = new Background(this, "images/Maps/Testing/Level1MapTest.png", 96, 360, 80);
+		soManager = new SolidObjectManager(background);
+
+		soManager.initLevelOne(); // set up map boundaries
+		soManager.setAllObjectsVisible(false);
+
+		soundManager.playClip("background", true);
+		soundManager.setVolume("background", 0.7f);
+		
+		//add rocks here 
+		rocks.add(new Rock(this, 1550, 1321, background));
+
+		//add enemies under here
+		enemies.add(new BeeAnimation(this, 620, 930, background, player));
+		enemies.add(new BeeAnimation(this, 680, 950, background, player));
+		enemies.add(new BeeAnimation(this, 780, 980, background, player));
+
+		enemies.add(new GrasshopperAnimation(this, 999, 900, background, player));
+		enemies.add(new GrasshopperAnimation(this, 1200, 950, background, player));
+		enemies.add(new GrasshopperAnimation(this, 1500, 980, background, player));
+
+		enemies.add(new MushroomAnimation(this, 1700, 900, background, player));
+		enemies.add(new MushroomAnimation(this, 1900, 960, background, player));
+	}
+
+	public void initLevelTwo(){
+		//stop clips from previous level and clears all objects
+		soundManager.stopAllClips();
+		rocks.clear();
+		enemies.clear();
+
+		// background = new Background(this, xxxxxx);
+		soManager = new SolidObjectManager(background);
+		
+		soManager.initLevelTwo(); // set up map boundaries
+		soManager.setAllObjectsVisible(false);
+	}
+
+	public void initLevelThree(){
+		soundManager.stopAllClips();
+		rocks.clear();
+		enemies.clear();
+
+		//note for level 3 offsetX: -90, offsetY: 400
+		background = new Background(this, "images/Maps/Testing/Level3MapTest.png", 96, -90, 400);
+		soManager = new SolidObjectManager(background);
+
+		soManager.initLevelThree(); // set up map boundaries
+		soManager.setAllObjectsVisible(false);
+
+		// soundManager.playClip("background", true);
+		// soundManager.setVolume("background", 0.7f);
+
+		//rocks under here
+		rocks.add(new Rock(this, 1550, 1321, background));
+
+		//enemies under here
+		enemies.add(new Shaman(this, 460, 1489, background, player, soManager));
+		enemies.add(new Bomber(this, 1425, 501, background, player, soManager));
+		enemies.add(new FireBat(this, 1425, 501, background, player));
+		enemies.add(new TinyBee(this, 1425, 501, background, player));
+		enemies.add(new RedBee(this, 1425, 501, background, player));
 	}
 
 	public void spawnRocks(int num, int x1, int x2, int y1, int y2){
