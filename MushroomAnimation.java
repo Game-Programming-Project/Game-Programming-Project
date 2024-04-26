@@ -46,6 +46,12 @@ public class MushroomAnimation extends Enemy {
 			playWalkSound();
 		}
 
+		// stop animation if enemy is blocked or not moving
+		if (oldMapX == mapX && oldMapY == mapY) {
+			walkAnimation.stop();
+			standImage = standImageForward;
+		}
+
 	}
 
 	public void loadWalkAnimations() {

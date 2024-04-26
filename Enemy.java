@@ -182,6 +182,9 @@ public class Enemy {
         if (health < 0) {
             health = 0;
         }
+
+        if(!soundManager.isStillPlaying("enemyHit"))
+            soundManager.playClip("enemyHit", false);
     }
 
     // method used in detecting if player will collide with a solid object

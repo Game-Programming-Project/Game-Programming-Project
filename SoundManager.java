@@ -49,6 +49,9 @@ public class SoundManager { // a Singleton class
 		clip = loadClip("sounds/dripping_water.wav");
 		clips.put("dripping", clip);
 
+		clip = loadClip("sounds/enemyHit.wav");
+		clips.put("enemyHit", clip);
+
 	}
 
 	public static SoundManager getInstance() { // class method to retrieve instance of Singleton
