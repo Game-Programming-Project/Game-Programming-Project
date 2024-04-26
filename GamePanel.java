@@ -38,6 +38,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private LevelInitializer levelInitializer;
 
+	private HealthDisplay healthDisplay;
+
 	public GamePanel() {
 
 		characterSelected = false;
@@ -61,6 +63,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		image = new BufferedImage(1100, 700, BufferedImage.TYPE_INT_RGB);
 		soManager = new SolidObjectManager();
+		healthDisplay = new HealthDisplay(10, 10); // position it at the top left corner
 	}
 
 	public void createGameEntities() {
@@ -199,6 +202,9 @@ public class GamePanel extends JPanel implements Runnable {
 
 		if (player != null)
 			player.draw(imageContext);
+
+		if (healthDisplay != null)
+			healthDisplay.draw(imageContext, player.getHealth(), getWidth());
 
 		Graphics2D g2 = (Graphics2D) getGraphics(); // get the graphics context for the panel
 
