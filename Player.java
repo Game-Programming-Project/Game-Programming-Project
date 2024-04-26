@@ -38,6 +38,9 @@ public class Player {
 	private Boolean attacking;
 	private Boolean justAttacked;
 	private Boolean attackRegistered;
+	private Boolean invincible;
+
+	private Long invincibleStart;
 
 	private SolidObjectManager soManager;
 	private SolidObject solidObject;
@@ -47,6 +50,7 @@ public class Player {
 
 	private int attackDamage;
 	private int health;
+
 
 	public Player(GamePanel p, int xPos, int yPos, String cType, SolidObjectManager soManager) {
 
@@ -82,6 +86,7 @@ public class Player {
 		justAttacked = false;
 		attackRegistered = false;
 		solidObject = null;
+		invincible = false;
 
 		attackDamage = 5;
 		health = 10;
@@ -135,8 +140,7 @@ public class Player {
 	public int move(int direction) {
 
 		if(soManager!=null)
-			solidObject = collidesWithSolid(); // if the player collides with a solid object (map boundary) this will be
-											// !=null
+			solidObject = collidesWithSolid(); // if the player collides with a solid object (map boundary) this will be !=null
 
 		if (!walkAnimation.isStillActive())
 			return 0;
@@ -401,8 +405,19 @@ public class Player {
 		
 		if(health<0)
 			health = 0;
+
+		invincibleStart = System.currentTimeMillis();
+		invincible = true;
 	}
 
+	public Boolean isInvincible() {
+		if (invincible) { // if player is invincible currently then check if 1 second has passed yet
+			if (System.currentTimeMillis() - invincibleStart > 2000) {
+				invincible = false;
+			}
+		}
+		return invincible;
+	}
 
 	public void setAttackDamage(int a){
 		attackDamage = a;
