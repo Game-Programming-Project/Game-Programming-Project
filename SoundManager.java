@@ -10,10 +10,20 @@ public class SoundManager { // a Singleton class
 	private float volume;
 
 	private SoundManager() {
+
 		clips = new HashMap<String, Clip>();
 
 		Clip clip = loadClip("sounds/break_rock.wav");
 		clips.put("break_rock", clip);
+
+		clip = loadClip("sounds/explosion.wav");
+		clips.put("explosion", clip);
+
+		clip = loadClip("sounds/game_over.wav");
+		clips.put("gameover", clip);
+
+		clip = loadClip("sounds/game_start.wav");
+		clips.put("startgame", clip);
 
 		clip = loadClip("sounds/Level1/background.wav"); // played from start of the Level 1
 		clips.put("background", clip);
@@ -26,6 +36,19 @@ public class SoundManager { // a Singleton class
 
 		clip = loadClip("sounds/Level1/grasshopperJump.wav"); // played when a grasshopper jumps
 		clips.put("grasshopperJump", clip);
+
+		clip = loadClip("sounds/lose_life.wav");
+		clips.put("lose life", clip);
+
+		clip = loadClip("sounds/pause_game.wav");
+		clips.put("pause", clip);
+
+		clip = loadClip("sounds/lobby.wav");
+		clips.put("lobby", clip);
+
+		clip = loadClip("sounds/dripping_water.wav");
+		clips.put("dripping", clip);
+
 	}
 
 	public static SoundManager getInstance() { // class method to retrieve instance of Singleton

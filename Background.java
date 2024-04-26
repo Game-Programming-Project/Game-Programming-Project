@@ -51,14 +51,9 @@ public class Background {
 		this.bgDY = 8; // move factor along y-axis
 
 		bg1X = ((bgImageWidth - panelWidth) / 2) * -1; // position panel at centre of image
-		bg1Y = ((bgImageHeight - panelHeight) / 2) * -1;
-
 
 		bg1X += offsetX;
 		bg1Y -= offsetY;
-
-		// bg1X = 438;
-		// bg1Y = 436;
 
 	}
 
