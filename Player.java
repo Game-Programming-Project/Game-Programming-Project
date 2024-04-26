@@ -37,12 +37,15 @@ public class Player {
 
 	private Boolean attacking;
 	private Boolean justAttacked;
+	private Boolean attackRegistered;
 
 	private SolidObjectManager soManager;
 	private SolidObject solidObject;
 
 	private int centerX;
 	private int centerY;
+
+	private int attackDamage;
 
 	public Player(GamePanel p, int xPos, int yPos, String cType, SolidObjectManager soManager) {
 
@@ -76,7 +79,10 @@ public class Player {
 
 		attacking = false;
 		justAttacked = false;
+		attackRegistered = false;
 		solidObject = null;
+
+		attackDamage = 5;
 	}
 
 	public void start() {
@@ -102,7 +108,6 @@ public class Player {
 		justAttacked = false; // need this or else it will falsely think it just finished attacking
 
 		if (attackAnimation.isStillActive()) { // if attack animation is active update it
-			System.out.println("attack update");
 			attacking = true;
 			attackAnimation.update();
 			return;
@@ -118,8 +123,10 @@ public class Player {
 		else
 			attacking = true;
 
-		System.out.println("attack");
+		
 		attackAnimation.start();
+		attackRegistered = false;
+
 		return true; // attack went off
 	}
 
@@ -388,8 +395,21 @@ public class Player {
 		return soManager.collidesWith(myRect);
 	}
 
+	public void setAttackDamage(int a){
+		attackDamage = a;
+	}
+
 	public void setJustAttacked(boolean a) {
 		justAttacked = a;
+	}
+
+	public boolean attackRegistered() {
+		if (!attackRegistered) {
+            attackRegistered = true;
+            return true;
+        }
+
+		return false;
 	}
 
 	public boolean justAttacked() {
@@ -398,6 +418,10 @@ public class Player {
 
 	public boolean isAttacking() {
 		return attacking;
+	}
+
+	public int getAttackDamage() {
+		return attackDamage;
 	}
 
 	public int getX() {

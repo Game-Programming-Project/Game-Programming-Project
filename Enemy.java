@@ -31,6 +31,9 @@ public class Enemy {
     protected Player player;
 
     protected int aggression; // how aggressive the enemy is, how likely it is to attack the player
+    protected int health;
+
+    protected Boolean isAlive;
 
     public Enemy(GamePanel gPanel, int mapX, int mapY, Background bg, Player player) {
 
@@ -40,7 +43,8 @@ public class Enemy {
         this.bg = bg;
         this.player = player;
 
-        aggression = 1;
+        aggression = 1; // always chase player by default
+        health = 10;
 
         soundManager = SoundManager.getInstance();
 
@@ -48,6 +52,7 @@ public class Enemy {
         walkAnimationLeft = new Animation(false);
         walkAnimationRight = new Animation(false);
 
+        isAlive = true;
     }
 
     public void loadWalkAnimation() {
@@ -68,6 +73,9 @@ public class Enemy {
             return;
 
         walkAnimation.update();
+        
+        if(health <=0)
+            isAlive = false;
     }
 
     public void move() {
@@ -148,6 +156,10 @@ public class Enemy {
         aggression = a;
     }
 
+    public boolean isAlive(){
+        return isAlive;
+    }
+
     public boolean collidesWithPlayer(Player p) {
         Rectangle2D.Double myRect = getBoundingRectangle();
         Rectangle2D.Double playerRect = p.getBoundingRectangle();
@@ -158,6 +170,12 @@ public class Enemy {
     public Rectangle2D.Double getBoundingRectangle() {
 		return new Rectangle2D.Double (x, y, width, height);
 	}
+
+    public void takeDamage(int damage) {
+        health -= damage;
+        if(health<0)
+            health=0;
+    }
 
     //method used in detecting if player will collide with a solid object
 	public Rectangle2D.Double getFutureBoundingRectangle(){
