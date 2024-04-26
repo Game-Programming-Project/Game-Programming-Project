@@ -22,8 +22,9 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private Thread gameThread;
 
-	private BufferedImage image;
-	// private Image backgroundImage;
+	private BufferedImage image1;
+	private BufferedImage image2;
+	private Image backgroundImage;
 
 	private Player player;
 
@@ -38,9 +39,6 @@ public class GamePanel extends JPanel implements Runnable {
 	private MushroomAnimation animMushroom;
 	GameWindow window;
 
-	private Image backgroundImage;
-
-	private Image bgImage;
 
 	public GamePanel(GameWindow w) {
 
@@ -68,9 +66,13 @@ public class GamePanel extends JPanel implements Runnable {
 		soundManager = SoundManager.getInstance();
 
 
-        //image = new BufferedImage(1200, 500, BufferedImage.TYPE_INT_RGB);
+		backgroundImage = ImageManager.loadImage("images/landing.jpg");
+;        //image = new BufferedImage(1200, 500, BufferedImage.TYPE_INT_RGB);
 
-		image = new BufferedImage(400, 400, BufferedImage.TYPE_INT_RGB);
+
+		image1 = new BufferedImage(1200, 500, BufferedImage.TYPE_INT_RGB);
+
+		image2 = new BufferedImage(1200, 500, BufferedImage.TYPE_INT_RGB);
 
 		
 	}
@@ -161,12 +163,17 @@ public class GamePanel extends JPanel implements Runnable {
 
 		// draw the game objects on the image
 
-		Graphics2D imageContext = (Graphics2D) image.getGraphics();
+		Graphics2D imageContext1 = (Graphics2D) image1.getGraphics();
+
+		background.draw(imageContext1);
+		imageContext1.drawImage(backgroundImage, 0, 0, null);	// draw the background image
+
+		Graphics2D imageContext = (Graphics2D) image2.getGraphics();
 
 		background.draw(imageContext);
 
 
-		//imageContext.drawImage(backgroundImage, 0, 0, null);	// draw the background image
+		
 
 		if(rocks !=null){
 			for (int i=0; i<rocks.size(); i++)
@@ -196,8 +203,10 @@ public class GamePanel extends JPanel implements Runnable {
 		}
 
 		Graphics2D g2 = (Graphics2D) getGraphics(); // get the graphics context for the panel
-		g2.drawImage(image, 0, 0, 400, 400, null);
+		g2.drawImage(image1, 0, 0, 1200, 500, null);
+		g2.drawImage(image2, 0, 0, 1200, 500, null);
 
+		imageContext1.dispose();
 		imageContext.dispose();
 		g2.dispose();
 	}
