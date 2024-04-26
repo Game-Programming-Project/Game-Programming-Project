@@ -26,7 +26,7 @@ public class SpiderAnimation {
         dy = -10;   // increment to move along y-axis
 
         // load images from strip file
-        Image stripImage = ImageManager.loadImage("images/spider.png");
+        Image stripImage = ImageManager.loadImage("images/Enemies/Level2/Spider/spider.png");
 
         int imageWidth = stripImage.getWidth(null) / 4; // Assuming 4 frames in the strip
         int imageHeight = stripImage.getHeight(null);

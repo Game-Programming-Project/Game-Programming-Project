@@ -29,11 +29,11 @@ public class ScorpionAnimation {
         dy = -10;       // increment to move along y-axis
 
         // load images from left strip file
-        Image leftStripImage = ImageManager.loadImage("images/scorpionLeft.png");
+        Image leftStripImage = ImageManager.loadImage("images/Enemies/Level2/Scorpion/scorpionLeft.png");
         loadAnimation(leftAnimation, leftStripImage);
 
         // load images from right strip file
-        Image rightStripImage = ImageManager.loadImage("images/scorpionRight.png");
+        Image rightStripImage = ImageManager.loadImage("images/Enemies/Level2/Scorpion/scorpionRight.png");
         loadAnimation(rightAnimation, rightStripImage);
     }
 

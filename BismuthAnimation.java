@@ -26,7 +26,7 @@ public class BismuthAnimation {
         dy = -10;   // increment to move along y-axis
 
         // load images from strip file
-        Image stripImage = ImageManager.loadImage("images/bismuth.png");
+        Image stripImage = ImageManager.loadImage("images/Enemies/Level2/Bismuth/bismuth.png");
 
         int imageWidth = stripImage.getWidth(null) / 10; // Assuming 10 frames in the strip
         int imageHeight = stripImage.getHeight(null);

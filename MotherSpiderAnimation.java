@@ -24,7 +24,7 @@ public class MotherSpiderAnimation {
         dy = 1;     // increment to move downward along y-axis
 
         // load images from vertical strip file
-        Image stripImage = ImageManager.loadImage("images/motherSpider.png");
+        Image stripImage = ImageManager.loadImage("images/Enemies/Level2/Spider/motherSpider.png");
 
         int imageWidth = stripImage.getWidth(null);
         int imageHeight = stripImage.getHeight(null) / 3; // Assuming 3 frames in the strip
