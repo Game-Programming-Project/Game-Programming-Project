@@ -91,10 +91,6 @@ public class LevelInitializer {
 		rocks.add(new Rock(gamePanel, 1550, 1321, background));
 
 		// enemies under here
-		enemies.add(new Shaman(gamePanel, 460, 1489, background, player, soManager));
-		enemies.add(new Bomber(gamePanel, 1425, 501, background, player, soManager));
-		enemies.add(new FireBat(gamePanel, 1425, 501, background, player));
-		enemies.add(new TinyBee(gamePanel, 1425, 501, background, player));
 		enemies.add(new RedBee(gamePanel, 1425, 501, background, player));
 	}
 }

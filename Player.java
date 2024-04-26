@@ -46,6 +46,7 @@ public class Player {
 	private int centerY;
 
 	private int attackDamage;
+	private int health;
 
 	public Player(GamePanel p, int xPos, int yPos, String cType, SolidObjectManager soManager) {
 
@@ -83,6 +84,7 @@ public class Player {
 		solidObject = null;
 
 		attackDamage = 5;
+		health = 10;
 	}
 
 	public void start() {
@@ -237,18 +239,17 @@ public class Player {
 	}
 
 	public void setDirections(int direction) {
-		if (direction == 1 && directions.contains(Integer.valueOf(1))) // already moved left so can move right (back to
-																		// centre)
+		if (direction == 1 && directions.contains(Integer.valueOf(1))) // already moved left so can move right (back to centre)
 			directions.add(Integer.valueOf(2));
-		else if (direction == 2 && directions.contains(Integer.valueOf(2))) // already moved right so can move left
-																			// (back to centre)
+			
+		else if (direction == 2 && directions.contains(Integer.valueOf(2))) // already moved right so can move left (back to centre)
 			directions.add(Integer.valueOf(1));
-		else if (direction == 3 && directions.contains(Integer.valueOf(3))) // already moved up so can move down (back
-																			// to centre)
+
+		else if (direction == 3 && directions.contains(Integer.valueOf(3))) // already moved up so can move down (back to centre)
 			directions.add(Integer.valueOf(4));
-		else if (direction == 4 && directions.contains(Integer.valueOf(4))) // already moved down so can move up (back
-																			// to centre)
-			directions.add(Integer.valueOf(3));
+		else if (direction == 4 && directions.contains(Integer.valueOf(4))) // already moved down so can move up (back to centre)
+
+		directions.add(Integer.valueOf(3));
 
 		if (direction > 0) { // new direction the bat can move in
 			directions.add(Integer.valueOf(direction));
@@ -438,6 +439,9 @@ public class Player {
 
 	public int getHeight(){
 		return height;
+	}
 
+	public int getHealth(){
+		return health;
 	}
 }
