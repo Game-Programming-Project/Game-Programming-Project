@@ -22,7 +22,7 @@ public class Background {
 
 	private HashSet directions;
 
-	public Background(GamePanel panel, String imageFile, int bgDX) {
+	public Background(GamePanel panel, String imageFile, int bgDX, int offsetX, int offsetY) {
 
 		// stores values corresponding to the directions in which the background should
 		// not scroll to allow the player to move
@@ -52,10 +52,8 @@ public class Background {
 
 		bg1X = ((bgImageWidth - panelWidth) / 2) * -1; // position panel at centre of image
 
-		bg1Y = ((bgImageHeight - panelHeight) / 2) * -1;
-
-		// bg1X = 87;
-		// bg1Y = 134;
+		bg1X += offsetX;
+		bg1Y -= offsetY;
 
 	}
 
@@ -178,12 +176,12 @@ public class Background {
 		g2.drawImage(bgImage, bg1X, bg1Y, null);
 	}
 
-  public int getbg1X(){
-	return bg1X;
-  }
+	public int getbg1X() {
+		return bg1X;
+	}
 
-  public int getbg1Y(){
-	return bg1Y;
-  }
+	public int getbg1Y() {
+		return bg1Y;
+	}
 
 }

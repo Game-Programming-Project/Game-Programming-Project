@@ -135,4 +135,8 @@ public class Animation {
         }
     }
 
+    public void setLoop(boolean loop) {
+        this.loop = loop;
+    }
+
 }

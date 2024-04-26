@@ -3,31 +3,159 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.util.Random;
 
-/**
- * The StripAnimation class creates an animation from a strip file.
- */
-public class BeeAnimation {
+public class BeeAnimation extends Enemy {
 
-	Animation animation;
+	private Image standImageForward;
+	private Image standImageAway;
 
-	private int x; // x position of animation
-	private int y; // y position of animation
+	private Animation walkAnimationAway;
+	private Animation walkAnimationForward;
 
-	private int width;
-	private int height;
+	// Constants for different behavior types
+	private static final int NORMAL = 0;
+	private static final int AGGRESSIVE = 1;
+	private static final int PASSIVE = 2;
 
-	private int dx; // increment to move along x-axis
-	private int dy; // increment to move along y-axis
+	// Probability of each behavior type (sum should be 100)
+	private static final int NORMAL_PROBABILITY = 60; // Higher chance of normal behavior
+	private static final int AGGRESSIVE_PROBABILITY = 20;
+	private static final int PASSIVE_PROBABILITY = 20;
 
-	public BeeAnimation() {
-		animation = new Animation(true); // run animation once
+	// Random object for generating random behavior
+	private static final Random random = new Random();
 
-		dx = 0; // increment to move along x-axis
-		dy = 0; // increment to move along y-axis
+	public BeeAnimation(GamePanel gPanel, int mapX, int mapY, Background bg, Player p) {
+		super(gPanel, mapX, mapY, bg, p);
+
+		walkAnimationAway = new Animation(false);
+		walkAnimationForward = new Animation(false);
+		initBehavior();
+
+		loadImages();
+		loadWalkAnimations();
+
+		width = height = 50;
+
+		dx = 2;
+		dy = 2;
+
+	}
+
+	// Method to initialize bee behavior
+	private void initBehavior() {
+		int behavior = selectBehavior();
+		setBehavior(behavior);
+	}
+
+	// Method to select bee behavior randomly based on probabilities
+	private int selectBehavior() {
+		int randomNumber = random.nextInt(100); // Generate random number between 0 and 99
+
+		if (randomNumber < NORMAL_PROBABILITY) {
+			return NORMAL;
+		} else if (randomNumber < NORMAL_PROBABILITY + AGGRESSIVE_PROBABILITY) {
+			return AGGRESSIVE;
+		} else {
+			return PASSIVE;
+		}
+	}
+
+	// Method to set behavior based on behavior type
+	private void setBehavior(int behavior) {
+		switch (behavior) {
+			case NORMAL:
+				// Set normal behavior
+				break;
+			case AGGRESSIVE:
+				// Set aggressive behavior
+				break;
+			case PASSIVE:
+				// Set passive behavior
+				break;
+			default:
+				// Default behavior
+				break;
+		}
+	}
+
+	public void chasePlayer() {
+		int playerX = player.getX();
+		int playerY = player.getY();
+
+		// Calculate the distance between the bee and the player
+		double distance = Math.sqrt(Math.pow(playerX - x, 2) + Math.pow(playerY - y, 2));
+
+		// If the player is within a certain range (e.g., 100 pixels)
+		if (distance <= 100) {
+			if (walkAnimation.isStillActive() && !soundManager.isStillPlaying("beeSound")) {
+				playWalkSound();
+			}
+			if (playerX > x) { // player is to the right
+				mapX += dx;
+				walkAnimation = walkAnimationRight;
+				standImage = standImageRight;
+				// playWalkSound();
+			} else if (playerX - player.getWidth() < x) { // player is to the left
+				mapX -= dx;
+				walkAnimation = walkAnimationLeft;
+				standImage = standImageLeft;
+				// playWalkSound();
+			}
+
+			if (playerY - player.getHeight() > y) { // player is below
+				mapY += dy;
+				walkAnimation = walkAnimationLeft;
+				// playWalkSound();
+			} else if (playerY + player.getHeight() < y) { // player is above
+				mapY -= dy;
+				walkAnimation = walkAnimationLeft;
+				// playWalkSound();
+			}
+		} else {
+			// If the player is not within range, the bee should be standing
+			// walkAnimation = null;
+			walkAnimation = walkAnimationRight;
+			standImage = standImageRight;
+
+		}
+	}
+
+	public void move() {
+		int oldMapX = mapX;
+		int oldMapY = mapY;
+
+		chasePlayer();
+
+		// mapX += dx;
+		if (oldMapX < mapX) { // moving right
+			walkAnimation = walkAnimationRight;
+			standImage = standImageRight;
+			playWalkSound();
+		} else if (oldMapX > mapX) { // moving left
+			walkAnimation = walkAnimationLeft;
+			standImage = standImageLeft;
+			playWalkSound();
+		}
+
+		// mapY += dy;
+
+	}
+
+	public void loadWalkAnimations() {
+		walkAnimationLeft = loadAnimation("images/Enemies/Level1/Bee/beeSpriteLeft.png");
+		walkAnimationRight = loadAnimation("images/Enemies/Level1/Bee/beeSpriteRight.png");
+
+		walkAnimation = walkAnimationRight;
+	}
+
+	public Animation loadAnimation(String stripFilePath) {
+
+		Animation Animation = new Animation(false);
 
 		// load images from strip file
-		Image stripImage = ImageManager.loadImage("images/beeSprite.png");
+		Image stripImage = ImageManager.loadImage(stripFilePath);
 
 		int spriteColumns = 5; // Assuming 5 columns in the sprite sheet
 		int spriteRows = 2; // Assuming 2 rows in the sprite sheet
@@ -46,31 +174,22 @@ public class BeeAnimation {
 						(row * imageHeight) + imageHeight,
 						null);
 
-				animation.addFrame(frameImage, 200);
+				Animation.addFrame(frameImage, 130);
 			}
+
 		}
+
+		return Animation;
 	}
 
-	public void start() {
-		x = 150;
-		y = 150;
-		animation.start();
+	public void loadImages() {
+		standImageLeft = ImageManager.loadImage("images/Enemies/Level1/Bee/beeStandingLeft.png");
+		standImageRight = ImageManager.loadImage("images/Enemies/Level1/Bee/beeStandingRight.png");
+
+		standImage = standImageForward;
 	}
 
-	public void update() {
-		if (!animation.isStillActive())
-			return;
-
-		animation.update();
-		x = x + dx;
-		y = y + dy;
+	private void playWalkSound() {
+		soundManager.playClip("beeSound", false);
 	}
-
-	public void draw(Graphics2D g2) {
-		if (!animation.isStillActive())
-			return;
-
-		g2.drawImage(animation.getImage(), x, y, 100, 100, null);
-	}
-
 }
