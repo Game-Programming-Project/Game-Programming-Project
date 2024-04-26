@@ -180,8 +180,9 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 		if (command.equals(startNewB.getText()))
 			gamePanel.startNewGame();
 
-		if (command.equals(focusB.getText()))
-			gamePanel.shootCat();
+		if (command.equals(focusB.getText())){
+			//gamePanel.shootCat();
+		}
 
 		if (command.equals(exitB.getText()))
 			System.exit(0);

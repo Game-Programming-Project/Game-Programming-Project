@@ -89,30 +89,34 @@ public class BeeAnimation extends Enemy {
 
 		// If the player is within a certain range (e.g., 100 pixels)
 		if (distance <= 100) {
-			soundManager.playClip("beeSound", true);
 
 			if (playerX > x) { // player is to the right
 				mapX += dx;
 				walkAnimation = walkAnimationRight;
 				standImage = standImageRight;
+				playWalkSound();
 			} else if (playerX - player.getWidth() < x) { // player is to the left
 				mapX -= dx;
 				walkAnimation = walkAnimationLeft;
 				standImage = standImageLeft;
+				playWalkSound();
 			}
 
 			if (playerY - player.getHeight() > y) { // player is below
 				mapY += dy;
 				walkAnimation = walkAnimationLeft;
+				playWalkSound();
 			} else if (playerY + player.getHeight() < y) { // player is above
 				mapY -= dy;
 				walkAnimation = walkAnimationLeft;
+				playWalkSound();
 			}
 		} else {
 			// If the player is not within range, the bee should be standing
 			// walkAnimation = null;
 			walkAnimation = walkAnimationRight;
 			standImage = standImageRight;
+			soundManager.stopClip("beeSound");
 
 		}
 	}
@@ -180,5 +184,9 @@ public class BeeAnimation extends Enemy {
 		standImageRight = ImageManager.loadImage("images/Enemies/Level1/Bee/beeStandingRight.png");
 
 		standImage = standImageForward;
+	}
+
+	private void playWalkSound() {
+		soundManager.playClip("beeSound", false);
 	}
 }

@@ -1,4 +1,3 @@
-import javax.sound.sampled.AudioInputStream; // for playing sound clips
 import javax.sound.sampled.*;
 import java.io.*;
 import java.util.HashMap; // for storing sound clips
@@ -21,6 +20,9 @@ public class SoundManager { // a Singleton class
 
 		clip = loadClip("sounds/Level1/bee.wav"); // played when a fireball is shot
 		clips.put("beeSound", clip);
+
+		clip = loadClip("sounds/Level1/mushroomWalk.wav"); // played when a mushroom walks
+		clips.put("mushroomWalk", clip);
 	}
 
 	public static SoundManager getInstance() { // class method to retrieve instance of Singleton
@@ -68,6 +70,12 @@ public class SoundManager { // a Singleton class
 		}
 	}
 
+	public void stopAllClips() {
+		for (Clip clip : clips.values()) {
+			clip.stop();
+		}
+	}
+
 	public void setVolume(String title, float volume) {
 		Clip clip = getClip(title);
 
@@ -77,6 +85,11 @@ public class SoundManager { // a Singleton class
 		float gain = (range * volume) + gainControl.getMinimum();
 
 		gainControl.setValue(gain);
+	}
+
+	public boolean isStillPlaying(String title) {
+		Clip clip = getClip(title);
+		return clip.isRunning();
 	}
 
 }

@@ -9,14 +9,15 @@ public class MushroomAnimation extends Enemy {
 	private Image standImageForward;
 	private Image standImageAway;
 
-	private Animation walkAnimationAway;
-	private Animation walkAnimationForward;
+	private Animation walkAnimationUp;
+	private Animation walkAnimationDown;
+	private Animation blowUpAnimation;
 
 	public MushroomAnimation(GamePanel gPanel, int mapX, int mapY, Background bg, Player p) {
 		super(gPanel, mapX, mapY, bg, p);
 
-		walkAnimationAway = new Animation(false);
-		walkAnimationForward = new Animation(true);
+		walkAnimationUp = new Animation(false);
+		walkAnimationDown = new Animation(false);
 
 		loadImages();
 		loadWalkAnimations();
@@ -48,9 +49,11 @@ public class MushroomAnimation extends Enemy {
 	public void loadWalkAnimations() {
 		walkAnimationLeft = loadAnimation("images/Enemies/Level1/Mushroom/mushroomChasingLeft.png");
 		walkAnimationRight = loadAnimation("images/Enemies/Level1/Mushroom/mushroomChasingRight.png");
-		walkAnimationForward.addFrame(standImageForward, 100);
+		blowUpAnimation = loadAnimation("images/Enemies/Level1/Mushroom/mushroomSpriteBOOM.png");
 
-		walkAnimation = walkAnimationForward;
+		walkAnimationDown.addFrame(standImageForward, 100);
+
+		walkAnimation = walkAnimationDown;
 	}
 
 	public Animation loadAnimation(String stripFilePath) {
@@ -101,29 +104,59 @@ public class MushroomAnimation extends Enemy {
 
 		// If the player is within a certain range (e.g., 100 pixels)
 		if (distance <= 300) {
+			if (distance <= 50) {
+				blowUp();
+				playBoomSound();
+			}
 			if (playerX - 150 > x) { // player is to the right
 				mapX += dx;
 				walkAnimation = walkAnimationRight;
 				standImage = standImageRight;
+				playWalkSound();
+
 			} else if (playerX + 100 < x) { // player is to the left
 				mapX -= dx;
 				walkAnimation = walkAnimationLeft;
 				standImage = standImageLeft;
+				playWalkSound();
 			}
 
 			if (playerY - 100 > y) { // player is below
 				mapY += dy;
 				walkAnimation = walkAnimationLeft;
+				playWalkSound();
+
 			} else if (playerY + 100 < y) { // player is above
 				mapY -= dy;
 				walkAnimation = walkAnimationLeft;
+				playWalkSound();
 			}
 		} else {
 			// If the player is not within range, the mushroom should be standing
 			// walkAnimation = null;
-			walkAnimation = walkAnimationForward;
+			walkAnimation = walkAnimationDown;
 			standImage = standImageForward; // or standImageLeft, depending on the last direction
 
 		}
+	}
+
+	// Method to trigger the blow-up animation
+	private void blowUp() {
+		// Replace the current animation with the blow-up animation
+		walkAnimation = loadAnimation("images/Enemies/Level1/Mushroom/mushroomSpriteBOOM.png");
+
+		// You may need to adjust the timing and other parameters for the blow-up
+		// animation
+		// based on your specific implementation
+		// Also, you might want to handle any cleanup or other logic related to the
+		// blow-up here
+	}
+
+	private void playWalkSound() {
+		soundManager.playClip("mushroomWalk", false);
+	}
+
+	private void playBoomSound() {
+		soundManager.playClip("mushroomBoom", false);
 	}
 }

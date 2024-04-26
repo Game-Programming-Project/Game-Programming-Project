@@ -1,38 +1,27 @@
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.Random;
 
-public class Bomber extends Enemy {
+public class TinyBee extends RedBee{
+    
+    public TinyBee(GamePanel gPanel, int mapX, int mapY, Background bg, Player p) {
+		super(gPanel, mapX, mapY, bg, p);
 
-    private Image standImageForward;
-    private Image standImageAway;
+        walkAnimationLeft.setLoop(true);
+        walkAnimationRight.setLoop(true);
 
-    private Animation walkAnimationUp;
-    private Animation walkAnimationDown;
+		loadImages();
+		loadWalkAnimations();
 
-    private Player player;
+        //bee image is 21 x 16
+		width = 21;
+        height = 16;
 
-    private SolidObjectManager soManager;
+		dx = 2;
+		dy = 2;
 
-    public Bomber(GamePanel gPanel, int mapX, int mapY, Background bg, Player p, SolidObjectManager soManager) {
-        super(gPanel,mapX,mapY,bg,p);
-        player = p;
-        this.soManager = soManager;
-
-        walkAnimationUp= new Animation(false);
-        walkAnimationDown= new Animation(false);
-        
-        loadImages();
-        loadWalkAnimations();
-
-        width=height=30;
-
-        dx=5;
-        dy=3;
-    }
+	}
 
     public void move() {
         int oldMapX = mapX;
@@ -40,8 +29,7 @@ public class Bomber extends Enemy {
 
         double distance = Math.sqrt(Math.pow(player.getX() - x, 2) + Math.pow(player.getY() - y, 2));
 
-        Boolean wouldCollide = soManager.collidesWithSolid(getFutureBoundingRectangle());
-        if(!wouldCollide && distance < 400) // only move if Bomber won't collide with a solid and if the player is within range
+        if(distance < 400) // only move if Bee won't collide with a solid and if the player is within range
             chasePlayer();
 
         if(oldMapX<mapX){ //moving right
@@ -52,19 +40,6 @@ public class Bomber extends Enemy {
             walkAnimation = walkAnimationLeft;
             standImage = standImageLeft;
         }
-
-        if (oldMapY < mapY) { // moving down
-            walkAnimation = walkAnimationDown;
-            standImage = standImageForward;
-        } else if (oldMapY > mapY) { // moving up
-            walkAnimation = walkAnimationUp;
-            standImage = standImageAway;
-        }
-
-        //stop animation if enemy is blocked or not moving
-        if(oldMapX == mapX && oldMapY == mapY){
-            walkAnimation.stop();
-        } 
 
     }
 
@@ -104,14 +79,32 @@ public class Bomber extends Enemy {
         }
     }
 
-    public void loadWalkAnimations() {
-        walkAnimationUp = loadAnimation("images/Enemies/Level3/Bomber/bomberWalkAway.png");
-        walkAnimationDown = loadAnimation("images/Enemies/Level3/Bomber/bomberWalkForward.png");
-        walkAnimationLeft = loadAnimation("images/Enemies/Level3/Bomber/bomberWalkLeft.png");
-        walkAnimationRight = loadAnimation("images/Enemies/Level3/Bomber/bomberWalkRight.png");
+    public void draw(Graphics2D g2) {
 
-        walkAnimation = walkAnimationDown;
+        updateScreenCoordinates();
+
+        // Always draw the stand image
+        g2.drawImage(standImage, x, y, null);
+    
+        // If the animation is ongoing, draw it on top of the stand image
+        if (walkAnimation != null && walkAnimation.isStillActive()) {
+            g2.drawImage(walkAnimation.getImage(), x, y, width, height, null);
+        }
     }
+
+    public void loadWalkAnimations() {
+		walkAnimationLeft = loadAnimation("images/Enemies/Level3/RedBee/TinyBee/tinyBeeWalkLeft.png");
+		walkAnimationRight = loadAnimation("images/Enemies/Level3/RedBee/TinyBee/tinyBeeWalkRight.png");
+
+		walkAnimation = walkAnimationRight;
+	}
+
+	public void loadImages() {
+		standImageLeft = ImageManager.loadImage("images/Enemies/Level3/RedBee/TinyBee/tinyBeeStandingLeft.png");
+		standImageRight = ImageManager.loadImage("images/Enemies/Level3/RedBee/TinyBee/tinyBeeStandingRight.png");
+
+		standImage = standImageRight;
+	}
 
     public Animation loadAnimation(String stripFilePath) {
 
@@ -132,17 +125,11 @@ public class Bomber extends Enemy {
                     i * imageWidth, 0, (i * imageWidth) + imageWidth, imageHeight,
                     null);
 
-            Animation.addFrame(frameImage, 200);
+            Animation.addFrame(frameImage, 100);
         }
 
         return Animation;
     }
 
-    public void loadImages() {
-        standImageForward = ImageManager.loadImage("images/Enemies/Level3/Bomber/Standing/bomberStandForward.png");
-        standImageAway = ImageManager.loadImage("images/Enemies/Level3/Bomber/Standing/bomberStandAway.png");
-        standImageRight = ImageManager.loadImage("images/Enemies/Level3/Bomber/Standing/bomberStandRight.png");
-        standImageLeft = ImageManager.loadImage("images/Enemies/Level3/Bomber/Standing/bomberStandLeft.png");
-        standImage = standImageForward;
-    }
 }
+

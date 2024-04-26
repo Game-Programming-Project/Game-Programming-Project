@@ -4,7 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
 public class Rock {
-    private Image rockImage;
+    private Image rockImage, destroyedRockImage;
     private int width, height;
     private int x, y;
 
@@ -16,6 +16,9 @@ public class Rock {
     private SoundManager soundManager;
 
     private boolean destroyed;
+    private boolean disappearCompleted;
+
+    private DisappearFX disappearFX;
 
     public Rock (GamePanel gPanel, int mapX, int mapY, Background bg) {
 
@@ -27,16 +30,28 @@ public class Rock {
         width = height = 30;
 
         soundManager = SoundManager.getInstance();
+        
+        rockImage = ImageManager.loadImage("images/Rocks/basicRock.png");
+        destroyedRockImage = ImageManager.loadImage("images/Rocks/destroyedRock.png");
 
-        rockImage = ImageManager.loadImage("images/Rocks/Rock_1.png");
+        disappearFX=null;
         destroyed = false;
+        disappearCompleted = false;
     }
 
     public void draw(Graphics2D g2) {
 
         updateScreenCoordinates();
         
-        if(!destroyed) // draw if rock is NOT destroyed
+        if(destroyed){ // draw if rock is NOT destroyed
+            //g2.drawImage(destroyedRockImage, x, y, width, height, null);
+            if(disappearFX!=null){
+                disappearFX.draw(g2);
+                if(disappearFX.isCompleted())
+                    disappearCompleted = true;
+            }
+        }
+        else
             g2.drawImage(rockImage, x, y, width, height, null);
 
     }
@@ -82,12 +97,33 @@ public class Rock {
         this.destroyed = destroyed;
     }
 
+    public void setFX(DisappearFX fx){
+        disappearFX = fx;
+     }
+  
+     public String getRockImageString(){ // method to return the current image of the rock(destroyed and alive)
+        if(!destroyed)
+            return "images/Rocks/basicRock.png";
+        else
+            return "images/Rocks/destroyedRock.png";
+     }
+
     public int getX() {
+        updateScreenCoordinates();
         return x;
     }
 
     public int getY() {
+        updateScreenCoordinates();
         return y;
+    }
+
+    public int getMapX() {
+        return mapX;
+    }
+
+    public int getMapY() {
+        return mapY;
     }
 
     public int getWidth() {
@@ -96,6 +132,19 @@ public class Rock {
 
     public int getHeight() {
         return height;
+    }
+
+    public boolean isDisappearCompleted() {
+        return disappearCompleted;
+    }
+
+    public void updateFX(){
+        if(disappearFX != null){
+            disappearFX.update();
+           if(disappearFX.isCompleted()){
+                disappearFX = null;
+           }
+        }
     }
 
 }

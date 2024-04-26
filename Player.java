@@ -37,12 +37,15 @@ public class Player {
 
 	private Boolean attacking;
 	private Boolean justAttacked;
+	private Boolean attackRegistered;
 
 	private SolidObjectManager soManager;
 	private SolidObject solidObject;
 
 	private int centerX;
 	private int centerY;
+
+	private int attackDamage;
 
 	public Player(GamePanel p, int xPos, int yPos, String cType, SolidObjectManager soManager) {
 
@@ -76,7 +79,10 @@ public class Player {
 
 		attacking = false;
 		justAttacked = false;
+		attackRegistered = false;
 		solidObject = null;
+
+		attackDamage = 5;
 	}
 
 	public void start() {
@@ -102,7 +108,6 @@ public class Player {
 		justAttacked = false; // need this or else it will falsely think it just finished attacking
 
 		if (attackAnimation.isStillActive()) { // if attack animation is active update it
-			System.out.println("attack update");
 			attacking = true;
 			attackAnimation.update();
 			return;
@@ -118,14 +123,17 @@ public class Player {
 		else
 			attacking = true;
 
-		System.out.println("attack");
+		
 		attackAnimation.start();
+		attackRegistered = false;
+
 		return true; // attack went off
 	}
 
 	public int move(int direction) {
 
-		solidObject = collidesWithSolid(); // if the player collides with a solid object (map boundary) this will be
+		if(soManager!=null)
+			solidObject = collidesWithSolid(); // if the player collides with a solid object (map boundary) this will be
 											// !=null
 
 		if (!walkAnimation.isStillActive())
@@ -275,20 +283,15 @@ public class Player {
 		// attackAnimationLeft =
 		// loadAnimation("images/Player/"+characterType+"/"+characterType+"_attackLeftTest.png");
 
-		attackAnimation = attackAnimationRight;
-	}
+        attackAnimation = attackAnimationRight;
+    }
 
-	private void loadWalkAnimations() {
-		walkAnimationRight = loadAnimation("images/Player/" + characterType + "/" + characterType + "_walkRight.png");
-		walkAnimationLeft = loadAnimation("images/Player/" + characterType + "/" + characterType + "_walkLeft.png");
-
-		// walkAnimationRight =
-		// loadAnimation("images/Player/"+characterType+"/"+characterType+"_walkRightTest.png");
-		// walkAnimationLeft =
-		// loadAnimation("images/Player/"+characterType+"/"+characterType+"_walkLeftTest.png");
-
-		walkAnimation = walkAnimationRight;
-	}
+    private void loadWalkAnimations() {
+		walkAnimationRight = loadAnimation("images/Player/"+characterType+"/"+characterType+"_walkRight.png");
+		walkAnimationLeft = loadAnimation("images/Player/"+characterType+"/"+characterType+"_walkLeft.png");
+	
+        walkAnimation = walkAnimationRight;
+    }
 
 	private void loadAllAnimations() {
 		loadWalkAnimations();
@@ -320,17 +323,12 @@ public class Player {
 		return Animation;
 	}
 
-	private void loadImages() {
-		standImageRight = ImageManager
-				.loadImage("images/Player/" + characterType + "/" + characterType + "_standRight.png");
-		standImageLeft = ImageManager
-				.loadImage("images/Player/" + characterType + "/" + characterType + "_standLeft.png");
-		// standImageRight =
-		// ImageManager.loadImage("images/Player/"+characterType+"/"+characterType+"_standRightTest.png");
-		// standImageLeft =
-		// ImageManager.loadImage("images/Player/"+characterType+"/"+characterType+"_standLeftTest.png");
-		standImage = standImageRight;
-	}
+    private void loadImages(){
+        standImageRight = ImageManager.loadImage("images/Player/"+characterType+"/"+characterType+"_standRight.png");
+		standImageLeft = ImageManager.loadImage("images/Player/"+characterType+"/"+characterType+"_standLeft.png");
+
+		standImage=standImageRight;
+    }
 
 	private void setDimensions() {
 		// player 1 is 27x38 walking and standing
@@ -364,18 +362,19 @@ public class Player {
 		}
 	}
 
-	public Rectangle2D.Double getBoundingRectangle() {
-		int offset;
+    public Rectangle2D.Double getBoundingRectangle() {
+		int offset = 10; // used to make player range bigger, needed for collision detection
 
-		if (characterType == "1" || characterType == "3")
-			offset = 10;
-		else
-			offset = 0;
+		// if(characterType=="1" || characterType=="3")
+		// 	offset = 10;
+		// else
+		// 	offset = 0;
 
 		return new Rectangle2D.Double(x, y, width + offset, height);
 	}
 
-	public Rectangle2D.Double getFutureBoundingRectangle(int direction) {
+	//method used in detecting if player will collide with a solid object
+	public Rectangle2D.Double getFutureBoundingRectangle(int direction){
 
 		int futureX = x, futureY = y;
 
@@ -396,8 +395,21 @@ public class Player {
 		return soManager.collidesWith(myRect);
 	}
 
+	public void setAttackDamage(int a){
+		attackDamage = a;
+	}
+
 	public void setJustAttacked(boolean a) {
 		justAttacked = a;
+	}
+
+	public boolean attackRegistered() {
+		if (!attackRegistered) {
+            attackRegistered = true;
+            return true;
+        }
+
+		return false;
 	}
 
 	public boolean justAttacked() {
@@ -408,6 +420,10 @@ public class Player {
 		return attacking;
 	}
 
+	public int getAttackDamage() {
+		return attackDamage;
+	}
+
 	public int getX() {
 		return x;
 	}
@@ -416,11 +432,12 @@ public class Player {
 		return y;
 	}
 
-	public int getHeight() {
-		return height;
+	public int getWidth(){
+		return width;
 	}
 
-	public int getWidth() {
-		return width;
+	public int getHeight(){
+		return height;
+
 	}
 }
