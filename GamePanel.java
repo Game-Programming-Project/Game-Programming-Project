@@ -230,7 +230,6 @@ public class GamePanel extends JPanel implements Runnable {
 			levelInitializer.initLevelThree();
 			gameThread = new Thread(this);
 			gameThread.start();
-
 		}
 	}
 
