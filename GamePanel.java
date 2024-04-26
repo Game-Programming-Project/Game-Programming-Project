@@ -64,6 +64,7 @@ public class GamePanel extends JPanel implements Runnable {
 	}
 
 	public void createGameEntities() {
+    
 		player = new Player(this, 550, 350, character, soManager);
 		rocks = new ArrayList<>();
 		enemies = new ArrayList<>();

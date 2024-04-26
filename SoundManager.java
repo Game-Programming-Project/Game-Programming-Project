@@ -1,4 +1,3 @@
-import javax.sound.sampled.AudioInputStream; // for playing sound clips
 import javax.sound.sampled.*;
 import java.io.*;
 import java.util.HashMap; // for storing sound clips
@@ -83,6 +82,11 @@ public class SoundManager { // a Singleton class
 		float gain = (range * volume) + gainControl.getMinimum();
 
 		gainControl.setValue(gain);
+	}
+
+	public boolean isStillPlaying(String title) {
+		Clip clip = getClip(title);
+		return clip.isRunning();
 	}
 
 }

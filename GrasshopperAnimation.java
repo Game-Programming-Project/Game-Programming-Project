@@ -41,6 +41,10 @@ public class GrasshopperAnimation extends Enemy {
 			walkAnimation = walkAnimationLeft;
 			standImage = standImageLeft;
 		}
+		// stop animation if enemy is blocked or not moving
+		if (oldMapX == mapX && oldMapY == mapY) {
+			walkAnimation.stop();
+		}
 
 	}
 
@@ -117,10 +121,10 @@ public class GrasshopperAnimation extends Enemy {
 				walkAnimation = walkAnimationLeft;
 			}
 		} else {
-			// If the player is not within range, the bee should be standing
-			// walkAnimation = null;
-			walkAnimation = walkAnimationRight;
-			standImage = standImageRight;
+			// // If the player is not within range, the bee should be standing
+			// // walkAnimation = null;
+			// walkAnimation = walkAnimationRight;
+			// standImage = standImageRight;
 
 		}
 	}
