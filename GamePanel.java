@@ -39,10 +39,13 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private LevelInitializer levelInitializer;
 
+	private GameWindow window;
+
 	private HealthDisplay healthDisplay;
 
-	public GamePanel() {
+	public GamePanel(GameWindow w) {
 
+		this.window = w; 
 		characterSelected = false;
 
 		setLayout(new GridBagLayout());
