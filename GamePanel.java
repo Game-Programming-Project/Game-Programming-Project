@@ -22,12 +22,9 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private Thread gameThread;
 
-	//private BufferedImage image;
-	private SolidObjectManager soManager;
+	private BufferedImage image;
 
-	private BufferedImage image1;
-	private BufferedImage image2;
-	private Image backgroundImage;
+	private SolidObjectManager soManager;
 
 	private Player player;
 
@@ -39,16 +36,12 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private GrasshopperAnimation animGrasshopper;
 	private MushroomAnimation animMushroom;
-	private GameWindow window;
-
 
 	private LevelInitializer levelInitializer;
 
 	private HealthDisplay healthDisplay;
 
-	public GamePanel(GameWindow w) {
-
-		this.window = w; 
+	public GamePanel() {
 
 		characterSelected = false;
 
@@ -56,7 +49,7 @@ public class GamePanel extends JPanel implements Runnable {
 		GridBagConstraints gbc = new GridBagConstraints();
 
 		charSelect = new CharacterSelection(this);
-	
+
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.weightx = 1.0;
@@ -69,22 +62,15 @@ public class GamePanel extends JPanel implements Runnable {
 		isPaused = false;
 		soundManager = SoundManager.getInstance();
 
+		image = new BufferedImage(1100, 700, BufferedImage.TYPE_INT_RGB);
 		soManager = new SolidObjectManager();
 		healthDisplay = new HealthDisplay(10, 10); // position it at the top left corner
-
-		backgroundImage = ImageManager.loadImage("images/landing.jpg");
-    //image = new BufferedImage(1200, 500, BufferedImage.TYPE_INT_RGB);
-
-		image1 = new BufferedImage(1100, 600, BufferedImage.TYPE_INT_RGB);
-		image2 = new BufferedImage(1100, 600, BufferedImage.TYPE_INT_RGB);
-
 	}
 
 	public void createGameEntities() {
 
 		player = new Player(this, 550, 350, character, soManager);
 		rocks = new ArrayList<>();
-
 		enemies = new ArrayList<>();
 
 		levelInitializer = new LevelInitializer(this, soundManager, soManager, rocks, enemies, background, player);
@@ -161,6 +147,8 @@ public class GamePanel extends JPanel implements Runnable {
 		// remove solid objects associated with rocks, if their rock was destroyed
 		soManager.removeDestroyedRocks();
 
+	}
+
 	public void updatePlayer(int direction) {
 
 		// get rectangle of player if they were to move in the direction
@@ -199,12 +187,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public void gameRender() {
 
 		// draw the game objects on the image
-		Graphics2D imageContext1 = (Graphics2D) image1.getGraphics();
-
-		background.draw(imageContext1);
-		imageContext1.drawImage(backgroundImage, 0, 0, null);	// draw the background image
-
-		Graphics2D imageContext = (Graphics2D) image2.getGraphics();
+		Graphics2D imageContext = (Graphics2D) image.getGraphics();
 
 		if (background != null)
 			background.draw(imageContext);
@@ -212,8 +195,8 @@ public class GamePanel extends JPanel implements Runnable {
 		if (soManager != null)
 			soManager.draw(imageContext);
 
-		if(rocks !=null){
-			for (int i=0; i<rocks.size(); i++)
+		if (rocks != null) {
+			for (int i = 0; i < rocks.size(); i++)
 				rocks.get(i).draw(imageContext);
 		}
 
@@ -230,10 +213,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 		Graphics2D g2 = (Graphics2D) getGraphics(); // get the graphics context for the panel
 
-		g2.drawImage(image1, 0, 0, 1100, 600, null);
-		g2.drawImage(image2, 0, 0, 1100, 600, null);
+		g2.drawImage(image, 0, 0, 1100, 700, null);
 
-		imageContext1.dispose();
 		imageContext.dispose();
 		g2.dispose();
 	}
@@ -261,29 +242,6 @@ public class GamePanel extends JPanel implements Runnable {
 			gameThread = new Thread(this);
 			gameThread.start();
 		}
-	}
-
-	public void setCharacterSelected(boolean characterSelected){
-		if(!characterSelected){
-			window.setStartGameComponentsVisible(false);
-		}
-		else{
-			window.setStartGameComponentsVisible(true);
-		}
-		
-	}
-	// method sets which character the player will be using
-	public void setCharacter(String character) {
-		this.character = character;
-		System.out.println("Character selected: " + this.character);
-		// Remove the SelectCharacter panel
-		remove(charSelect);
-
-		characterSelected = true;
-		setCharacterSelected(characterSelected);
-		// Redraw the GamePanel
-		revalidate();
-		repaint();
 	}
 
 	public void pauseGame() { // pause the game (don't update game entities)
@@ -350,6 +308,19 @@ public class GamePanel extends JPanel implements Runnable {
 				soManager.addSolidObject(s);
 			}
 		}
+	}
+
+	// method sets which character the player will be using
+	public void setCharacter(String character) {
+		this.character = character;
+		System.out.println("Character selected: " + this.character);
+		// Remove the SelectCharacter panel
+		remove(charSelect);
+
+		characterSelected = true;
+		// Redraw the GamePanel
+		revalidate();
+		repaint();
 	}
 
 	public void setBackground(Background bg) {
