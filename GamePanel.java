@@ -122,12 +122,6 @@ public class GamePanel extends JPanel implements Runnable {
 			if (enemy.getDX() != 0)
 				enemy.start();
 			enemy.update();
-
-
-			if(enemy instanceof Shaman){ // if enemy is a Shaman
-
-			}
-
 		}
 
 		// remove solid objects associated with rocks, if their rock was destroyed
