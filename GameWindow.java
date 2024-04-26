@@ -304,10 +304,11 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 		if (command.equals(restartB.getText())){
 			pauseB.setText ("Pause Game");
 			gamePanel.startNewGame();
-
-		if (command.equals(focusB.getText())){
-			//gamePanel.shootCat();
 		}
+
+		// if (command.equals(focusB.getText())){
+		// 	//gamePanel.shootCat();
+		// }
 
 		if (command.equals(exitB.getText()))
 			System.exit(0);
@@ -321,7 +322,7 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 		int keyCode = e.getKeyCode();
 
 		String keyText = e.getKeyText(keyCode);
-		keyTF.setText(keyText + " pressed.");
+		//keyTF.setText(keyText + " pressed.");
 
 		if (keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_LEFT) {
 			gamePanel.updatePlayer(1);
@@ -351,6 +352,11 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 	// implement methods in MouseListener interface
 
 	public void mouseClicked(MouseEvent e) {
+		int x = e.getX();
+		int y = e.getY();
+
+		// 99 means attack, so clicking makes player swing weapon
+		gamePanel.updatePlayer(99);
 
 	}
 

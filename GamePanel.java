@@ -72,8 +72,8 @@ public class GamePanel extends JPanel implements Runnable {
 		soManager = new SolidObjectManager();
 		healthDisplay = new HealthDisplay(10, 10); // position it at the top left corner
 
-		backgroundImage = ImageManager.loadImage("images/landing.jpg");
-    //image = new BufferedImage(1200, 500, BufferedImage.TYPE_INT_RGB);
+		//backgroundImage = ImageManager.loadImage("images/landing.jpg");
+    	//image = new BufferedImage(1200, 500, BufferedImage.TYPE_INT_RGB);
 
 		image1 = new BufferedImage(1100, 600, BufferedImage.TYPE_INT_RGB);
 		image2 = new BufferedImage(1100, 600, BufferedImage.TYPE_INT_RGB);
@@ -160,6 +160,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		// remove solid objects associated with rocks, if their rock was destroyed
 		soManager.removeDestroyedRocks();
+	}
 
 	public void updatePlayer(int direction) {
 
@@ -202,7 +203,7 @@ public class GamePanel extends JPanel implements Runnable {
 		Graphics2D imageContext1 = (Graphics2D) image1.getGraphics();
 
 		background.draw(imageContext1);
-		imageContext1.drawImage(backgroundImage, 0, 0, null);	// draw the background image
+		//imageContext1.drawImage(backgroundImage, 0, 0, null);	// draw the background image
 
 		Graphics2D imageContext = (Graphics2D) image2.getGraphics();
 
@@ -230,10 +231,10 @@ public class GamePanel extends JPanel implements Runnable {
 
 		Graphics2D g2 = (Graphics2D) getGraphics(); // get the graphics context for the panel
 
-		g2.drawImage(image1, 0, 0, 1100, 600, null);
+		//g2.drawImage(image1, 0, 0, 1100, 600, null);
 		g2.drawImage(image2, 0, 0, 1100, 600, null);
 
-		imageContext1.dispose();
+		//imageContext1.dispose();
 		imageContext.dispose();
 		g2.dispose();
 	}
