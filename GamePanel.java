@@ -36,8 +36,15 @@ public class GamePanel extends JPanel implements Runnable {
 	private BeeAnimation animBee;
 	private GrasshopperAnimation animGrasshopper;
 	private MushroomAnimation animMushroom;
+	GameWindow window;
 
-	public GamePanel() {
+	private Image backgroundImage;
+
+	private Image bgImage;
+
+	public GamePanel(GameWindow w) {
+
+		this.window = w; 
 
 		characterSelected = false;
 
@@ -45,7 +52,7 @@ public class GamePanel extends JPanel implements Runnable {
 		GridBagConstraints gbc = new GridBagConstraints();
 
 		charSelect = new CharacterSelection(this);
-
+	
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.weightx = 1.0;
@@ -60,9 +67,12 @@ public class GamePanel extends JPanel implements Runnable {
 		isPaused = false;
 		soundManager = SoundManager.getInstance();
 
-		// backgroundImage = ImageManager.loadImage ("images/Background.jpg");
+
+        //image = new BufferedImage(1200, 500, BufferedImage.TYPE_INT_RGB);
 
 		image = new BufferedImage(400, 400, BufferedImage.TYPE_INT_RGB);
+
+		
 	}
 
 	public void createGameEntities() {
@@ -195,7 +205,6 @@ public class GamePanel extends JPanel implements Runnable {
 	public void startGame() { // initialise and start the game thread
 
 		if (gameThread == null && characterSelected) {
-			// soundManager.playClip ("background", true);
 			createGameEntities();
 			gameThread = new Thread(this);
 			gameThread.start();
@@ -228,6 +237,29 @@ public class GamePanel extends JPanel implements Runnable {
 		}
 	}
 
+	public void setCharacterSelected(boolean characterSelected){
+		if(!characterSelected){
+			window.setStartGameComponentsVisible(false);
+		}
+		else{
+			window.setStartGameComponentsVisible(true);
+		}
+		
+	}
+	// method sets which character the player will be using
+	public void setCharacter(String character) {
+		this.character = character;
+		System.out.println("Character selected: " + this.character);
+		// Remove the SelectCharacter panel
+		remove(charSelect);
+
+		characterSelected = true;
+		setCharacterSelected(characterSelected);
+		// Redraw the GamePanel
+		revalidate();
+		repaint();
+	}
+
 	public void pauseGame() { // pause the game (don't update game entities)
 		if (isRunning) {
 			if (isPaused)
@@ -246,16 +278,5 @@ public class GamePanel extends JPanel implements Runnable {
 		// animation3.start();
 	}
 
-	// method sets which character the player will be using
-	public void setCharacter(String character) {
-		this.character = character;
-		System.out.println("Character selected: " + this.character);
-		// Remove the SelectCharacter panel
-		remove(charSelect);
 
-		characterSelected = true;
-		// Redraw the GamePanel
-		revalidate();
-		repaint();
-	}
 }

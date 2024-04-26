@@ -8,9 +8,14 @@ public class CharacterSelection extends JPanel {
     private JButton character2Button;
     private JButton character3Button;
     private String selectedCharacter;
+    private SoundManager sm;
 
     public CharacterSelection(GamePanel gamePanel) {
-        
+    
+      
+
+        sm = SoundManager.getInstance();
+
         setLayout(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
 
@@ -75,10 +80,16 @@ public class CharacterSelection extends JPanel {
 
         gbc.gridx = 2;
         add(character3Button, gbc);
+
+        sm.playClip("lobby", true);
+
+
+
     }
 
     //send the selected character to the gamePanel
     public String getSelectedCharacter() {
         return selectedCharacter;
     }
+
 }
