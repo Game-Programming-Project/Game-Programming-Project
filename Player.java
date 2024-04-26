@@ -38,6 +38,9 @@ public class Player {
 	private Boolean attacking;
 	private Boolean justAttacked;
 	private Boolean attackRegistered;
+	private Boolean invincible;
+
+	private Long invincibleStart;
 
 	private SolidObjectManager soManager;
 	private SolidObject solidObject;
@@ -47,6 +50,7 @@ public class Player {
 
 	private int attackDamage;
 	private int health;
+
 
 	public Player(GamePanel p, int xPos, int yPos, String cType, SolidObjectManager soManager) {
 
@@ -82,6 +86,7 @@ public class Player {
 		justAttacked = false;
 		attackRegistered = false;
 		solidObject = null;
+		invincible = false;
 
 		attackDamage = 5;
 		health = 10;
@@ -135,8 +140,7 @@ public class Player {
 	public int move(int direction) {
 
 		if(soManager!=null)
-			solidObject = collidesWithSolid(); // if the player collides with a solid object (map boundary) this will be
-											// !=null
+			solidObject = collidesWithSolid(); // if the player collides with a solid object (map boundary) this will be !=null
 
 		if (!walkAnimation.isStillActive())
 			return 0;
@@ -241,7 +245,7 @@ public class Player {
 	public void setDirections(int direction) {
 		if (direction == 1 && directions.contains(Integer.valueOf(1))) // already moved left so can move right (back to centre)
 			directions.add(Integer.valueOf(2));
-			
+
 		else if (direction == 2 && directions.contains(Integer.valueOf(2))) // already moved right so can move left (back to centre)
 			directions.add(Integer.valueOf(1));
 
@@ -394,6 +398,25 @@ public class Player {
 	public SolidObject collidesWithSolid() {
 		Rectangle2D.Double myRect = getBoundingRectangle();
 		return soManager.collidesWith(myRect);
+	}
+
+	public void takeDamage(int damage) {
+		health -= damage;
+		
+		if(health<0)
+			health = 0;
+
+		invincibleStart = System.currentTimeMillis();
+		invincible = true;
+	}
+
+	public Boolean isInvincible() {
+		if (invincible) { // if player is invincible currently then check if 1 second has passed yet
+			if (System.currentTimeMillis() - invincibleStart > 2000) {
+				invincible = false;
+			}
+		}
+		return invincible;
 	}
 
 	public void setAttackDamage(int a){

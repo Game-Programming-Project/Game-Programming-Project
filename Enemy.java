@@ -31,6 +31,7 @@ public class Enemy {
 
     protected int aggression; // how aggressive the enemy is, how likely it is to attack the player
     protected int health;
+    private int attackDamage;
 
     protected Boolean isAlive;
 
@@ -52,6 +53,7 @@ public class Enemy {
         walkAnimationRight = new Animation(false);
 
         isAlive = true;
+        attackDamage=1;
     }
 
     public void loadWalkAnimation() {
@@ -169,6 +171,10 @@ public class Enemy {
 
     public Rectangle2D.Double getBoundingRectangle() {
         return new Rectangle2D.Double(x, y, width, height);
+    }
+
+    public int getAttackDamage(){
+        return attackDamage;
     }
 
     public void takeDamage(int damage) {

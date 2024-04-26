@@ -26,6 +26,7 @@ public class LevelInitializer {
 		rocks.clear();
 		enemies.clear();
 
+		//offsetX is 360, offsetY is 80
 		background = new Background(gamePanel, "images/Maps/Testing/Level1MapTest.png", 96, 360, 80);
 		soManager.setBg(background);
 		gamePanel.setBackground(background);

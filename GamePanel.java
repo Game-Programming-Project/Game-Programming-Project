@@ -39,10 +39,13 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private LevelInitializer levelInitializer;
 
+	private GameWindow window;
+
 	private HealthDisplay healthDisplay;
 
-	public GamePanel() {
+	public GamePanel(GameWindow w) {
 
+		this.window = w; 
 		characterSelected = false;
 
 		setLayout(new GridBagLayout());
@@ -129,9 +132,13 @@ public class GamePanel extends JPanel implements Runnable {
 				enemy.start();
 			enemy.update();
 
+			//if the enemy collides with player and the player has attacked, then the enemy takes damage
 			if (enemy.collidesWithPlayer(player) && player.attackRegistered() && enemy.isAlive()) {
 				System.out.println("enemy HIT for " + player.getAttackDamage() + " damage");
 				enemy.takeDamage(player.getAttackDamage());
+
+				if(!player.isInvincible())
+					player.takeDamage(enemy.getAttackDamage());
 			}
 
 			// if enemy is dead then remove it from the game
@@ -172,12 +179,10 @@ public class GamePanel extends JPanel implements Runnable {
 
 		if (background != null && player != null && !isPaused && direction != 99) {
 			if (!wouldCollide) { // if wouldn't collide with solid then move in the direction
-				int batMovement = background.move(direction); // check whether the bat can start/stop moving in a new
-																// direction
+				int batMovement = background.move(direction); // check whether the bat can start/stop moving in a new direction
 
 				player.setDirections(batMovement);
-				background.setDirections(player.move(direction)); // check if the bat is centred so the background can
-																	// move
+				background.setDirections(player.move(direction)); // check if the bat is centred so the background can move
 			}
 		}
 	}
@@ -324,4 +329,5 @@ public class GamePanel extends JPanel implements Runnable {
 	public void setBackground(Background bg) {
 		background = bg;
 	}
+
 }
