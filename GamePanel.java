@@ -123,6 +123,17 @@ public class GamePanel extends JPanel implements Runnable {
 			if (enemy.getDX() != 0)
 				enemy.start();
 			enemy.update();
+
+
+			if(enemy.collidesWithPlayer(player) && player.attackRegistered() && enemy.isAlive()){
+				System.out.println("enemy HIT for " + player.getAttackDamage() + " damage");
+				enemy.takeDamage(player.getAttackDamage());
+			}
+
+			//if enemy is dead then remove it from the game
+			if(!enemy.isAlive()){
+				enemyIterator.remove();
+			}
 		}
 
 		// remove solid objects associated with rocks, if their rock was destroyed
@@ -201,7 +212,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		if (gameThread == null && characterSelected) {
 			createGameEntities();
-			levelInitializer.initLevelOne();
+			levelInitializer.initLevelThree();
 			gameThread = new Thread(this);
 			gameThread.start();
 
@@ -216,7 +227,7 @@ public class GamePanel extends JPanel implements Runnable {
 		if (gameThread == null || !isRunning) {
 			// soundManager.playClip ("background", true);
 			createGameEntities();
-			levelInitializer.initLevelOne();
+			levelInitializer.initLevelThree();
 			gameThread = new Thread(this);
 			gameThread.start();
 
