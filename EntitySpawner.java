@@ -4,7 +4,7 @@ import java.util.Random;
 import java.awt.Point;
 
 public class EntitySpawner {
-    private GamePanel gamePanel;
+	private GamePanel gamePanel;
 	private SoundManager soundManager;
 	private SolidObjectManager soManager;
 	private List<Rock> rocks;
@@ -26,9 +26,9 @@ public class EntitySpawner {
 		random = new Random();
 	}
 
-	public void spawnLevelOneEnemies(){
+	public void spawnLevelOneEnemies() {
 
-		for(int i=0;i<3;i++){ // run 3 times
+		for (int i = 0; i < 3; i++) { // run 3 times
 			Point p = getRandomPoint(645, 829, 832, 1086);
 			if (p != null) {
 				enemies.add(new BeeAnimation(gamePanel, p.x, p.y, background, player));
@@ -40,48 +40,50 @@ public class EntitySpawner {
 			}
 		}
 
-		for(int i=0;i<2;i++){ // run 2 times
+		for (int i = 0; i < 2; i++) { // run 2 times
 			Point p = getRandomPoint(1841, 2063, 809, 1146);
 			if (p != null) {
 				enemies.add(new MushroomAnimation(gamePanel, p.x, p.y, background, player, soManager));
 			}
 		}
-	
-	}
-
-	public void spawnLevelTwo(){
 
 	}
 
-	public void spawnLevelThree(){
+	public void spawnLevelTwo() {
 
 	}
 
-    public void spawnRocks(int num, int x1, int x2, int y1, int y2, double basicProbability, double copperProbability, double ironProbability, double goldProbability, double diamondProbability) {
+	public void spawnLevelThree() {
+
+	}
+
+	public void spawnRocks(int num, int x1, int x2, int y1, int y2, double basicProbability, double copperProbability,
+			double ironProbability, double goldProbability, double diamondProbability) {
 		for (int i = 0; i < num; i++) {
 			Point p = getRandomPoint(x1, x2, y1, y2);
 
 			int x = p.x;
 			int y = p.y;
 
-			if (p!=null) { // if p is null then a new point to spawn couldn't be found
+			if (p != null) { // if p is null then a new point to spawn couldn't be found
 				Rock rock;
 				int randomValue = new Random().nextInt(100); // Generate a random number between 0 and 99
 
 				if (randomValue < basicProbability) { // 75% chance
 					rock = new Rock(gamePanel, x, y, background);
-				} else if (randomValue < basicProbability+copperProbability) { // 13% chance
+				} else if (randomValue < basicProbability + copperProbability) { // 13% chance
 					rock = new CopperRock(gamePanel, x, y, background);
-				} else if (randomValue < basicProbability+copperProbability+ironProbability) { // 8% chance
+				} else if (randomValue < basicProbability + copperProbability + ironProbability) { // 8% chance
 					rock = new IronRock(gamePanel, x, y, background);
-				} else if (randomValue < basicProbability+copperProbability+ironProbability+goldProbability) { // 3% chance
+				} else if (randomValue < basicProbability + copperProbability + ironProbability + goldProbability) { // 3%
+																														// chance
 					rock = new GoldRock(gamePanel, x, y, background);
 				} else { // 1% chance
 					rock = new DiamondRock(gamePanel, x, y, background);
 				}
 
 				// 10% chance to have a fruit
-				if (new Random().nextInt(100) < 10) {
+				if (new Random().nextInt(100) < 3) {
 					rock.setHasFruit(true);
 				}
 
@@ -96,7 +98,7 @@ public class EntitySpawner {
 		}
 	}
 
-	public Point getRandomPoint(int x1, int x2, int y1, int y2){
+	public Point getRandomPoint(int x1, int x2, int y1, int y2) {
 
 		int width = 30;
 		int height = 30;
@@ -114,7 +116,7 @@ public class EntitySpawner {
 			y = (int) (Math.random() * (y2 - y1 + 1) + y1);
 			onSolid = soManager.onSolidObject(x, y, width, height);
 
-			if (numTries > 1000) { // if it's tried 1000 times to find a new location then just break 
+			if (numTries > 1000) { // if it's tried 1000 times to find a new location then just break
 				spawn = false;
 				break;
 			}
@@ -123,7 +125,7 @@ public class EntitySpawner {
 		}
 		numTries = 0;
 
-		if(spawn)
+		if (spawn)
 			return new Point(x, y);
 		else
 			return null;
