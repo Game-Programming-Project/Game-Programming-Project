@@ -43,6 +43,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private HealthDisplay healthDisplay;
 
+	private String currentLevel;
+
 	public GamePanel(GameWindow w) {
 
 		this.window = w;
@@ -64,6 +66,8 @@ public class GamePanel extends JPanel implements Runnable {
 		isRunning = false;
 		isPaused = false;
 		soundManager = SoundManager.getInstance();
+
+		currentLevel="1";
 
 		image = new BufferedImage(1100, 700, BufferedImage.TYPE_INT_RGB);
 		soManager = new SolidObjectManager();
@@ -134,11 +138,18 @@ public class GamePanel extends JPanel implements Runnable {
 				enemy.start();
 			enemy.update();
 
-			// if the enemy collides with player and the player has attacked, then the enemy
-			// takes damage
+			// if the player attacked while enemy collides then dmg enemy
 			if (enemy.collidesWithPlayer(player) && player.attackRegistered() && enemy.isAlive()) {
+
 				System.out.println("enemy HIT for " + player.getAttackDamage() + " damage");
 				enemy.takeDamage(player.getAttackDamage());
+
+				if (!player.isInvincible())
+					player.takeDamage(enemy.getAttackDamage());
+			}
+
+			// if enemy collides with player damage player
+			if (enemy.collidesWithPlayer(player) && enemy.isAlive()) {
 
 				if (!player.isInvincible())
 					player.takeDamage(enemy.getAttackDamage());
@@ -167,7 +178,7 @@ public class GamePanel extends JPanel implements Runnable {
 		// wouldCollide = false; // for testing purposes, comment out when done
 
 		if (player != null && !isPaused) {
-			if (direction != 99) {
+			if (direction != 99 & direction != 88) {
 
 				if (!wouldCollide) { // if would not collide in the next move then move
 					player.start();
@@ -178,9 +189,30 @@ public class GamePanel extends JPanel implements Runnable {
 			if (direction == 99) { // direction of 99 means click on screen to attack
 				player.attack();
 			}
+
+			//right click on ladder
+			if(direction == 88 && playerOnLadder()){
+
+				currentLevel = levelInitializer.initNextLevel(currentLevel);
+
+				if(!soundManager.isStillPlaying("ladderDown"))
+					soundManager.playClip("ladderDown", false);
+			}
+
+			//right click on fruit
+			if(direction == 88 && playerOnFruit()!=null){
+				Rock r = playerOnFruit();
+
+				player.heal(2);
+
+				if(!soundManager.isStillPlaying("munch"))
+					soundManager.playClip("munch", false);
+				
+				r.setFruitEaten(true);
+			}
 		}
 
-		if (background != null && player != null && !isPaused && direction != 99) {
+		if (background != null && player != null && !isPaused && direction != 99 && direction != 88) {
 			if (!wouldCollide) { // if wouldn't collide with solid then move in the direction
 				int batMovement = background.move(direction); // check whether the bat can start/stop moving in a new
 																// direction
@@ -266,56 +298,23 @@ public class GamePanel extends JPanel implements Runnable {
 		// soundManager.stopClip ("background");
 	}
 
-	public void spawnRocks(int num, int x1, int x2, int y1, int y2, double basicProbability, double copperProbability, double ironProbability, double goldProbability, double diamondProbability) {
-		for (int i = 0; i < num; i++) {
-			int x = (int) (Math.random() * (x2 - x1 + 1) + x1); // random x coordinate within the range
-			int y = (int) (Math.random() * (y2 - y1 + 1) + y1); // random y coordinate within the range
-
-			boolean onSolid = soManager.onSolidObject(x, y, 30, 30);
-			boolean spawn = true;
-
-			int numTries = 0;
-			while (onSolid) { // if the rock is on a solid object then keep generating new coordinates until
-								// it's not on a solid object
-				x = (int) (Math.random() * (x2 - x1 + 1) + x1);
-				y = (int) (Math.random() * (y2 - y1 + 1) + y1);
-				onSolid = soManager.onSolidObject(x, y, 30, 30);
-
-				if (numTries > 1000) { // if it's tried 1000 times to find a new location then just break out of the
-										// loop
-					spawn = false;
-					break;
-				}
-
-				numTries++;
-			}
-			numTries = 0;
-
-			if (spawn) { // spawn will be false if there are too many solid objects to spawn the rock
-				Rock rock;
-				int randomValue = new Random().nextInt(100); // Generate a random number between 0 and 99
-
-				if (randomValue < basicProbability) { // 75% chance
-					rock = new Rock(this, x, y, background);
-				} else if (randomValue < basicProbability+copperProbability) { // 13% chance
-					rock = new CopperRock(this, x, y, background);
-				} else if (randomValue < basicProbability+copperProbability+ironProbability) { // 8% chance
-					rock = new IronRock(this, x, y, background);
-				} else if (randomValue < basicProbability+copperProbability+ironProbability+goldProbability) { // 3% chance
-					rock = new GoldRock(this, x, y, background);
-				} else { // 1% chance
-					rock = new DiamondRock(this, x, y, background);
-				}
-
-				rocks.add(rock);
-
-				// adds a solid object for each rock and associates the rock with the object
-				// this is so rocks don't spawn on each other and so that players can't walk
-				// through rocks
-				SolidObject s = new SolidObject(x, y, i, i, getBackground(), onSolid, background, rock);
-				soManager.addSolidObject(s);
+	public boolean playerOnLadder() {
+		for (Rock rock : rocks) {
+			if (rock.hasLadder() && rock.collidesWithPlayer(player)) {
+				return true;
 			}
 		}
+		return false;
+	}
+
+	public Rock playerOnFruit(){
+		for (Rock rock : rocks) {
+			if (rock.hasFruit() && rock.collidesWithPlayer(player)) {
+				return rock;
+			}
+		}
+		return null;
+	
 	}
 
 	// method sets which character the player will be using
@@ -335,4 +334,7 @@ public class GamePanel extends JPanel implements Runnable {
 		background = bg;
 	}
 
+	public String getCurrentLevel(){
+		return currentLevel;
+	}
 }
