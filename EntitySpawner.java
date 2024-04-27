@@ -52,9 +52,30 @@ public class EntitySpawner {
 
 	public void spawnLevelTwoEnemies(){
 
-	}
+	} 	
 
 	public void spawnLevelThreeEnemies(){
+
+		for (int i = 0; i < 5; i++) { // run 5 times
+			Point p = getRandomPoint(221, 2741, 210, 1590);
+			if (p != null) {
+				enemies.add(new Bomber(gamePanel, p.x, p.y, background, player, soManager));
+			}
+		}
+
+		for (int i = 0; i < 4; i++) { // run 4 times
+			Point p = getRandomPoint(221, 2741, 210, 1590);
+			if (p != null) {
+				enemies.add(new Shaman(gamePanel, p.x, p.y, background, player, soManager));
+			}
+		}
+
+		for (int i = 0; i < 3; i++) { // run 4 times
+			Point p = getRandomPoint(221, 2741, 210, 1590);
+			if (p != null) {
+				enemies.add(new RedBee(gamePanel, p.x, p.y, background, player));
+			}
+		}
 
 	}
 
