@@ -42,12 +42,21 @@ public class Rock {
         hasLadder=false;
     }
 
+    public Rock(GamePanel gPanel, int mapX, int mapY, Background bg, Boolean hasLadder){
+        this(gPanel, mapX, mapY, bg);
+
+        this.hasLadder=hasLadder;
+        if(hasLadder)
+            setLadderImage();
+    }
+
     public void draw(Graphics2D g2) {
 
         updateScreenCoordinates();
 
         if(destroyed && hasLadder){
             g2.drawImage(ladderImage, x, y, width, height, null);
+            return;
         }
 
         if (destroyed) { // draw disappear effect if rock is destroyed
@@ -106,6 +115,22 @@ public class Rock {
 
     public void setFX(DisappearFX fx) {
         disappearFX = fx;
+    }
+
+    public void setHasLadder(Boolean hasLadder){
+        this.hasLadder=hasLadder;
+    }
+
+    public void setLadderImage(){
+        String level = gPanel.getCurrentLevel();
+        if(level=="1")
+            ladderImage=ImageManager.loadImage("images/Rocks/Level1_ladder.png");
+        
+        if(level=="2")
+            ladderImage=ImageManager.loadImage("images/Rocks/Level2_ladder.png");
+        
+        if(level=="3")
+            ladderImage=ImageManager.loadImage("images/Rocks/Level3_ladder.png");
     }
 
     public String getRockImageString() { // method to return the current image of the rock(destroyed and alive)

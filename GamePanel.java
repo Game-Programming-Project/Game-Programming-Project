@@ -43,6 +43,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private HealthDisplay healthDisplay;
 
+	private String currentLevel;
+
 	public GamePanel(GameWindow w) {
 
 		this.window = w;
@@ -64,6 +66,8 @@ public class GamePanel extends JPanel implements Runnable {
 		isRunning = false;
 		isPaused = false;
 		soundManager = SoundManager.getInstance();
+
+		currentLevel="1";
 
 		image = new BufferedImage(1100, 700, BufferedImage.TYPE_INT_RGB);
 		soManager = new SolidObjectManager();
@@ -335,4 +339,7 @@ public class GamePanel extends JPanel implements Runnable {
 		background = bg;
 	}
 
+	public String getCurrentLevel(){
+		return currentLevel;
+	}
 }

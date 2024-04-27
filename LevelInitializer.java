@@ -39,7 +39,7 @@ public class LevelInitializer {
 
 		// add rocks here
 
-		// rocks.add(new Rock(gamePanel, 1550, 1321, background));
+		rocks.add(new Rock(gamePanel, 1982, 902, background, true));
 		gamePanel.spawnRocks(15, 620, 844, 839, 1138, 75, 13, 8, 3, 1);
 		gamePanel.spawnRocks(6, 873, 1127, 850, 1106, 75, 13, 8, 3, 1);
 		gamePanel.spawnRocks(25, 1075, 1622, 682, 1225, 75, 13, 8, 3, 1);
