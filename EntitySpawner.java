@@ -80,6 +80,11 @@ public class EntitySpawner {
 					rock = new DiamondRock(gamePanel, x, y, background);
 				}
 
+				// 10% chance to have a fruit
+				if (new Random().nextInt(100) < 10) {
+					rock.setHasFruit(true);
+				}
+
 				rocks.add(rock);
 
 				// adds a solid object for each rock and associates the rock with the object

@@ -44,6 +44,7 @@ public class Rock {
         hasLadder=false;
         hasFruit=false;
         fruitEaten=false;
+        fruitImage=null;
     }
 
     public Rock(GamePanel gPanel, int mapX, int mapY, Background bg, Boolean hasLadder){
@@ -197,6 +198,14 @@ public class Rock {
 
     public Boolean hasFruit(){
         return hasFruit;
+    }
+
+    public void setHasFruit(Boolean f){
+        
+        if(f && !hasFruit)
+            fruitImage = ImageManager.loadImage("images/Player/Hearts/starfruit.png");
+
+        this.hasFruit=f;
     }
 
     public void setFruitEaten(Boolean fruitEaten){
