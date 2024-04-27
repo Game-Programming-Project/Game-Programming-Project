@@ -49,7 +49,7 @@ public class Player {
 	private int centerY;
 
 	private int attackDamage;
-	private int health;
+	private int health, maxHealth;
 	private int speed;
 
 	public Player(GamePanel p, int xPos, int yPos, String cType, SolidObjectManager soManager) {
@@ -84,7 +84,7 @@ public class Player {
 		invincible = false;
 
 		attackDamage = 8;
-		health = 10;
+		health = maxHealth = 10;
 		speed = 5;
 		dx = dy = 5;
 
@@ -377,7 +377,7 @@ public class Player {
 
 			speed = 6;
 			dx = dy = 6;
-			health = 16;
+			health = maxHealth = 16;
 			attackDamage = 6;
 		}
 	}
@@ -425,6 +425,13 @@ public class Player {
 		invincible = true;
 	}
 
+	public void heal(int h) {
+		health += h;
+
+		if (health > maxHealth)
+			health = maxHealth;
+	}
+
 	public Boolean isInvincible() {
 		if (invincible) { // if player is invincible currently then check if 1 second has passed yet
 			if (System.currentTimeMillis() - invincibleStart > 2000) {
@@ -443,7 +450,7 @@ public class Player {
 	}
 
 	public boolean attackRegistered() {
-		if (!attackRegistered) {
+		if (!attackRegistered && attackAnimation.isStillActive()) {
 			attackRegistered = true;
 			return true;
 		}

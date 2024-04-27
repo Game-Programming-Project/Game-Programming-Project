@@ -10,7 +10,7 @@ public class LevelInitializer {
 	private Background background;
 	private Player player;
 
-	private String currentLevel;
+	private EntitySpawner entitySpawner;
 
 	public LevelInitializer(GamePanel gamePanel, SoundManager soundManager, SolidObjectManager soManager,
 			List<Rock> rocks, List<Enemy> enemies, Background background, Player player) {
@@ -21,7 +21,8 @@ public class LevelInitializer {
 		this.enemies = enemies;
 		this.background = background;
 		this.player = player;
-		currentLevel="1";
+
+		entitySpawner = new EntitySpawner(gamePanel,soundManager,soManager,rocks,enemies,background,player);
 	}
 
 	public String initNextLevel(String currentLevel){
@@ -52,6 +53,7 @@ public class LevelInitializer {
 		background = new Background(gamePanel, "images/Maps/Testing/Level1MapTest.png", 96 + player.getSpeed(), 360, 80);
 		soManager.setBg(background);
 		gamePanel.setBackground(background);
+		entitySpawner.setBg(background);
 
 		soManager.initLevelOne(); // set up map boundaries
 		soManager.setAllObjectsVisible(false);
@@ -61,27 +63,15 @@ public class LevelInitializer {
 
 		// add rocks here
 
-		rocks.add(new Rock(gamePanel, 690,992, background, true));
-		// gamePanel.spawnRocks(15, 620, 844, 839, 1138, 75, 13, 8, 3, 1);
-		// gamePanel.spawnRocks(6, 873, 1127, 850, 1106, 75, 13, 8, 3, 1);
-		// gamePanel.spawnRocks(25, 1075, 1622, 682, 1225, 75, 13, 8, 3, 1);
-		// gamePanel.spawnRocks(7, 1605, 1807, 914, 1062, 75, 13, 8, 3, 1);
-		// gamePanel.spawnRocks(15, 1806, 2088, 790, 1299, 75, 13, 8, 3, 1);
+		rocks.add(new Rock(gamePanel, 690,992, background, false, true));
+		// entitySpawner.spawnRocks(15, 620, 844, 839, 1138, 75, 13, 8, 3, 1);
+		// entitySpawner.spawnRocks(6, 873, 1127, 850, 1106, 75, 13, 8, 3, 1);
+		// entitySpawner.spawnRocks(25, 1075, 1622, 682, 1225, 75, 13, 8, 3, 1);
+		// entitySpawner.spawnRocks(7, 1605, 1807, 914, 1062, 75, 13, 8, 3, 1);
+		// entitySpawner.spawnRocks(15, 1806, 2088, 790, 1299, 75, 13, 8, 3, 1);
 
 		// add enemies under here
-		// enemies.add(new BeeAnimation(gamePanel, 620, 930, background, player));
-		// enemies.add(new BeeAnimation(gamePanel, 680, 950, background, player));
-		// enemies.add(new BeeAnimation(gamePanel, 780, 980, background, player));
-
-		// enemies.add(new GrasshopperAnimation(gamePanel, 999, 900, background,
-		// player));
-		// enemies.add(new GrasshopperAnimation(gamePanel, 1200, 950, background,
-		// player));
-		// enemies.add(new GrasshopperAnimation(gamePanel, 1500, 980, background,
-		// player));
-
-		enemies.add(new MushroomAnimation(gamePanel, 1700, 900, background, player, soManager));
-		enemies.add(new MushroomAnimation(gamePanel, 1900, 960, background, player, soManager));
+		entitySpawner.spawnLevelOneEnemies();
 	}
 
 	public void initLevelTwo() {
@@ -96,6 +86,7 @@ public class LevelInitializer {
 
 		soManager.setBg(background);
 		gamePanel.setBackground(background);
+		entitySpawner.setBg(background);
 
 		soManager.initLevelTwo(); // set up map boundaries
 		soManager.setAllObjectsVisible(false);
@@ -113,6 +104,7 @@ public class LevelInitializer {
 
 		soManager.setBg(background);
 		gamePanel.setBackground(background);
+		entitySpawner.setBg(background);
 
 		soManager.initLevelThree(); // set up map boundaries
 		soManager.setAllObjectsVisible(false);

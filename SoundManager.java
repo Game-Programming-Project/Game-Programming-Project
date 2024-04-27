@@ -58,6 +58,9 @@ public class SoundManager { // a Singleton class
 		clip = loadClip("sounds/ladderDown.wav");
 		clips.put("ladderDown", clip);
 
+		clip = loadClip("sounds/player/munch.wav");
+		clips.put("munch", clip);
+
 	}
 
 	public static SoundManager getInstance() { // class method to retrieve instance of Singleton

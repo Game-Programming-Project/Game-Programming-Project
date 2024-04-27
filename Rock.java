@@ -4,7 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
 public class Rock {
-    protected Image rockImage, destroyedRockImage, ladderImage;
+    protected Image rockImage, destroyedRockImage, ladderImage, fruitImage;
     private int width, height;
     private int x, y;
 
@@ -21,6 +21,8 @@ public class Rock {
     private DisappearFX disappearFX;
 
     private Boolean hasLadder;
+    private Boolean hasFruit;
+    private Boolean fruitEaten;
 
     public Rock(GamePanel gPanel, int mapX, int mapY, Background bg) {
 
@@ -40,6 +42,8 @@ public class Rock {
         destroyed = false;
         disappearCompleted = false;
         hasLadder=false;
+        hasFruit=false;
+        fruitEaten=false;
     }
 
     public Rock(GamePanel gPanel, int mapX, int mapY, Background bg, Boolean hasLadder){
@@ -50,9 +54,22 @@ public class Rock {
             setLadderImage();
     }
 
+    public Rock(GamePanel gPanel, int mapX, int mapY, Background bg, Boolean hasLadder, Boolean hasFruit){
+        this(gPanel, mapX, mapY, bg, hasLadder);
+
+        this.hasFruit=hasFruit;
+        if(hasFruit)
+            fruitImage = ImageManager.loadImage("images/Player/Hearts/starfruit.png");
+    }
+
     public void draw(Graphics2D g2) {
 
         updateScreenCoordinates();
+
+        if(destroyed && hasFruit && !fruitEaten){
+            g2.drawImage(fruitImage, x, y, width, height, null);
+            return;
+        }
 
         if(destroyed && hasLadder){
             g2.drawImage(ladderImage, x, y, width, height, null);
@@ -74,6 +91,10 @@ public class Rock {
     // background map coordinates
     // the x and y that is updated are the coordinates to be drawn to the screen
     public void updateScreenCoordinates() { // meant to be called right before the entity is drawn to the screen
+
+        if(bg==null)
+            return;
+
         int bgX = bg.getbg1X();
         int bgY = bg.getbg1Y();
 
@@ -172,6 +193,14 @@ public class Rock {
 
     public boolean isDisappearCompleted() {
         return disappearCompleted;
+    }
+
+    public Boolean hasFruit(){
+        return hasFruit;
+    }
+
+    public void setFruitEaten(Boolean fruitEaten){
+        this.fruitEaten=fruitEaten;
     }
 
     public void updateFX() {

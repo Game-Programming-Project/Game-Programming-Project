@@ -115,22 +115,22 @@ public class MushroomAnimation extends Enemy {
 		// 	playWalkSound();
 		// }
 
-		if (playerX - 50 > x) { // player is to the right
+		if (playerX - 45 > x) { // player is to the right
 			mapX += dx;
 			walkAnimation = walkAnimationRight;
 			standImage = standImageRight;
 
-		} else if (playerX + 50 < x) { // player is to the left
+		} else if (playerX + 45 < x) { // player is to the left
 			mapX -= dx;
 			walkAnimation = walkAnimationLeft;
 			standImage = standImageLeft;
 		}
 
-		if (playerY - 50 > y) { // player is below
+		if (playerY - 45 > y) { // player is below
 			mapY += dy;
 			walkAnimation = walkAnimationLeft;
 
-		} else if (playerY + 50 < y) { // player is above
+		} else if (playerY + 45 < y) { // player is above
 			mapY -= dy;
 			walkAnimation = walkAnimationLeft;
 		}

@@ -50,7 +50,10 @@ public class SolidObject {
 		return new Rectangle2D.Double (x, y, width, height);
 	}
 
-    public void updateScreenCoordinates(){ 
+    public void updateScreenCoordinates(){
+		if(bg==null)
+			return;
+			
         int bgX = bg.getbg1X();
         int bgY = bg.getbg1Y();
 
