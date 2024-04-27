@@ -23,6 +23,17 @@ public class RedBee extends BeeAnimation{
 
 	}
 
+    public void update() {
+        if (!walkAnimation.isStillActive()) // if the animation is not active, no need to update
+            return;
+
+        walkAnimation.update();
+
+        if (health <= 0){
+            isAlive = false;
+        }   
+    }
+
     public void move() {
         int oldMapX = mapX;
         int oldMapY = mapY;

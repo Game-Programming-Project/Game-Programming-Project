@@ -220,4 +220,12 @@ public class Enemy {
         return new Rectangle2D.Double(futureX, futureY, width, height);
     }
 
+    public int getMapX() {
+        return mapX;
+    }
+
+    public int getMapY() {
+        return mapY;
+    }
+
 }

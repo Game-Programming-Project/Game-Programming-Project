@@ -8,8 +8,10 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.awt.geom.Rectangle2D;
 import java.util.Random;
+import java.awt.Point;
 
 public class GamePanel extends JPanel implements Runnable {
 
@@ -45,6 +47,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private String currentLevel;
 
+	private List<Enemy> tempEnemies;
+
 	public GamePanel(GameWindow w) {
 
 		this.window = w;
@@ -79,6 +83,7 @@ public class GamePanel extends JPanel implements Runnable {
 		player = new Player(this, 550, 350, character, soManager);
 		rocks = new ArrayList<>();
 		enemies = new ArrayList<>();
+		tempEnemies = new ArrayList<>();
 		healthDisplay.setPlayer(player);
 		healthDisplay.setMaxHealth(player.getHealth());
 
@@ -154,12 +159,22 @@ public class GamePanel extends JPanel implements Runnable {
 				if (!player.isInvincible())
 					player.takeDamage(enemy.getAttackDamage());
 			}
+			
+			if((enemy instanceof RedBee) && !enemy.isAlive()){
+				//spawn 3 TinyBees when red bee dies
+				Point p = new Point(enemy.getMapX(), enemy.getMapY());
+				tempEnemies.add(new TinyBee(this, p.x+30, p.y, background, player));
+				tempEnemies.add(new TinyBee(this, p.x-30, p.y, background, player));
+				tempEnemies.add(new TinyBee(this, p.x, p.y-30, background, player));
+			}
 
 			// if enemy is dead then remove it from the game
 			if (!enemy.isAlive()) {
 				enemyIterator.remove();
 			}
 		}
+		enemies.addAll(tempEnemies);
+		tempEnemies.clear();
 
 		// remove solid objects associated with rocks, if their rock was destroyed
 		soManager.removeDestroyedRocks();
@@ -337,5 +352,9 @@ public class GamePanel extends JPanel implements Runnable {
 
 	public String getCurrentLevel(){
 		return currentLevel;
+	}
+
+	public void addEnemy(Enemy e) {
+		enemies.add(e);
 	}
 }
