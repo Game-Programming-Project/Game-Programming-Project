@@ -16,7 +16,7 @@ public class SoundManager { // a Singleton class
 		Clip clip = loadClip("sounds/break_rock.wav");
 		clips.put("break_rock", clip);
 
-		clip = loadClip("sounds/explosion.wav");
+		clip = loadClip("sounds/Level2/explosion.wav");
 		clips.put("explosion", clip);
 
 		clip = loadClip("sounds/game_over.wav");
