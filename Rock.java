@@ -4,7 +4,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
 public class Rock {
-    protected Image rockImage, destroyedRockImage;
+    protected Image rockImage, destroyedRockImage, ladderImage;
     private int width, height;
     private int x, y;
 
@@ -19,6 +19,8 @@ public class Rock {
     private boolean disappearCompleted;
 
     private DisappearFX disappearFX;
+
+    private Boolean hasLadder;
 
     public Rock(GamePanel gPanel, int mapX, int mapY, Background bg) {
 
@@ -37,14 +39,18 @@ public class Rock {
         disappearFX = null;
         destroyed = false;
         disappearCompleted = false;
+        hasLadder=false;
     }
 
     public void draw(Graphics2D g2) {
 
         updateScreenCoordinates();
 
-        if (destroyed) { // draw if rock is NOT destroyed
-            // g2.drawImage(destroyedRockImage, x, y, width, height, null);
+        if(destroyed && hasLadder){
+            g2.drawImage(ladderImage, x, y, width, height, null);
+        }
+
+        if (destroyed) { // draw disappear effect if rock is destroyed
             if (disappearFX != null) {
                 disappearFX.draw(g2);
                 if (disappearFX.isCompleted())

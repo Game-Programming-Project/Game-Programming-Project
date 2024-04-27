@@ -13,7 +13,6 @@ import java.util.Random;
 
 public class GamePanel extends JPanel implements Runnable {
 
-	private SoundManager soundManager;
 	private boolean isRunning;
 	private boolean isPaused;
 
@@ -24,7 +23,10 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private BufferedImage image;
 
+	private SoundManager soundManager;
 	private SolidObjectManager soManager;
+
+	private LevelInitializer levelInitializer;
 
 	private Player player;
 
@@ -36,8 +38,6 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private GrasshopperAnimation animGrasshopper;
 	private MushroomAnimation animMushroom;
-
-	private LevelInitializer levelInitializer;
 
 	private GameWindow window;
 
@@ -266,7 +266,7 @@ public class GamePanel extends JPanel implements Runnable {
 		// soundManager.stopClip ("background");
 	}
 
-	public void spawnRocks(int num, int x1, int x2, int y1, int y2) {
+	public void spawnRocks(int num, int x1, int x2, int y1, int y2, double basicProbability, double copperProbability, double ironProbability, double goldProbability, double diamondProbability) {
 		for (int i = 0; i < num; i++) {
 			int x = (int) (Math.random() * (x2 - x1 + 1) + x1); // random x coordinate within the range
 			int y = (int) (Math.random() * (y2 - y1 + 1) + y1); // random y coordinate within the range
@@ -295,13 +295,13 @@ public class GamePanel extends JPanel implements Runnable {
 				Rock rock;
 				int randomValue = new Random().nextInt(100); // Generate a random number between 0 and 99
 
-				if (randomValue < 75) { // 75% chance
+				if (randomValue < basicProbability) { // 75% chance
 					rock = new Rock(this, x, y, background);
-				} else if (randomValue < 88) { // 13% chance
+				} else if (randomValue < basicProbability+copperProbability) { // 13% chance
 					rock = new CopperRock(this, x, y, background);
-				} else if (randomValue < 96) { // 8% chance
+				} else if (randomValue < basicProbability+copperProbability+ironProbability) { // 8% chance
 					rock = new IronRock(this, x, y, background);
-				} else if (randomValue < 99) { // 3% chance
+				} else if (randomValue < basicProbability+copperProbability+ironProbability+goldProbability) { // 3% chance
 					rock = new GoldRock(this, x, y, background);
 				} else { // 1% chance
 					rock = new DiamondRock(this, x, y, background);
