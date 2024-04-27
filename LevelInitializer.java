@@ -96,8 +96,8 @@ public class LevelInitializer {
 		enemies.clear();
 
 		// note for level 3 offsetX: -90, offsetY: 400
-		background = new Background(gamePanel, "images/Maps/Testing/Level3MapTest.png", 96 + player.getSpeed(), -90,
-				400);
+		background = new Background(gamePanel, "images/Maps/Testing/Level3MapTest.png", 96 + player.getSpeed(), -90, 300);
+
 		player.resetX();
 		player.resetY();
 
@@ -112,9 +112,9 @@ public class LevelInitializer {
 		// soundManager.setVolume("background", 0.7f);
 
 		// rocks under here
-		rocks.add(new Rock(gamePanel, 1550, 1321, background));
-
+		entitySpawner.spawnLevelThreeRocks();
+		
 		// enemies under here
-		enemies.add(new RedBee(gamePanel, 1425, 501, background, player));
+		entitySpawner.spawnLevelThreeEnemies();
 	}
 }

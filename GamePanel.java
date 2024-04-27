@@ -193,6 +193,7 @@ public class GamePanel extends JPanel implements Runnable {
 			//right click on ladder
 			if(direction == 88 && playerOnLadder()){
 
+				//send player to next level if right click on ladder
 				currentLevel = levelInitializer.initNextLevel(currentLevel);
 
 				if(!soundManager.isStillPlaying("ladderDown"))
@@ -263,7 +264,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		if (gameThread == null && characterSelected) {
 			createGameEntities();
-			levelInitializer.initLevelOne();
+			levelInitializer.initLevelThree();
 			gameThread = new Thread(this);
 			gameThread.start();
 
