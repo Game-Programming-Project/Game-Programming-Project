@@ -109,7 +109,8 @@ public class SoundManager { // a Singleton class
 
 	public void stopAllClips() {
 		for (Clip clip : clips.values()) {
-			clip.stop();
+			if(clip!=null)
+				clip.stop();
 		}
 	}
 
