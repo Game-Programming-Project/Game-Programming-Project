@@ -99,8 +99,8 @@ public class EntitySpawner {
 					rock = new DiamondRock(gamePanel, x, y, background);
 				}
 
-				// 10% chance to have a fruit
-				if (new Random().nextInt(100) < 3) {
+				// 5% chance to have a fruit
+				if (new Random().nextInt(100) < 5) {
 					rock.setHasFruit(true);
 				}
 

@@ -264,7 +264,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		if (gameThread == null && characterSelected) {
 			createGameEntities();
-			levelInitializer.initLevelThree();
+			levelInitializer.initLevelOne();
 			gameThread = new Thread(this);
 			gameThread.start();
 
