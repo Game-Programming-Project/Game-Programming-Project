@@ -34,6 +34,9 @@ public class SoundManager { // a Singleton class
 		clip = loadClip("sounds/Level1/mushroomWalk.wav"); // played when a mushroom walks
 		clips.put("mushroomWalk", clip);
 
+		clip = loadClip("sounds/Level1/mushroomBoom.wav"); // played when a mushroom explodes
+		clips.put("mushroomBoom", clip);
+
 		clip = loadClip("sounds/Level1/grasshopperJump.wav"); // played when a grasshopper jumps
 		clips.put("grasshopperJump", clip);
 
