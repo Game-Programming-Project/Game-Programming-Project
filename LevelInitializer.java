@@ -68,15 +68,20 @@ public class LevelInitializer {
 		background = new Background(gamePanel, "images/Maps/Testing/Level2MapTest.png", 96, 360, 80);
 		soManager.setBg(background);
 		gamePanel.setBackground(background);
+		
+		// Add level 2 background sound
+		soundManager.playClip("background2", true);
+		soundManager.setVolume("background2", 0.7f);
 
-		gamePanel.spawnRocks(15, 620, 844, 839, 1138);
-		gamePanel.spawnRocks(6, 873, 1127, 850, 1106);
-		gamePanel.spawnRocks(25, 1075, 1622, 682, 1225);
-		gamePanel.spawnRocks(7, 1605, 1807, 914, 1062);
-		gamePanel.spawnRocks(15, 1806, 2088, 790, 1299);
+		gamePanel.spawnRocks(6, 662, 1018, 182, 546);
+		gamePanel.spawnRocks(4, 384, 1298, 937, 1210);
+		gamePanel.spawnRocks(8, 1107, 1892, 31, 576);
+		gamePanel.spawnRocks(5, 1283, 1853, 942, 1182);
+		gamePanel.spawnRocks(6, 1979, 2789, 318, 581);
+		gamePanel.spawnRocks(10, 2090, 2803, 586, 969);
 
+		enemies.add(new ScorpionAnimation(gamePanel, 620, 930, background, player));
 
-		// background = new Background(this, xxxxxx);
 		soManager.setBg(background);
 		gamePanel.setBackground(background);
 
