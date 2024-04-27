@@ -65,7 +65,7 @@ public class LevelInitializer {
 		rocks.clear();
 		enemies.clear();
 
-		background = new Background(gamePanel, "images/Maps/Testing/Level2MapTest.png", 96, 360, 80);
+		background = new Background(gamePanel, "images/Maps/Testing/Level2MapTest.png", 96, 461, 386);
 		soManager.setBg(background);
 		gamePanel.setBackground(background);
 
