@@ -31,7 +31,7 @@ public class Enemy {
 
     protected int aggression; // how aggressive the enemy is, how likely it is to attack the player
     protected int health;
-    private int attackDamage;
+    protected int attackDamage;
 
     protected Boolean isAlive;
 
@@ -182,6 +182,9 @@ public class Enemy {
         if (health < 0) {
             health = 0;
         }
+
+        if(!soundManager.isStillPlaying("enemyHit"))
+            soundManager.playClip("enemyHit", false);
     }
 
     // method used in detecting if player will collide with a solid object

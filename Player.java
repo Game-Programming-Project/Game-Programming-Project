@@ -50,7 +50,7 @@ public class Player {
 
 	private int attackDamage;
 	private int health;
-
+	private int speed;
 
 	public Player(GamePanel p, int xPos, int yPos, String cType, SolidObjectManager soManager) {
 
@@ -67,8 +67,6 @@ public class Player {
 		characterType = cType;
 
 		panel = p;
-
-		setDimensions();
 
 		this.soManager = soManager;
 
@@ -88,8 +86,11 @@ public class Player {
 		solidObject = null;
 		invincible = false;
 
-		attackDamage = 5;
+		attackDamage = 8;
 		health = 10;
+		speed = 5;
+
+		setDimensions();
 	}
 
 	public void start() {
@@ -130,7 +131,6 @@ public class Player {
 		else
 			attacking = true;
 
-		
 		attackAnimation.start();
 		attackRegistered = false;
 
@@ -139,8 +139,9 @@ public class Player {
 
 	public int move(int direction) {
 
-		if(soManager!=null)
-			solidObject = collidesWithSolid(); // if the player collides with a solid object (map boundary) this will be !=null
+		if (soManager != null)
+			solidObject = collidesWithSolid(); // if the player collides with a solid object (map boundary) this will be
+												// !=null
 
 		if (!walkAnimation.isStillActive())
 			return 0;
@@ -243,17 +244,21 @@ public class Player {
 	}
 
 	public void setDirections(int direction) {
-		if (direction == 1 && directions.contains(Integer.valueOf(1))) // already moved left so can move right (back to centre)
+		if (direction == 1 && directions.contains(Integer.valueOf(1))) // already moved left so can move right (back to
+																		// centre)
 			directions.add(Integer.valueOf(2));
 
-		else if (direction == 2 && directions.contains(Integer.valueOf(2))) // already moved right so can move left (back to centre)
+		else if (direction == 2 && directions.contains(Integer.valueOf(2))) // already moved right so can move left
+																			// (back to centre)
 			directions.add(Integer.valueOf(1));
 
-		else if (direction == 3 && directions.contains(Integer.valueOf(3))) // already moved up so can move down (back to centre)
+		else if (direction == 3 && directions.contains(Integer.valueOf(3))) // already moved up so can move down (back
+																			// to centre)
 			directions.add(Integer.valueOf(4));
-		else if (direction == 4 && directions.contains(Integer.valueOf(4))) // already moved down so can move up (back to centre)
+		else if (direction == 4 && directions.contains(Integer.valueOf(4))) // already moved down so can move up (back
+																			// to centre)
 
-		directions.add(Integer.valueOf(3));
+			directions.add(Integer.valueOf(3));
 
 		if (direction > 0) { // new direction the bat can move in
 			directions.add(Integer.valueOf(direction));
@@ -288,15 +293,15 @@ public class Player {
 		// attackAnimationLeft =
 		// loadAnimation("images/Player/"+characterType+"/"+characterType+"_attackLeftTest.png");
 
-        attackAnimation = attackAnimationRight;
-    }
+		attackAnimation = attackAnimationRight;
+	}
 
-    private void loadWalkAnimations() {
-		walkAnimationRight = loadAnimation("images/Player/"+characterType+"/"+characterType+"_walkRight.png");
-		walkAnimationLeft = loadAnimation("images/Player/"+characterType+"/"+characterType+"_walkLeft.png");
-	
-        walkAnimation = walkAnimationRight;
-    }
+	private void loadWalkAnimations() {
+		walkAnimationRight = loadAnimation("images/Player/" + characterType + "/" + characterType + "_walkRight.png");
+		walkAnimationLeft = loadAnimation("images/Player/" + characterType + "/" + characterType + "_walkLeft.png");
+
+		walkAnimation = walkAnimationRight;
+	}
 
 	private void loadAllAnimations() {
 		loadWalkAnimations();
@@ -328,12 +333,14 @@ public class Player {
 		return Animation;
 	}
 
-    private void loadImages(){
-        standImageRight = ImageManager.loadImage("images/Player/"+characterType+"/"+characterType+"_standRight.png");
-		standImageLeft = ImageManager.loadImage("images/Player/"+characterType+"/"+characterType+"_standLeft.png");
+	private void loadImages() {
+		standImageRight = ImageManager
+				.loadImage("images/Player/" + characterType + "/" + characterType + "_standRight.png");
+		standImageLeft = ImageManager
+				.loadImage("images/Player/" + characterType + "/" + characterType + "_standLeft.png");
 
-		standImage=standImageRight;
-    }
+		standImage = standImageRight;
+	}
 
 	private void setDimensions() {
 		// player 1 is 27x38 walking and standing
@@ -344,6 +351,7 @@ public class Player {
 
 			attackWidth = 76;
 			attackHeight = 80;
+
 		}
 
 		// player 2 is 32x38 walking and standing
@@ -354,6 +362,9 @@ public class Player {
 
 			attackWidth = 76;
 			attackHeight = 80;
+
+			speed = 8;
+			attackDamage = 6;
 		}
 
 		// player 3 is 27x38 walking and standing
@@ -364,22 +375,26 @@ public class Player {
 
 			attackWidth = 66;
 			attackHeight = 80;
+
+			health = 16;
+			speed = 6;
+			attackDamage = 6;
 		}
 	}
 
-    public Rectangle2D.Double getBoundingRectangle() {
+	public Rectangle2D.Double getBoundingRectangle() {
 		int offset = 10; // used to make player range bigger, needed for collision detection
 
 		// if(characterType=="1" || characterType=="3")
-		// 	offset = 10;
+		// offset = 10;
 		// else
-		// 	offset = 0;
+		// offset = 0;
 
 		return new Rectangle2D.Double(x, y, width + offset, height);
 	}
 
-	//method used in detecting if player will collide with a solid object
-	public Rectangle2D.Double getFutureBoundingRectangle(int direction){
+	// method used in detecting if player will collide with a solid object
+	public Rectangle2D.Double getFutureBoundingRectangle(int direction) {
 
 		int futureX = x, futureY = y;
 
@@ -402,8 +417,8 @@ public class Player {
 
 	public void takeDamage(int damage) {
 		health -= damage;
-		
-		if(health<0)
+
+		if (health < 0)
 			health = 0;
 
 		invincibleStart = System.currentTimeMillis();
@@ -419,7 +434,7 @@ public class Player {
 		return invincible;
 	}
 
-	public void setAttackDamage(int a){
+	public void setAttackDamage(int a) {
 		attackDamage = a;
 	}
 
@@ -429,9 +444,9 @@ public class Player {
 
 	public boolean attackRegistered() {
 		if (!attackRegistered) {
-            attackRegistered = true;
-            return true;
-        }
+			attackRegistered = true;
+			return true;
+		}
 
 		return false;
 	}
@@ -456,15 +471,15 @@ public class Player {
 		return y;
 	}
 
-	public int getWidth(){
+	public int getWidth() {
 		return width;
 	}
 
-	public int getHeight(){
+	public int getHeight() {
 		return height;
 	}
 
-	public int getHealth(){
+	public int getHealth() {
 		return health;
 	}
 }

@@ -26,7 +26,7 @@ public class LevelInitializer {
 		rocks.clear();
 		enemies.clear();
 
-		//offsetX is 360, offsetY is 80
+		// offsetX is 360, offsetY is 80
 		background = new Background(gamePanel, "images/Maps/Testing/Level1MapTest.png", 96, 360, 80);
 		soManager.setBg(background);
 		gamePanel.setBackground(background);
@@ -38,6 +38,7 @@ public class LevelInitializer {
 		soundManager.setVolume("background", 0.7f);
 
 		// add rocks here
+
 		// rocks.add(new Rock(gamePanel, 1550, 1321, background));
 		gamePanel.spawnRocks(15, 620, 844, 839, 1138, 75, 13, 8, 3, 1);
 		gamePanel.spawnRocks(6, 873, 1127, 850, 1106, 75, 13, 8, 3, 1);
@@ -46,16 +47,19 @@ public class LevelInitializer {
 		gamePanel.spawnRocks(15, 1806, 2088, 790, 1299, 75, 13, 8, 3, 1);
 
 		// add enemies under here
-		enemies.add(new BeeAnimation(gamePanel, 620, 930, background, player));
-		enemies.add(new BeeAnimation(gamePanel, 680, 950, background, player));
-		enemies.add(new BeeAnimation(gamePanel, 780, 980, background, player));
+		// enemies.add(new BeeAnimation(gamePanel, 620, 930, background, player));
+		// enemies.add(new BeeAnimation(gamePanel, 680, 950, background, player));
+		// enemies.add(new BeeAnimation(gamePanel, 780, 980, background, player));
 
-		enemies.add(new GrasshopperAnimation(gamePanel, 999, 900, background, player));
-		enemies.add(new GrasshopperAnimation(gamePanel, 1200, 950, background, player));
-		enemies.add(new GrasshopperAnimation(gamePanel, 1500, 980, background, player));
+		// enemies.add(new GrasshopperAnimation(gamePanel, 999, 900, background,
+		// player));
+		// enemies.add(new GrasshopperAnimation(gamePanel, 1200, 950, background,
+		// player));
+		// enemies.add(new GrasshopperAnimation(gamePanel, 1500, 980, background,
+		// player));
 
-		enemies.add(new MushroomAnimation(gamePanel, 1700, 900, background, player));
-		enemies.add(new MushroomAnimation(gamePanel, 1900, 960, background, player));
+		enemies.add(new MushroomAnimation(gamePanel, 1700, 900, background, player, soManager));
+		enemies.add(new MushroomAnimation(gamePanel, 1900, 960, background, player, soManager));
 	}
 
 	public void initLevelTwo() {
