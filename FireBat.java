@@ -1,9 +1,7 @@
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.util.Random;
+
 
 public class FireBat extends Enemy {
 

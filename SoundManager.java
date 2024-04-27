@@ -46,8 +46,14 @@ public class SoundManager { // a Singleton class
 		clip = loadClip("sounds/lobby.wav");
 		clips.put("lobby", clip);
 
-		clip = loadClip("sounds/dripping_water.wav");
+		clip = loadClip("sounds/game_start.wav");
+		clips.put("start", clip);
+
+		clip = loadClip("sounds/Level2/dripping_water.wav");
 		clips.put("dripping", clip);
+
+		clip = loadClip("sounds/Level2/crawling.wav");
+		clips.put("crawling", clip);
 
 	}
 

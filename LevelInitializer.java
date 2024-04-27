@@ -22,7 +22,9 @@ public class LevelInitializer {
 	}
 
 	public void initLevelOne() {
-		soundManager.stopAllClips();
+		soundManager.stopClip("lobby");
+		soundManager.playClip("start", false);
+
 		rocks.clear();
 		enemies.clear();
 
@@ -62,6 +64,17 @@ public class LevelInitializer {
 		soundManager.stopAllClips();
 		rocks.clear();
 		enemies.clear();
+
+		background = new Background(gamePanel, "images/Maps/Testing/Level2MapTest.png", 96, 360, 80);
+		soManager.setBg(background);
+		gamePanel.setBackground(background);
+
+		gamePanel.spawnRocks(15, 620, 844, 839, 1138);
+		gamePanel.spawnRocks(6, 873, 1127, 850, 1106);
+		gamePanel.spawnRocks(25, 1075, 1622, 682, 1225);
+		gamePanel.spawnRocks(7, 1605, 1807, 914, 1062);
+		gamePanel.spawnRocks(15, 1806, 2088, 790, 1299);
+
 
 		// background = new Background(this, xxxxxx);
 		soManager.setBg(background);

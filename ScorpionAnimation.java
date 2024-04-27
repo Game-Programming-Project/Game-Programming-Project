@@ -2,48 +2,49 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.Graphics2D;
 
+public class ScorpionAnimation extends Enemy {
 
-/**
-    The ScorpionAnimation class creates animations for a scorpion facing left and right.
-*/
-public class ScorpionAnimation {
-    
-    Animation leftAnimation;
-    Animation rightAnimation;
 
-    private int xLeft;      // x position of left animation
-    private int yLeft;      // y position of left animation
+	public ScorpionAnimation(GamePanel gPanel, int mapX, int mapY, Background bg, Player p) {
+		super(gPanel, mapX, mapY, bg, p);
 
-    private int xRight;     // x position of right animation
-    private int yRight;     // y position of right animation
+		loadImages();
+		loadWalkAnimations();
 
-    private int dx;         // increment to move along x-axis
-    private int dy;         // increment to move along y-axis
+		width = height = 60;
 
-    public ScorpionAnimation() {
+		dx = 5;
+		dy = 5;
 
-        leftAnimation = new Animation(false);   // run left animation once
-        rightAnimation = new Animation(false);  // run right animation once
+	}
 
-        dx = 0;         // increment to move along x-axis
-        dy = -10;       // increment to move along y-axis
+    public void move() {
+        int prevMapX = mapX;
+        //int prevMapY = mapY;
 
-        // load images from left strip file
-        Image leftStripImage = ImageManager.loadImage("images/Enemies/Level2/Scorpion/scorpionLeft.png");
-        loadAnimation(leftAnimation, leftStripImage);
+        double distance = Math.sqrt(Math.pow(player.getX() - x, 2) + Math.pow(player.getY() - y, 2));
 
-        // load images from right strip file
-        Image rightStripImage = ImageManager.loadImage("images/Enemies/Level2/Scorpion/scorpionRight.png");
-        loadAnimation(rightAnimation, rightStripImage);
+        // only update the movement of scorpion if there is no collision with solid object/ player in range
+        if(distance < 350) chasePlayer();
+
+        else if(prevMapX < mapX){ //moving right
+            walkAnimation = walkAnimationRight;
+            standImage = standImageRight;
+        } 
+        else if (prevMapX > mapX) { // moving left
+            walkAnimation = walkAnimationLeft;
+            standImage = standImageLeft;
+        }
+        
     }
+	
+ 
+    // Loads images from a strip file into an animation.
+    private Animation loadAnimation(String stripFilePath) {
+        Animation animation = new Animation(false);
+        Image stripImage = ImageManager.loadImage(stripFilePath);
 
-    /**
-     * Loads images from a strip file into an animation.
-     * @param animation The animation to load images into
-     * @param stripImage The strip image containing animation frames
-     */
-    private void loadAnimation(Animation animation, Image stripImage) {
-        int imageWidth = stripImage.getWidth(null) / 8; // Assuming 8 frames in the strip
+         int imageWidth = stripImage.getWidth(null) / 8; // Assuming 8 frames in the strip
         int imageHeight = stripImage.getHeight(null);
 
         for (int i = 0; i < 8; i++) {
@@ -57,36 +58,64 @@ public class ScorpionAnimation {
 
             animation.addFrame(frameImage, 100);
         }
+
+        return animation;
+       
     }
 
-    public void start() {
-        xLeft = 250;
-        yLeft = 250;
-        leftAnimation.start();
+    public void loadWalkAnimations() {
+		walkAnimationLeft = loadAnimation("images/Enemies/Level2/Scorpion/scorpionLeft.png");
+		walkAnimationRight = loadAnimation("images/Enemies/Level2/Scorpion/scorpionRight.png");
 
-        xRight = 350; // Adjust x position for the right animation
-        yRight = 250;
-        rightAnimation.start();
+		walkAnimation = walkAnimationRight;
+	}
+    
+
+    public void loadImages() {
+        standImageRight = ImageManager.loadImage("images/Enemies/Level2/Scorpion/scorpionStandRight.png");
+        standImageLeft = ImageManager.loadImage("images/Enemies/Level2/Scorpion/scorpionStandLeft.png");
+
+        standImage = standImageLeft;
     }
 
-    public void update() {
-        if (!leftAnimation.isStillActive() || !rightAnimation.isStillActive())
-            return;
+	public void chasePlayer() {
+		int playerX = player.getX();
+		int playerY = player.getY();
 
-        leftAnimation.update();
-        xLeft = xLeft + dx;
-        yLeft = yLeft + dy;
+		// Calculate the distance between the scorpion and the player
+		double distance = Math.sqrt(Math.pow(playerX - x, 2) + Math.pow(playerY - y, 2));
 
-        rightAnimation.update();
-        xRight = xRight + dx;
-        yRight = yRight + dy;
-    }
+		// If the player is within a certain range (e.g., 100 pixels)
+		if (distance <= 200) {
+			if (walkAnimation.isStillActive() && !soundManager.isStillPlaying("grasshopperJump")) {
+				playCrawlingSound();
+			}
+			if (playerX > x) { // player is to the right
+				mapX += dx;
+				walkAnimation = walkAnimationRight;
+				standImage = standImageRight;
+			} else if (playerX - player.getWidth() < x) { // player is to the left
+				mapX -= dx;
+				walkAnimation = walkAnimationLeft;
+				standImage = standImageLeft;
+			}
 
-    public void draw(Graphics2D g2) {
-        if (!leftAnimation.isStillActive() || !rightAnimation.isStillActive())
-            return;
+			if (playerY - player.getHeight() > y) { // player is below
+				mapY += dy;
+				walkAnimation = walkAnimationLeft;
+			} else if (playerY + player.getHeight() < y) { // player is above
+				mapY -= dy;
+				walkAnimation = walkAnimationLeft;
+			}
+		} else {
+			walkAnimation = null;
+			standImage = standImageRight;
 
-        g2.drawImage(leftAnimation.getImage(), xLeft, yLeft, 70, 50, null);
-        g2.drawImage(rightAnimation.getImage(), xRight, yRight, 70, 50, null);
-    }
+		}
+	}
+
+	private void playCrawlingSound() {
+		soundManager.playClip("crawling", false);
+	}
+
 }

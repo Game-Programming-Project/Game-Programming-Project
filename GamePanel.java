@@ -76,7 +76,7 @@ public class GamePanel extends JPanel implements Runnable {
     	//image = new BufferedImage(1200, 500, BufferedImage.TYPE_INT_RGB);
 
 		image1 = new BufferedImage(1100, 600, BufferedImage.TYPE_INT_RGB);
-		image2 = new BufferedImage(1100, 600, BufferedImage.TYPE_INT_RGB);
+		//image2 = new BufferedImage(1100, 600, BufferedImage.TYPE_INT_RGB);
 
 	}
 
@@ -200,12 +200,12 @@ public class GamePanel extends JPanel implements Runnable {
 	public void gameRender() {
 
 		// draw the game objects on the image
-		Graphics2D imageContext1 = (Graphics2D) image1.getGraphics();
+		Graphics2D imageContext = (Graphics2D) image1.getGraphics();
 
-		background.draw(imageContext1);
+		background.draw(imageContext);
 		//imageContext1.drawImage(backgroundImage, 0, 0, null);	// draw the background image
 
-		Graphics2D imageContext = (Graphics2D) image2.getGraphics();
+		//Graphics2D imageContext = (Graphics2D) image2.getGraphics();
 
 		if (background != null)
 			background.draw(imageContext);
@@ -232,7 +232,7 @@ public class GamePanel extends JPanel implements Runnable {
 		Graphics2D g2 = (Graphics2D) getGraphics(); // get the graphics context for the panel
 
 		//g2.drawImage(image1, 0, 0, 1100, 600, null);
-		g2.drawImage(image2, 0, 0, 1100, 600, null);
+		g2.drawImage(image1, 0, 0, 1100, 600, null);
 
 		//imageContext1.dispose();
 		imageContext.dispose();
@@ -256,6 +256,7 @@ public class GamePanel extends JPanel implements Runnable {
 		isPaused = false;
 
 		if (gameThread == null || !isRunning) {
+			soundManager.playClip("start", false);
 			// soundManager.playClip ("background", true);
 			createGameEntities();
 			levelInitializer.initLevelThree();
