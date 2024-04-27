@@ -250,9 +250,6 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 		c = getContentPane();
 		c.add(mainPanel);
 
-		// set properties of window
-		//setResizable(false);
-
 		// Set properties of window
 		setResizable(true);
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -263,16 +260,14 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 
 		// Setting the initial values 
 		score = 0;
-		numLives = 5;
 		gameOver = false; 
 
 		// Set the default values of the score, lives and time text fields in the infoPanel
 		scoreTF.setText(" 0 ");
-		timeTF.setText(" 02:00 ");
+		timeTF.setText(" 00:00 ");
 	}
 
 	// implement single method in ActionListener interface
-
 	public void actionPerformed(ActionEvent e) {
 
 		String command = e.getActionCommand();
@@ -315,12 +310,8 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 	}
 
 	// implement methods in KeyListener interface
-
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
-
-		String keyText = e.getKeyText(keyCode);
-		//keyTF.setText(keyText + " pressed.");
 
 		if (keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_LEFT) {
 			gamePanel.updatePlayer(1);
@@ -336,6 +327,10 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 
 		if (keyCode == KeyEvent.VK_S || keyCode == KeyEvent.VK_DOWN) {
 			gamePanel.updatePlayer(4);
+		}
+
+		if(keyCode == KeyEvent.VK_B){
+			gamePanel.bombBismuth();
 		}
 	}
 
@@ -374,10 +369,9 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 
 	}
 
-	// Method to set the visibility of the start game label and play button
+	// Method to set the visibility of the start game label 
     public void setStartGameComponentsVisible(boolean isVisible) {
         startGameLabel.setVisible(isVisible);
-       // playB.setVisible(isVisible);
     }
 
 }

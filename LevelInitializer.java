@@ -68,6 +68,9 @@ public class LevelInitializer {
 		background = new Background(gamePanel, "images/Maps/Testing/Level2MapTest.png", 96, 360, 80);
 		soManager.setBg(background);
 		gamePanel.setBackground(background);
+
+		soManager.initLevelTwo(); // set up map boundaries
+		soManager.setAllObjectsVisible(false);
 		
 		// Add level 2 background sound
 		soundManager.playClip("background2", true);
@@ -81,12 +84,7 @@ public class LevelInitializer {
 		gamePanel.spawnRocks(10, 2090, 2803, 586, 969);
 
 		enemies.add(new ScorpionAnimation(gamePanel, 620, 930, background, player));
-
-		soManager.setBg(background);
-		gamePanel.setBackground(background);
-
-		soManager.initLevelTwo(); // set up map boundaries
-		soManager.setAllObjectsVisible(false);
+		enemies.add(new BismuthAnimation(gamePanel, 2462, 883, background, player, soManager));
 	}
 
 	public void initLevelThree() {

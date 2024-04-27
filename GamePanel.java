@@ -243,7 +243,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		if (gameThread == null && characterSelected) {
 			createGameEntities();
-			levelInitializer.initLevelOne();
+			levelInitializer.initLevelTwo();
 			gameThread = new Thread(this);
 			gameThread.start();
 
@@ -259,7 +259,7 @@ public class GamePanel extends JPanel implements Runnable {
 			soundManager.playClip("start", false);
 			// soundManager.playClip ("background", true);
 			createGameEntities();
-			levelInitializer.initLevelThree();
+			levelInitializer.initLevelTwo();
 			gameThread = new Thread(this);
 			gameThread.start();
 		}
@@ -356,6 +356,10 @@ public class GamePanel extends JPanel implements Runnable {
 
 	public void setBackground(Background bg) {
 		background = bg;
+	}
+
+	public void bombBismuth(){
+
 	}
 
 }
