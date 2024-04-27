@@ -98,7 +98,7 @@ public class LevelInitializer {
 		enemies.clear();
 
 		// note for level 3 offsetX: -90, offsetY: 400
-		background = new Background(gamePanel, "images/Maps/Testing/Level3MapTest.png", 96 + player.getSpeed(), -90, 400);
+		background = new Background(gamePanel, "images/Maps/Testing/Level3MapTest.png", 96 + player.getSpeed(), -90, 300);
 		player.resetX();
 		player.resetY();
 
@@ -113,9 +113,18 @@ public class LevelInitializer {
 		// soundManager.setVolume("background", 0.7f);
 
 		// rocks under here
-		rocks.add(new Rock(gamePanel, 1550, 1321, background));
+		entitySpawner.spawnRocks(25,1061,1943,1357,1571,50,15,20,10,5); // below spawn
+		entitySpawner.spawnRocks(15,1708,2027,910,1355,50,15,20,10,5); // right of spawn
+		entitySpawner.spawnRocks(15,1105, 1351, 1010, 1362,50,15,20,10,5); // left of spawn
+		entitySpawner.spawnRocks(15,1426,1561,367,974,50,15,20,10,5); // above nose
+		entitySpawner.spawnRocks(15,1923,2606,656,834,50,15,20,10,5);//top right straight
+		entitySpawner.spawnRocks(6,2391,2600,506,656,50,15,20,10,5); // top right corner
+		entitySpawner.spawnRocks(10,2021,2689,1172,1581,50,15,20,10,5); // bottom right corner
+		entitySpawner.spawnRocks(7,1555,1820,401,640,50,15,20,10,5); // top right of nose
+		entitySpawner.spawnRocks(10,1165,1426,376,632,50,15,20,10,5); // top left of nose
+		entitySpawner.spawnRocks(10,,50,15,20,10,5);
 
 		// enemies under here
-		enemies.add(new RedBee(gamePanel, 1425, 501, background, player));
+		entitySpawner.spawnLevelThreeEnemies();
 	}
 }

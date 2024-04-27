@@ -60,7 +60,7 @@ public class Rock {
 
         this.hasFruit=hasFruit;
         if(hasFruit)
-            fruitImage = ImageManager.loadImage("images/Player/Hearts/starfruit.png");
+            setFruitImage();
     }
 
     public void draw(Graphics2D g2) {
@@ -203,13 +203,25 @@ public class Rock {
     public void setHasFruit(Boolean f){
         
         if(f && !hasFruit)
-            fruitImage = ImageManager.loadImage("images/Player/Hearts/starfruit.png");
+            setFruitImage();
 
         this.hasFruit=f;
     }
 
     public void setFruitEaten(Boolean fruitEaten){
         this.fruitEaten=fruitEaten;
+    }
+
+    public void setFruitImage(){
+        String level = gPanel.getCurrentLevel();
+        if(level=="1")
+            fruitImage=ImageManager.loadImage("images/Player/Hearts/starfruit.png");
+        
+        if(level=="2")
+            fruitImage=ImageManager.loadImage("images/Player/Hearts/xxx.png");
+        
+        if(level=="3")
+            fruitImage=ImageManager.loadImage("images/Player/Hearts/Prismatic_Shard.png");
     }
 
     public void updateFX() {

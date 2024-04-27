@@ -49,11 +49,13 @@ public class EntitySpawner {
 	
 	}
 
-	public void spawnLevelTwo(){
+	public void spawnLevelTwoEnemies(){
 
 	}
 
-	public void spawnLevelThree(){
+	public void spawnLevelThreeEnemies(){
+
+		
 
 	}
 
