@@ -242,6 +242,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public void startGame() { // initialise and start the game thread
 
 		if (gameThread == null && characterSelected) {
+			soundManager.playClip("start", false);
 			createGameEntities();
 			levelInitializer.initLevelTwo();
 			gameThread = new Thread(this);
@@ -257,7 +258,6 @@ public class GamePanel extends JPanel implements Runnable {
 
 		if (gameThread == null || !isRunning) {
 			soundManager.playClip("start", false);
-			// soundManager.playClip ("background", true);
 			createGameEntities();
 			levelInitializer.initLevelTwo();
 			gameThread = new Thread(this);
