@@ -31,7 +31,7 @@ public class Enemy {
 
     protected int aggression; // how aggressive the enemy is, how likely it is to attack the player
     protected int health;
-    private int attackDamage;
+    protected int attackDamage;
 
     protected Boolean isAlive;
 

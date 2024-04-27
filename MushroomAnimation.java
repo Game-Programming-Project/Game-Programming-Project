@@ -38,6 +38,8 @@ public class MushroomAnimation extends Enemy {
 		inRange=false;
 		blowingUp=false;
 		blowUpTime=null;
+
+		attackDamage = 2;
 	}
 
 	public void update() {
@@ -138,7 +140,7 @@ public class MushroomAnimation extends Enemy {
 	private void blowUp() {
 		if(blowingUp)
 			return;
-			
+
 		blowingUp=true;
 		blowUpTime = System.currentTimeMillis();
 		walkAnimation = blowUpAnimation;
