@@ -117,6 +117,8 @@ public class SolidObjectManager {
    public void initLevelOne() {
       solidObjects.clear();
 
+      // adding solid objects to create boundaries on map
+
       solidObjects.add(new SolidObject(651, 584, 138, 64, Color.YELLOW, false, bg));
       solidObjects.add(new SolidObject(631, 648, 20, 71, Color.BLUE, false, bg));
       solidObjects.add(new SolidObject(610, 725, 23, 399, Color.CYAN, false, bg));
