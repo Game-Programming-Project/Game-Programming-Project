@@ -39,23 +39,23 @@ public class LevelInitializer {
 
 		// add rocks here
 		// rocks.add(new Rock(gamePanel, 1550, 1321, background));
-		gamePanel.spawnRocks(15, 620, 844, 839, 1138);
-		gamePanel.spawnRocks(6, 873, 1127, 850, 1106);
-		gamePanel.spawnRocks(25, 1075, 1622, 682, 1225);
-		gamePanel.spawnRocks(7, 1605, 1807, 914, 1062);
-		gamePanel.spawnRocks(15, 1806, 2088, 790, 1299);
+		// gamePanel.spawnRocks(15, 620, 844, 839, 1138);
+		// gamePanel.spawnRocks(6, 873, 1127, 850, 1106);
+		// gamePanel.spawnRocks(25, 1075, 1622, 682, 1225);
+		// gamePanel.spawnRocks(7, 1605, 1807, 914, 1062);
+		// gamePanel.spawnRocks(15, 1806, 2088, 790, 1299);
 
 		// add enemies under here
-		enemies.add(new BeeAnimation(gamePanel, 620, 930, background, player));
-		enemies.add(new BeeAnimation(gamePanel, 680, 950, background, player));
-		enemies.add(new BeeAnimation(gamePanel, 780, 980, background, player));
+		// enemies.add(new BeeAnimation(gamePanel, 620, 930, background, player));
+		// enemies.add(new BeeAnimation(gamePanel, 680, 950, background, player));
+		// enemies.add(new BeeAnimation(gamePanel, 780, 980, background, player));
 
-		enemies.add(new GrasshopperAnimation(gamePanel, 999, 900, background, player));
-		enemies.add(new GrasshopperAnimation(gamePanel, 1200, 950, background, player));
-		enemies.add(new GrasshopperAnimation(gamePanel, 1500, 980, background, player));
+		// enemies.add(new GrasshopperAnimation(gamePanel, 999, 900, background, player));
+		// enemies.add(new GrasshopperAnimation(gamePanel, 1200, 950, background, player));
+		// enemies.add(new GrasshopperAnimation(gamePanel, 1500, 980, background, player));
 
-		enemies.add(new MushroomAnimation(gamePanel, 1700, 900, background, player));
-		enemies.add(new MushroomAnimation(gamePanel, 1900, 960, background, player));
+		enemies.add(new MushroomAnimation(gamePanel, 1700, 900, background, player, soManager));
+		enemies.add(new MushroomAnimation(gamePanel, 1900, 960, background, player, soManager));
 	}
 
 	public void initLevelTwo() {

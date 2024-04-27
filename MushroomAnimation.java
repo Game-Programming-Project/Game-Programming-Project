@@ -13,8 +13,15 @@ public class MushroomAnimation extends Enemy {
 	private Animation walkAnimationDown;
 	private Animation blowUpAnimation;
 
-	public MushroomAnimation(GamePanel gPanel, int mapX, int mapY, Background bg, Player p) {
+	private SolidObjectManager soManager;
+
+	private Boolean inRange;
+	private Boolean blowingUp;
+	private Long blowUpTime;
+
+	public MushroomAnimation(GamePanel gPanel, int mapX, int mapY, Background bg, Player p, SolidObjectManager soManager) {
 		super(gPanel, mapX, mapY, bg, p);
+		this.soManager = soManager;
 
 		walkAnimationUp = new Animation(false);
 		walkAnimationDown = new Animation(false);
@@ -25,33 +32,117 @@ public class MushroomAnimation extends Enemy {
 		width = 212; // 53:26
 		height = 104;
 
-		dx = 10;
-		dy = 10;
+		dx = 0;
+		dy = 0;
 
+		inRange=false;
+		blowingUp=false;
+		blowUpTime=null;
 	}
 
+	public void update() {
+        if (!walkAnimation.isStillActive()) // if the animation is not active, no need to update
+            return;
+
+		if(!soundManager.isStillPlaying("mushroomWalk") && walkAnimation.isStillActive() && walkAnimation!=walkAnimationDown && !blowingUp) {
+			playWalkSound();
+		}
+
+        walkAnimation.update();
+
+        if (health <= 0)
+            isAlive = false;
+
+		if(blowingUp && (System.currentTimeMillis() - blowUpTime > 1000)) {
+			isAlive = false; // if 1 second pass after blow up then die
+		}
+    }
+
 	public void move() {
+
+		if(blowingUp)
+			return;
+
 		int oldMapX = mapX;
 		int oldMapY = mapY;
 
-		chasePlayer();
+		double distance = Math.sqrt(Math.pow(player.getX() - x, 2) + Math.pow(player.getY() - y, 2));
+		if(distance<300)
+			inRange=true;
+		else
+			inRange=false;
+
+		if (distance <= 50) 
+			blowUp();
+
+		if(inRange)
+			dx=dy=10;
+		else
+			dx=dy=0;
+		
+		
+		Boolean wouldCollide = soManager.collidesWithSolid(getFutureBoundingRectangle());
+        if(!wouldCollide && inRange) // only move if Mushroom won't collide with a solid and if the player is within range
+            chasePlayer();
+		
 
 		if (oldMapX < mapX) { // moving right
 			walkAnimation = walkAnimationRight;
 			standImage = standImageRight;
-			playWalkSound();
+
 		} else if (oldMapX > mapX) { // moving left
 			walkAnimation = walkAnimationLeft;
 			standImage = standImageLeft;
-			playWalkSound();
+
 		}
 
 		// stop animation if enemy is blocked or not moving
 		if (oldMapX == mapX && oldMapY == mapY) {
+			//walkAnimation=walkAnimationDown;
 			walkAnimation.stop();
 			standImage = standImageForward;
 		}
 
+	}
+
+	public void chasePlayer() {
+		int playerX = player.getX();
+		int playerY = player.getY();
+
+		// if (walkAnimation.isStillActive() && !soundManager.isStillPlaying("mushroomWalk")) {
+		// 	playWalkSound();
+		// }
+
+		if (playerX - 50 > x) { // player is to the right
+			mapX += dx;
+			walkAnimation = walkAnimationRight;
+			standImage = standImageRight;
+
+		} else if (playerX + 50 < x) { // player is to the left
+			mapX -= dx;
+			walkAnimation = walkAnimationLeft;
+			standImage = standImageLeft;
+		}
+
+		if (playerY - 50 > y) { // player is below
+			mapY += dy;
+			walkAnimation = walkAnimationLeft;
+
+		} else if (playerY + 50 < y) { // player is above
+			mapY -= dy;
+			walkAnimation = walkAnimationLeft;
+		}
+	}
+	
+	// Method to trigger the blow-up animation
+	private void blowUp() {
+		if(blowingUp)
+			return;
+			
+		blowingUp=true;
+		blowUpTime = System.currentTimeMillis();
+		walkAnimation = blowUpAnimation;
+		playBoomSound();
 	}
 
 	public void loadWalkAnimations() {
@@ -59,9 +150,9 @@ public class MushroomAnimation extends Enemy {
 		walkAnimationRight = loadAnimation("images/Enemies/Level1/Mushroom/mushroomChasingRight.png");
 		blowUpAnimation = loadAnimation("images/Enemies/Level1/Mushroom/mushroomSpriteBOOM.png");
 
-		walkAnimationDown.addFrame(standImageForward, 100);
+		//walkAnimationDown.addFrame(standImageForward, 100);
 
-		walkAnimation = walkAnimationDown;
+		walkAnimation = walkAnimationLeft;
 	}
 
 	public Animation loadAnimation(String stripFilePath) {
@@ -103,71 +194,21 @@ public class MushroomAnimation extends Enemy {
 		standImage = standImageForward;
 	}
 
-	public void chasePlayer() {
-		int playerX = player.getX();
-		int playerY = player.getY();
-
-		// Calculate the distance between the mushroom and the player
-		double distance = Math.sqrt(Math.pow(playerX - x, 2) + Math.pow(playerY - y, 2));
-
-		// If the player is within a certain range (e.g., 100 pixels)
-		if (distance <= 300) {
-			if (walkAnimation.isStillActive() && !soundManager.isStillPlaying("mushroomWalk")) {
-				playWalkSound();
-			}
-			if (distance <= 50) {
-				blowUp();
-				playBoomSound();
-			}
-			if (playerX - 150 > x) { // player is to the right
-				mapX += dx;
-				walkAnimation = walkAnimationRight;
-				standImage = standImageRight;
-				// playWalkSound();
-
-			} else if (playerX + 100 < x) { // player is to the left
-				mapX -= dx;
-				walkAnimation = walkAnimationLeft;
-				standImage = standImageLeft;
-				// playWalkSound();
-			}
-
-			if (playerY - 100 > y) { // player is below
-				mapY += dy;
-				walkAnimation = walkAnimationLeft;
-				// playWalkSound();
-
-			} else if (playerY + 100 < y) { // player is above
-				mapY -= dy;
-				walkAnimation = walkAnimationLeft;
-				// playWalkSound();
-			}
-		} else {
-			// If the player is not within range, the mushroom should be standing
-			// walkAnimation = null;
-			walkAnimation = walkAnimationDown;
-			standImage = standImageForward; // or standImageLeft, depending on the last direction
-
-		}
-	}
-
-	// Method to trigger the blow-up animation
-	private void blowUp() {
-		// Replace the current animation with the blow-up animation
-		walkAnimation = loadAnimation("images/Enemies/Level1/Mushroom/mushroomSpriteBOOM.png");
-
-		// You may need to adjust the timing and other parameters for the blow-up
-		// animation
-		// based on your specific implementation
-		// Also, you might want to handle any cleanup or other logic related to the
-		// blow-up here
-	}
-
 	private void playWalkSound() {
+		if(soundManager.isStillPlaying("mushroomWalk") || blowingUp)
+			return;
+
 		soundManager.playClip("mushroomWalk", false);
 	}
 
 	private void playBoomSound() {
+		if(soundManager.isStillPlaying("mushroomBoom"))
+			return;
+
+		if(soundManager.isStillPlaying("mushroomWalk"))
+			soundManager.stopClip("mushroomWalk");
+
 		soundManager.playClip("mushroomBoom", false);
+		
 	}
 }
