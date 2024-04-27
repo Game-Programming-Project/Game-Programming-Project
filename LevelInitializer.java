@@ -22,24 +22,21 @@ public class LevelInitializer {
 		this.background = background;
 		this.player = player;
 
-		entitySpawner = new EntitySpawner(gamePanel,soundManager,soManager,rocks,enemies,background,player);
+		entitySpawner = new EntitySpawner(gamePanel, soundManager, soManager, rocks, enemies, background, player);
 	}
 
-	public String initNextLevel(String currentLevel){
-		if(currentLevel.equals("1")){
+	public String initNextLevel(String currentLevel) {
+		if (currentLevel.equals("1")) {
 			initLevelThree();
-			currentLevel="2";
+			currentLevel = "2";
 			return "2";
-		}
-		else if(currentLevel.equals("2")){
+		} else if (currentLevel.equals("2")) {
 			initLevelThree();
-			currentLevel="3";
+			currentLevel = "3";
 			return "3";
-		}
-		else if(currentLevel.equals("3")){
+		} else if (currentLevel.equals("3")) {
 			return "win";
-		}
-		else{
+		} else {
 			return "Error";
 		}
 	}
@@ -49,8 +46,9 @@ public class LevelInitializer {
 		rocks.clear();
 		enemies.clear();
 
-		// offsetX is 360, offsetY is 80 
-		background = new Background(gamePanel, "images/Maps/Testing/Level1MapTest.png", 96 + player.getSpeed(), 360, 80);
+		// offsetX is 360, offsetY is 80
+		background = new Background(gamePanel, "images/Maps/Testing/Level1MapTest.png", 96 + player.getSpeed(), 360,
+				80);
 		soManager.setBg(background);
 		gamePanel.setBackground(background);
 		entitySpawner.setBg(background);
@@ -63,12 +61,12 @@ public class LevelInitializer {
 
 		// add rocks here
 
-		rocks.add(new Rock(gamePanel, 690,992, background, false, true));
-		// entitySpawner.spawnRocks(15, 620, 844, 839, 1138, 75, 13, 8, 3, 1);
-		// entitySpawner.spawnRocks(6, 873, 1127, 850, 1106, 75, 13, 8, 3, 1);
-		// entitySpawner.spawnRocks(25, 1075, 1622, 682, 1225, 75, 13, 8, 3, 1);
-		// entitySpawner.spawnRocks(7, 1605, 1807, 914, 1062, 75, 13, 8, 3, 1);
-		// entitySpawner.spawnRocks(15, 1806, 2088, 790, 1299, 75, 13, 8, 3, 1);
+		rocks.add(new Rock(gamePanel, 690, 992, background, true));
+		entitySpawner.spawnRocks(15, 620, 844, 839, 1138, 75, 13, 8, 3, 1);
+		entitySpawner.spawnRocks(6, 873, 1127, 850, 1106, 75, 13, 8, 3, 1);
+		entitySpawner.spawnRocks(25, 1075, 1622, 682, 1225, 75, 13, 8, 3, 1);
+		entitySpawner.spawnRocks(7, 1605, 1807, 914, 1062, 75, 13, 8, 3, 1);
+		entitySpawner.spawnRocks(15, 1806, 2088, 790, 1299, 75, 13, 8, 3, 1);
 
 		// add enemies under here
 		entitySpawner.spawnLevelOneEnemies();
@@ -99,6 +97,7 @@ public class LevelInitializer {
 
 		// note for level 3 offsetX: -90, offsetY: 400
 		background = new Background(gamePanel, "images/Maps/Testing/Level3MapTest.png", 96 + player.getSpeed(), -90, 300);
+
 		player.resetX();
 		player.resetY();
 
