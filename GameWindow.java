@@ -350,11 +350,14 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 	// implement methods in MouseListener interface
 
 	public void mouseClicked(MouseEvent e) {
-		int x = e.getX();
-		int y = e.getY();
 
-		// 99 means attack, so clicking makes player swing weapon
-		gamePanel.updatePlayer(99);
+		if (SwingUtilities.isLeftMouseButton(e)) {
+			// 99 means attack, so clicking makes player swing weapon
+			gamePanel.updatePlayer(99);
+
+        } else if (SwingUtilities.isRightMouseButton(e)) {
+			gamePanel.updatePlayer(88);
+        }
 
 	}
 

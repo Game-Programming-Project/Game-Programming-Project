@@ -171,7 +171,7 @@ public class GamePanel extends JPanel implements Runnable {
 		// wouldCollide = false; // for testing purposes, comment out when done
 
 		if (player != null && !isPaused) {
-			if (direction != 99) {
+			if (direction != 99 & direction != 88) {
 
 				if (!wouldCollide) { // if would not collide in the next move then move
 					player.start();
@@ -182,9 +182,17 @@ public class GamePanel extends JPanel implements Runnable {
 			if (direction == 99) { // direction of 99 means click on screen to attack
 				player.attack();
 			}
+
+			if(direction == 88 && playerOnLadder()){
+
+				currentLevel = levelInitializer.initNextLevel(currentLevel);
+
+				if(!soundManager.isStillPlaying("ladderDown"))
+					soundManager.playClip("ladderDown", false);
+			}
 		}
 
-		if (background != null && player != null && !isPaused && direction != 99) {
+		if (background != null && player != null && !isPaused && direction != 99 && direction != 88) {
 			if (!wouldCollide) { // if wouldn't collide with solid then move in the direction
 				int batMovement = background.move(direction); // check whether the bat can start/stop moving in a new
 																// direction
@@ -268,6 +276,15 @@ public class GamePanel extends JPanel implements Runnable {
 	public void endGame() { // end the game thread
 		isRunning = false;
 		// soundManager.stopClip ("background");
+	}
+
+	public boolean playerOnLadder() {
+		for (Rock rock : rocks) {
+			if (rock.hasLadder() && rock.collidesWithPlayer(player)) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void spawnRocks(int num, int x1, int x2, int y1, int y2, double basicProbability, double copperProbability, double ironProbability, double goldProbability, double diamondProbability) {

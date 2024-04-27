@@ -482,4 +482,12 @@ public class Player {
 	public int getHealth() {
 		return health;
 	}
+
+	public void resetX(){
+		x = centerX;
+	}
+
+	public void resetY(){
+		y = centerY;
+	}
 }

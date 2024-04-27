@@ -117,6 +117,10 @@ public class Rock {
         disappearFX = fx;
     }
 
+    public Boolean hasLadder(){
+        return hasLadder;
+    }
+
     public void setHasLadder(Boolean hasLadder){
         this.hasLadder=hasLadder;
     }
