@@ -75,6 +75,8 @@ public class GamePanel extends JPanel implements Runnable {
 		player = new Player(this, 550, 350, character, soManager);
 		rocks = new ArrayList<>();
 		enemies = new ArrayList<>();
+		healthDisplay.setPlayer(player);
+		healthDisplay.setMaxHealth(player.getHealth());
 
 		levelInitializer = new LevelInitializer(this, soundManager, soManager, rocks, enemies, background, player);
 	}
