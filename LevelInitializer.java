@@ -48,8 +48,8 @@ public class LevelInitializer {
 		rocks.clear();
 		enemies.clear();
 
-		// offsetX is 360, offsetY is 80
-		background = new Background(gamePanel, "images/Maps/Testing/Level1MapTest.png", 96, 360, 80);
+		// offsetX is 360, offsetY is 80 
+		background = new Background(gamePanel, "images/Maps/Testing/Level1MapTest.png", 96 + player.getSpeed(), 360, 80);
 		soManager.setBg(background);
 		gamePanel.setBackground(background);
 
@@ -107,7 +107,7 @@ public class LevelInitializer {
 		enemies.clear();
 
 		// note for level 3 offsetX: -90, offsetY: 400
-		background = new Background(gamePanel, "images/Maps/Testing/Level3MapTest.png", 96, -90, 400);
+		background = new Background(gamePanel, "images/Maps/Testing/Level3MapTest.png", 96 + player.getSpeed(), -90, 400);
 		player.resetX();
 		player.resetY();
 

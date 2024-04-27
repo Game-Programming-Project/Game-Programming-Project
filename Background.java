@@ -185,4 +185,8 @@ public class Background {
 		return bg1Y;
 	}
 
+	public void setBgDX(int bgDX) {
+		this.bgDX = bgDX;
+	}
+
 }

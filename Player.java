@@ -73,9 +73,6 @@ public class Player {
 		x = centerX = xPos;
 		y = centerY = yPos;
 
-		dx = 8;
-		dy = 8;
-
 		// load images from strip files
 		loadImages();
 		loadAllAnimations();
@@ -89,6 +86,7 @@ public class Player {
 		attackDamage = 8;
 		health = 10;
 		speed = 5;
+		dx = dy = 5;
 
 		setDimensions();
 	}
@@ -364,6 +362,7 @@ public class Player {
 			attackHeight = 80;
 
 			speed = 8;
+			dx = dy = 8;
 			attackDamage = 6;
 		}
 
@@ -376,8 +375,9 @@ public class Player {
 			attackWidth = 66;
 			attackHeight = 80;
 
-			health = 16;
 			speed = 6;
+			dx = dy = 6;
+			health = 16;
 			attackDamage = 6;
 		}
 	}
@@ -489,5 +489,9 @@ public class Player {
 
 	public void resetY(){
 		y = centerY;
+	}
+
+	public int getSpeed(){
+		return speed;
 	}
 }
