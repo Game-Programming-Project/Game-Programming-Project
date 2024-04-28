@@ -79,15 +79,12 @@ public class SoundManager { // a Singleton class
 		clip = loadClip("sounds/Level2/crawling.wav");
 		clips.put("crawling", clip);
 
-		
 		clip = loadClip("sounds/Level2/background2.wav");
 		clips.put("background2", clip);
 
-			
 		clip = loadClip("sounds/Level2/explosion.wav");
 		clips.put("explosion", clip);
 
-			
 		clip = loadClip("sounds/Level2/scorpion.wav");
 		clips.put("scorpionRattle", clip);
 
@@ -96,6 +93,9 @@ public class SoundManager { // a Singleton class
 
 		clip = loadClip("sounds/Level3/chestSpawn.wav");
 		clips.put("chestSpawn", clip);
+
+		clip = loadClip("sounds/Level3/victory.wav");
+		clips.put("victory", clip);
 
 	}
 
@@ -146,7 +146,7 @@ public class SoundManager { // a Singleton class
 
 	public void stopAllClips() {
 		for (Clip clip : clips.values()) {
-			if(clip!=null)
+			if (clip != null)
 				clip.stop();
 		}
 	}
@@ -154,7 +154,7 @@ public class SoundManager { // a Singleton class
 	public void setVolume(String title, float volume) {
 		Clip clip = getClip(title);
 
-		if(clip==null)
+		if (clip == null)
 			return;
 
 		FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);

@@ -68,21 +68,21 @@ public class GamePanel extends JPanel implements Runnable {
 
 		isRunning = false;
 		isPaused = false;
-		chest=null;
+		chest = null;
 
 		soundManager = SoundManager.getInstance();
 
 		currentLevel = "1";
-		numEnemies=-1;
+		numEnemies = -1;
 
 		image = new BufferedImage(1100, 700, BufferedImage.TYPE_INT_RGB);
 		soManager = new SolidObjectManager();
 		healthDisplay = new HealthDisplay(10, 10); // position it at the top left corner
 
-		//backgroundImage = ImageManager.loadImage("images/landing.jpg");
-    	//image = new BufferedImage(1200, 500, BufferedImage.TYPE_INT_RGB);
+		// backgroundImage = ImageManager.loadImage("images/landing.jpg");
+		// image = new BufferedImage(1200, 500, BufferedImage.TYPE_INT_RGB);
 
-		//image2 = new BufferedImage(1100, 600, BufferedImage.TYPE_INT_RGB);
+		// image2 = new BufferedImage(1100, 600, BufferedImage.TYPE_INT_RGB);
 	}
 
 	public void createGameEntities() {
@@ -96,7 +96,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 		entitySpawner = new EntitySpawner(this, soundManager, soManager, rocks, enemies, background, player);
 
-		levelInitializer = new LevelInitializer(this, soundManager, soManager, rocks, enemies, background, player, entitySpawner);
+		levelInitializer = new LevelInitializer(this, soundManager, soManager, rocks, enemies, background, player,
+				entitySpawner);
 	}
 
 	public void run() {
@@ -139,7 +140,8 @@ public class GamePanel extends JPanel implements Runnable {
 			}
 
 			rock.updateFX(); // update rock FX if any going on
-			if (rock.isDisappearCompleted() || rock.isFruitEaten()) { // if rock is destroyed and the effect is completed
+			if (rock.isDisappearCompleted() || rock.isFruitEaten()) { // if rock is destroyed and the effect is
+																		// completed
 				rockIterator.remove(); // then remove it from the game since it's no longer needed
 			}
 		}
@@ -158,7 +160,7 @@ public class GamePanel extends JPanel implements Runnable {
 			// if the player attacked while enemy collides then dmg enemy
 			if (enemy.collidesWithPlayer(player) && player.attackRegistered() && enemy.isAlive()) {
 
-				//System.out.println("enemy HIT for " + player.getAttackDamage() + " damage");
+				// System.out.println("enemy HIT for " + player.getAttackDamage() + " damage");
 				enemy.takeDamage(player.getAttackDamage());
 
 				if (!player.isInvincible())
@@ -171,13 +173,13 @@ public class GamePanel extends JPanel implements Runnable {
 				if (!player.isInvincible())
 					player.takeDamage(enemy.getAttackDamage());
 			}
-			
-			if((enemy instanceof RedBee) && !enemy.isAlive()){
-				//spawn 3 TinyBees when red bee dies
+
+			if ((enemy instanceof RedBee) && !enemy.isAlive()) {
+				// spawn 3 TinyBees when red bee dies
 				Point p = new Point(enemy.getMapX(), enemy.getMapY());
-				tempEnemies.add(new TinyBee(this, p.x+30, p.y, background, player));
-				tempEnemies.add(new TinyBee(this, p.x-30, p.y, background, player));
-				tempEnemies.add(new TinyBee(this, p.x, p.y-30, background, player));
+				tempEnemies.add(new TinyBee(this, p.x + 30, p.y, background, player));
+				tempEnemies.add(new TinyBee(this, p.x - 30, p.y, background, player));
+				tempEnemies.add(new TinyBee(this, p.x, p.y - 30, background, player));
 			}
 
 			// if enemy is dead then remove it from the game
@@ -185,8 +187,8 @@ public class GamePanel extends JPanel implements Runnable {
 				player.addScore(enemy.getScoreValue());
 				enemyIterator.remove();
 
-				System.out.println("NumEnemies "+numEnemies);
-				if(numEnemies!=-1)
+				System.out.println("NumEnemies " + numEnemies);
+				if (numEnemies != -1)
 					numEnemies--;
 			}
 		}
@@ -196,9 +198,9 @@ public class GamePanel extends JPanel implements Runnable {
 		// remove solid objects associated with rocks, if their rock was destroyed
 		soManager.removeDestroyedRocks();
 
-		if(numEnemies<1 && chest==null){
-			chest = new Chest(this, player.getX()-player.getHeight(), player.getY(), background);
-			soundManager.playClip("chestSpawn",false);
+		if (numEnemies < 1 && chest == null) {
+			chest = new Chest(this, player.getX() - player.getHeight(), player.getY(), background);
+			soundManager.playClip("chestSpawn", false);
 			System.out.println("chestSpawned");
 		}
 
@@ -215,7 +217,7 @@ public class GamePanel extends JPanel implements Runnable {
 		Boolean wouldCollide = soManager.collidesWithSolid(futurePosition);
 
 		// this makes the player walk through any solid object
-		 wouldCollide = false; // for testing purposes, comment out when done
+		wouldCollide = false; // for testing purposes, comment out when done
 
 		if (player != null && !isPaused) {
 			if (direction != 99 & direction != 88) {
@@ -253,7 +255,9 @@ public class GamePanel extends JPanel implements Runnable {
 			}
 
 			if (direction == 88 && playerOnChest()) {
-				if(!chest.isOpen()){
+				if (!chest.isOpen()) {
+					soundManager.stopClip("level3_background");
+					soundManager.playClip("victory", false);
 					chest.setOpen(true);
 					player.addScore(chest.getScoreValue());
 				}
@@ -294,7 +298,7 @@ public class GamePanel extends JPanel implements Runnable {
 				enemies.get(i).draw(imageContext);
 		}
 
-		if(chest !=null)
+		if (chest != null)
 			chest.draw(imageContext);
 
 		if (player != null)
@@ -385,11 +389,11 @@ public class GamePanel extends JPanel implements Runnable {
 		this.rocks = rocks;
 	}
 
-	public void bombBismuth(){
+	public void bombBismuth() {
 
 	}
 
-	public void setNumEnemies(int numEnemies){
+	public void setNumEnemies(int numEnemies) {
 		this.numEnemies = numEnemies;
 	}
 
@@ -411,8 +415,8 @@ public class GamePanel extends JPanel implements Runnable {
 		return null;
 	}
 
-	public boolean playerOnChest(){
-		if(chest!=null && chest.collidesWithPlayer(player))
+	public boolean playerOnChest() {
+		if (chest != null && chest.collidesWithPlayer(player))
 			return true;
 		return false;
 	}
