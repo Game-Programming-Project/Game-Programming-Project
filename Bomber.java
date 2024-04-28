@@ -104,6 +104,18 @@ public class Bomber extends Enemy {
         }
     }
 
+    public void takeDamage(int damage) {
+        health -= damage;
+        if (health < 0) {
+            health = 0;
+        }
+
+        if(!soundManager.isStillPlaying("bomberHit")){
+            soundManager.setVolume("bomberHit", 0.6f);
+            soundManager.playClip("bomberHit", false);
+        }
+    }
+
     public void loadWalkAnimations() {
         walkAnimationUp = loadAnimation("images/Enemies/Level3/Bomber/bomberWalkAway.png");
         walkAnimationDown = loadAnimation("images/Enemies/Level3/Bomber/bomberWalkForward.png");
