@@ -40,7 +40,7 @@ public class RedBee extends BeeAnimation{
 
         double distance = Math.sqrt(Math.pow(player.getX() - x, 2) + Math.pow(player.getY() - y, 2));
 
-        if(distance <=250){
+        if(distance <=150){
             if(!soundManager.isStillPlaying("beeSound")){
                 soundManager.playClip("beeSound", false);
             }

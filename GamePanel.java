@@ -193,7 +193,7 @@ public class GamePanel extends JPanel implements Runnable {
 		Boolean wouldCollide = soManager.collidesWithSolid(futurePosition);
 
 		// this makes the player walk through any solid object
-		// wouldCollide = false; // for testing purposes, comment out when done
+		wouldCollide = false; // for testing purposes, comment out when done
 
 		if (player != null && !isPaused) {
 			if (direction != 99 & direction != 88) {
@@ -212,8 +212,8 @@ public class GamePanel extends JPanel implements Runnable {
 			if(direction == 88 && playerOnLadder()){
 
 				//send player to next level if right click on ladder
-				levelInitializer.initLevelThree();
-				//currentLevel = levelInitializer.initNextLevel(currentLevel);
+				//levelInitializer.initLevelThree();
+				currentLevel = levelInitializer.initNextLevel(currentLevel);
 
 				if(!soundManager.isStillPlaying("ladderDown"))
 					soundManager.playClip("ladderDown", false);

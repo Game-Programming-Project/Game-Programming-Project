@@ -107,7 +107,7 @@ public class LevelInitializer {
 		soManager.initLevelThree(); // set up map boundaries
 		soManager.setAllObjectsVisible(false);
 
-		soundManager.setVolume("level3_background", 1f);
+		soundManager.setVolume("level3_background", 0.7f);
 		soundManager.playClip("level3_background", true);
 		
 
