@@ -9,6 +9,7 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 	private JLabel gameL;
 	private JLabel materialLabel;
 
+	private JLabel startGameLabel;
 	private JLabel scoreLabel;
 	private JLabel timeLabel;
 
