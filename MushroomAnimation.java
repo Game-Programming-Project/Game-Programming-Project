@@ -47,9 +47,9 @@ public class MushroomAnimation extends Enemy {
         if (!walkAnimation.isStillActive()) // if the animation is not active, no need to update
             return;
 
-		if(!soundManager.isStillPlaying("mushroomWalk") && walkAnimation.isStillActive() && walkAnimation!=walkAnimationDown && !blowingUp) {
-			playWalkSound();
-		}
+		//if(!soundManager.isStillPlaying("mushroomWalk") && walkAnimation.isStillActive() && walkAnimation!=walkAnimationDown && !blowingUp) {
+		//	playWalkSound();
+		//}
 
         walkAnimation.update();
 
@@ -70,10 +70,14 @@ public class MushroomAnimation extends Enemy {
 		int oldMapY = mapY;
 
 		double distance = Math.sqrt(Math.pow(player.getX() - x, 2) + Math.pow(player.getY() - y, 2));
-		if(distance<300)
+		if(distance<150)
 			inRange=true;
 		else
 			inRange=false;
+
+		if(distance < 150 && !soundManager.isStillPlaying("mushroomWalk") && !blowingUp) {
+			playWalkSound();
+		}
 
 		if (distance <= 50) 
 			blowUp();

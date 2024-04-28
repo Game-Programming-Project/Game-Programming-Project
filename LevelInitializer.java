@@ -67,11 +67,11 @@ public class LevelInitializer {
 		// add rocks here
 		Point p = entitySpawner.getRandomPoint(1946, 2083, 798, 1137);
 		rocks.add(new Rock(gamePanel, p.x, p.y, background, true));
-		entitySpawner.spawnRocks(15, 620, 844, 839, 1138, 75, 13, 8, 3, 1);
-		entitySpawner.spawnRocks(6, 873, 1127, 850, 1106, 75, 13, 8, 3, 1);
-		entitySpawner.spawnRocks(25, 1075, 1622, 682, 1225, 75, 13, 8, 3, 1);
-		entitySpawner.spawnRocks(7, 1605, 1807, 914, 1062, 75, 13, 8, 3, 1);
-		entitySpawner.spawnRocks(15, 1806, 2088, 790, 1299, 75, 13, 8, 3, 1);
+		entitySpawner.spawnRocks(15, 633, 847, 808, 1138, 75, 13, 8, 3, 1); // left area
+		entitySpawner.spawnRocks(6, 873, 1127, 850, 1106, 75, 13, 8, 3, 1); // left corridor
+		entitySpawner.spawnRocks(25, 1075, 1622, 682, 1225, 75, 13, 8, 3, 1); // middle area
+		entitySpawner.spawnRocks(7, 1605, 1807, 914, 1062, 75, 13, 8, 3, 1); // right corridor
+		entitySpawner.spawnRocks(15, 1806, 2088, 790, 1299, 75, 13, 8, 3, 1); // right area
 
 		// add enemies under here
 		entitySpawner.spawnLevelOneEnemies();
@@ -96,8 +96,8 @@ public class LevelInitializer {
 		soManager.setAllObjectsVisible(false);
 		
 		// Add level 2 background sound
-		soundManager.playClip("background2", true);
 		soundManager.setVolume("background2", 1.0f);
+		soundManager.playClip("background2", true);
 
 		entitySpawner.spawnRocks(6, 662, 1018, 182, 546, 65, 8, 20, 5, 2);
 		entitySpawner.spawnRocks(15, 384, 1298, 937, 1210, 65, 8, 20, 5, 2);
