@@ -4,28 +4,14 @@ import java.awt.event.*; // need this to respond to GUI events
 
 public class GameWindow extends JFrame implements ActionListener, KeyListener, MouseListener {
 
-	// declare instance variables for user interface objects
-
-	// declare labels
-
-	//private JLabel statusBarL;
-	//private JLabel keyL;
-	//private JLabel mouseL;
-
-	// declare text fields
-
-	//private JTextField statusBarTF;
-	//private JTextField keyTF;
-	//private JTextField mouseTF;
-
 	private static final int initialTimeInSeconds = 120;		
 	// Labels declaration 
 	private JLabel gameL;
 	private JLabel materialLabel;
+
 	private JLabel scoreLabel;
 	private JLabel timeLabel;
-	private JLabel startGameLabel;
-	
+
 	// Text fields declaration 
 	private JTextField materialTF;
 	private JTextField scoreTF;
@@ -38,11 +24,8 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 	private JButton restartB;   
 	private JButton exitB; 
 
-
-
 	// Variable declarations
 	private int score; 
-	private int numLives;
 	private int remainingTime;
 	private boolean gameOver;
 	private boolean isTimerPaused;
@@ -55,47 +38,12 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 	@SuppressWarnings({ "unchecked" })
 	public GameWindow() {
 
-
-		//setSize(1200, 875);
-
-		// create user interface objects
-		// create labels
-		//statusBarL = new JLabel("Application Status: ");
-		//keyL = new JLabel("Key Pressed: ");
-		//mouseL = new JLabel("Location of Mouse Click: ");
-  
-		// create text fields and set their colour, etc.
-		//statusBarTF = new JTextField(25);
-		//keyTF = new JTextField(25);
-		//mouseTF = new JTextField(25);
-
-		//statusBarTF.setEditable(false);
-		//keyTF.setEditable(false);
-		//mouseTF.setEditable(false);
-
-		//statusBarTF.setBackground(Color.CYAN);
-		//keyTF.setBackground(Color.YELLOW);
-		//mouseTF.setBackground(Color.GREEN);
-
-		// create buttons
-
-		//startB = new JButton("Start Game");
-		//pauseB = new JButton("Pause Game");
-		//endB = new JButton("End Game");
-		//startNewB = new JButton("Start New Game");
-		//focusB = new JButton("Shoot Cat");
-		//exitB = new JButton("Exit");
-
-		// add listener to each button (same as the current object)
-
-		//startB.addActionListener(this);
-
 		setTitle ("A Game of a Miner's Exploration"); // window name
 		setSize (1920, 800); // window size
 
 		// Load image for header panel
 		Image originalImage = ImageManager.loadImage("images/Game Title.png");
-		int panelWidth = 800; // Adjust this to match the desired width of the panel
+		int panelWidth = 600; // Adjust this to match the desired width of the panel
 		int panelHeight = 100; // Adjust this to match the desired height of the panel
 		Image scaledImage = originalImage.getScaledInstance(panelWidth, panelHeight, Image.SCALE_SMOOTH);
 		ImageIcon gameTitleIcon = new ImageIcon(scaledImage);
@@ -147,28 +95,6 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 
 		GridLayout gridLayout;
 
-		// create the gamePanel for game entities
-
-		// create infoPanel
-
-		//JPanel infoPanel = new JPanel();
-		//gridLayout = new GridLayout(3, 2);
-		//infoPanel.setLayout(gridLayout);
-		//infoPanel.setBackground(Color.ORANGE);
-
-		// add user interface objects to infoPanel
-
-		//infoPanel.add(statusBarL);
-		//infoPanel.add(statusBarTF);
-
-		//infoPanel.add(keyL);
-		//infoPanel.add(keyTF);
-
-		//infoPanel.add(mouseL);
-		//infoPanel.add(mouseTF);
-
-		// create buttonPanel
-
 
 		// // Create the gamePanel for game entities and set properties
 		gamePanel = new GamePanel(this);
@@ -179,39 +105,13 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 		startGameLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		startGameLabel.setFont(new Font("Arial", Font.BOLD, 20));
 		startGameLabel.setForeground(Color.BLACK);
-
 		
+		// Create the gamePanel for game entities and set properties
+		gamePanel = new GamePanel(this);
+		gamePanel.setPreferredSize(new Dimension(1100, 600));
 	
-		// //Create the play button from an image
-		// ImageIcon playIcon = new ImageIcon("images/play.png");
-		// Image scaledPlayImage = playIcon.getImage().getScaledInstance(200, 80, Image.SCALE_SMOOTH);
-		// playIcon = new ImageIcon(scaledPlayImage);
-		// playB = new JButton(playIcon);
-		// playB.setContentAreaFilled(false); // Make the button transparent
-		// playB.setBorderPainted(false); // Remove border
-
-		
-
-		//Add startGameLabel
-		// gamePanel.add(startGameLabel);
-		// startGameLabel.setAlignmentX(Component.TOP_ALIGNMENT); // Center the label horizontally
-		
-		// // Add rigid area to create space between the label and button
-		// gamePanel.add(Box.createRigidArea(new Dimension(0, 10))); // Adjust the vertical space as needed
-		// startGameLabel.setVisible(false);
-		// // Add playB button
-		// playB.setPreferredSize(new Dimension(200, 80)); // Set button size
-		// gamePanel.add(playB);
-		// playB.setAlignmentX(Component.BOTTOM_ALIGNMENT); // Center the button horizontally
-		// playB.setVisible(false);
-		gamePanel.add(startGameLabel);
-		startGameLabel.setVisible(false);
-		//gamePanel.add(playB); // Add play button to the bottom
-		// Set the action command for the play button
-		//playB.setActionCommand("Play");
 	
 		// Create buttonPanel
-
 		JPanel buttonPanel = new JPanel();
 		FlowLayout f = new FlowLayout();
 		buttonPanel.setLayout(f);
@@ -282,7 +182,6 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 
 		if (command.equals("Play")) {
 			gamePanel.startGame();
-			setStartGameComponentsVisible(true);
 		}
 
 		if (command.equals("Pause Game")) {
@@ -306,10 +205,6 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 			pauseB.setText ("Pause Game");
 			gamePanel.startNewGame();
 		}
-
-		// if (command.equals(focusB.getText())){
-		// 	//gamePanel.shootCat();
-		// }
 
 		if (command.equals(exitB.getText()))
 			System.exit(0);
@@ -384,11 +279,6 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 	public void mouseReleased(MouseEvent e) {
 
 	}
-
-	// Method to set the visibility of the start game label 
-    public void setStartGameComponentsVisible(boolean isVisible) {
-        startGameLabel.setVisible(isVisible);
-    }
 
 	public void updateScore(int score) {
 		scoreTF.setText(String.valueOf(score));

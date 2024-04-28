@@ -10,7 +10,10 @@ public class CharacterSelection extends JPanel {
     private String selectedCharacter;
     private SoundManager sm;
 
+    private GamePanel gamePanel;
+
     public CharacterSelection(GamePanel gamePanel) {
+        this.gamePanel = gamePanel; // Initialize gamePanel
 
         sm = SoundManager.getInstance();
 
@@ -65,6 +68,7 @@ public class CharacterSelection extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 selectedCharacter = "1";
                 gamePanel.setCharacter(selectedCharacter);
+                displayBackground();
             }
         });
 
@@ -72,6 +76,7 @@ public class CharacterSelection extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 selectedCharacter = "2";
                 gamePanel.setCharacter(selectedCharacter);
+                displayBackground();
             }
         });
 
@@ -79,6 +84,7 @@ public class CharacterSelection extends JPanel {
             public void actionPerformed(ActionEvent e) {
                 selectedCharacter = "3";
                 gamePanel.setCharacter(selectedCharacter);
+                displayBackground();
             }
         });
 
@@ -109,7 +115,6 @@ public class CharacterSelection extends JPanel {
         add(character3Label, gbc);
 
         sm.playClip("lobby", true);
-
     }
 
     // send the selected character to the gamePanel
@@ -117,4 +122,20 @@ public class CharacterSelection extends JPanel {
         return selectedCharacter;
     }
 
+    public void displayBackground() {
+        if (gamePanel != null && selectedCharacter != null) { // Ensure gamePanel is not null and a character is selected
+            gamePanel.setBackground(new Color(136, 159, 191)); 
+            gamePanel.setLayout(new GridBagLayout());
+            GridBagConstraints gbc = new GridBagConstraints();
+            JLabel startLabel = new JLabel("Click Play To Start Game");
+            startLabel.setFont(new Font("PressStart2P", Font.BOLD, 48)); // Change "PressStart2P" to the desired font name
+            startLabel.setForeground(Color.WHITE); // Set text color to white
+            gbc.gridx = 0;
+            gbc.gridy = 0;
+            gbc.weightx = 1.0;
+            gbc.weighty = 1.0;
+            gbc.anchor = GridBagConstraints.CENTER;
+            gamePanel.add(startLabel, gbc);
+        }
+    }
 }

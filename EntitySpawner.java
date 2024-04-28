@@ -51,6 +51,30 @@ public class EntitySpawner {
 
 	public void spawnLevelTwoEnemies() {
 
+		// Spawn 2 scorpions
+		for (int i = 0; i < 3; i++) { 
+			Point p = getRandomPoint(896, 1149, 834, 1543);
+			if (p != null) {
+				enemies.add(new ScorpionAnimation(gamePanel, p.x, p.y, background, player, soManager));
+			}
+		}
+
+		// Spawn 5 spiders 
+		for (int i = 0; i < 5; i++) { 
+			Point p = getRandomPoint(1484, 2281, 709, 1487);
+			if (p != null) {
+				enemies.add(new SpiderAnimation(gamePanel, p.x, p.y, background, player, soManager));
+			}
+		}
+
+		// Spawn 2 bismuths
+		for (int i = 0; i < 2; i++) { 
+			Point p = getRandomPoint(2619, 3139, 729, 1336);
+			if (p != null) {
+				enemies.add(new BismuthAnimation(gamePanel, p.x, p.y, background, player, soManager));
+			}
+		}
+
 	} 	
 
 	public void spawnLevelThreeEnemies() {
@@ -83,6 +107,21 @@ public class EntitySpawner {
 			}
 		
 		}
+
+	}
+	
+	public void spawnLevelTwoRocks() {
+		spawnRocks(10, 888, 1251, 576, 922, 70, 12, 20, 15, 4);
+		spawnRocks(6, 706, 911, 806, 996, 70, 12, 20, 15, 4);
+		spawnRocks(8, 970, 1146, 1058, 1325, 70, 12, 20, 15, 4);
+		spawnRocks(12, 831, 1385, 1359, 1538, 70, 12, 20, 15, 4);
+		spawnRocks(12, 1515, 2122, 916, 1251, 70, 12, 20, 15, 4);
+		spawnRocks(10, 1660, 2227, 638, 874, 70, 12, 20, 15, 4);
+		spawnRocks(6, 1771, 2060, 1271, 1589, 70, 12, 20, 15, 4);
+		spawnRocks(4, 2310, 2429, 1121, 1310, 70, 12, 20, 15, 4);
+		spawnRocks(8, 2296, 2653, 859, 1035, 70, 12, 20, 15, 4);
+		spawnRocks(20, 2633, 3130, 726, 1333, 70, 12, 20, 15, 4);
+		spawnRocks(10, 2679, 3076, 1342, 1552, 70, 12, 20, 15, 4);
 
 	}
 
