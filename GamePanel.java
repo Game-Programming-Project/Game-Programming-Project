@@ -72,7 +72,7 @@ public class GamePanel extends JPanel implements Runnable {
 		isPaused = false;
 		soundManager = SoundManager.getInstance();
 
-		currentLevel="1";
+		currentLevel = "1";
 
 		image = new BufferedImage(1100, 700, BufferedImage.TYPE_INT_RGB);
 		soManager = new SolidObjectManager();
@@ -208,26 +208,25 @@ public class GamePanel extends JPanel implements Runnable {
 				player.attack();
 			}
 
-			//right click on ladder
-			if(direction == 88 && playerOnLadder()){
+			// right click on ladder
+			if (direction == 88 && playerOnLadder()) {
 
-				//send player to next level if right click on ladder
-				//levelInitializer.initLevelThree();
+				// send player to next level if right click on ladder
 				currentLevel = levelInitializer.initNextLevel(currentLevel);
 
-				if(!soundManager.isStillPlaying("ladderDown"))
+				if (!soundManager.isStillPlaying("ladderDown"))
 					soundManager.playClip("ladderDown", false);
 			}
 
-			//right click on fruit
-			if(direction == 88 && playerOnFruit()!=null){
+			// right click on fruit
+			if (direction == 88 && playerOnFruit() != null) {
 				Rock r = playerOnFruit();
 
 				player.heal(2);
 
-				if(!soundManager.isStillPlaying("munch"))
+				if (!soundManager.isStillPlaying("munch"))
 					soundManager.playClip("munch", false);
-				
+
 				r.setFruitEaten(true);
 			}
 		}
@@ -327,14 +326,14 @@ public class GamePanel extends JPanel implements Runnable {
 		return false;
 	}
 
-	public Rock playerOnFruit(){
+	public Rock playerOnFruit() {
 		for (Rock rock : rocks) {
 			if (rock.hasFruit() && rock.collidesWithPlayer(player)) {
 				return rock;
 			}
 		}
 		return null;
-	
+
 	}
 
 	// method sets which character the player will be using
@@ -354,7 +353,7 @@ public class GamePanel extends JPanel implements Runnable {
 		background = bg;
 	}
 
-	public String getCurrentLevel(){
+	public String getCurrentLevel() {
 		return currentLevel;
 	}
 
