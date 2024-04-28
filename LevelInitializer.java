@@ -48,8 +48,9 @@ public class LevelInitializer {
 		enemies.clear();
 
 		// offsetX is 360, offsetY is 80
-		background = new Background(gamePanel, "images/Maps/Testing/Level1MapTest.png", 96 + player.getSpeed(), 390, -30);
-				
+		background = new Background(gamePanel, "images/Maps/Testing/Level1MapTest.png", 96 + player.getSpeed(), 390,
+				-30);
+
 		soManager.setBg(background);
 		gamePanel.setBackground(background);
 		entitySpawner.setBg(background);
@@ -58,11 +59,10 @@ public class LevelInitializer {
 		soManager.setAllObjectsVisible(false);
 
 		soundManager.playClip("background", true);
-		soundManager.setVolume("background", 0.7f);
 
 		// add rocks here
 		Point p = entitySpawner.getRandomPoint(1946, 2083, 798, 1137);
-		rocks.add(new Rock(gamePanel,p.x, p.y, background, true));
+		rocks.add(new Rock(gamePanel, p.x, p.y, background, true));
 		entitySpawner.spawnRocks(15, 620, 844, 839, 1138, 75, 13, 8, 3, 1);
 		entitySpawner.spawnRocks(6, 873, 1127, 850, 1106, 75, 13, 8, 3, 1);
 		entitySpawner.spawnRocks(25, 1075, 1622, 682, 1225, 75, 13, 8, 3, 1);
@@ -97,7 +97,8 @@ public class LevelInitializer {
 		enemies.clear();
 
 		// note for level 3 offsetX: -90, offsetY: 400
-		background = new Background(gamePanel, "images/Maps/Testing/Level3MapTest.png", 96 + player.getSpeed(), -90, 300);
+		background = new Background(gamePanel, "images/Maps/Testing/Level3MapTest.png", 96 + player.getSpeed(), -90,
+				300);
 
 		player.resetX();
 		player.resetY();
@@ -114,7 +115,7 @@ public class LevelInitializer {
 
 		// rocks under here
 		entitySpawner.spawnLevelThreeRocks();
-		
+
 		// enemies under here
 		entitySpawner.spawnLevelThreeEnemies();
 	}

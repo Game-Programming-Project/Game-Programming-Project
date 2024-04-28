@@ -41,7 +41,7 @@ public class EntitySpawner {
 		}
 
 		for (int i = 0; i < 2; i++) { // run 2 times
-			Point p = getRandomPoint(1841, 2063, 809, 1146);
+			Point p = getRandomPoint(1837, 1875, 811, 1072);
 			if (p != null) {
 				enemies.add(new MushroomAnimation(gamePanel, p.x, p.y, background, player, soManager));
 			}
@@ -49,29 +49,28 @@ public class EntitySpawner {
 
 	}
 
-
-	public void spawnLevelTwoEnemies(){
-
-	}
-
-	public void spawnLevelThreeEnemies(){
+	public void spawnLevelTwoEnemies() {
 
 	}
 
-	public void spawnLevelThreeRocks(){
-		spawnRocks(25,1061,1943,1357,1571,50,15,20,10,5); // below spawn
-		spawnRocks(15,1708,2027,910,1355,50,15,20,10,5); // right of spawn
-		spawnRocks(15,1105, 1351, 1010, 1362,50,15,20,10,5); // left of spawn
-		spawnRocks(8,1426,1561,367,974,50,15,20,10,5); // middle corridor above nose
-		spawnRocks(15,1923,2606,656,834,50,15,20,10,5);//top right straight
-		spawnRocks(6,2391,2600,506,656,50,15,20,10,5); // top right corner
-		spawnRocks(10,2021,2689,1172,1581,50,15,20,10,5); // bottom right corner
-		spawnRocks(7,1555,1820,401,640,50,15,20,10,5); // top right of nose
-		spawnRocks(10,1165,1426,376,632,50,15,20,10,5); // top left of nose
-		spawnRocks(13,247,963,1159,1549,50,15,20,10,5); // bottom left corner
-		spawnRocks(7,904,1030,587,1156,50,15,20,10,5); //left corridor
-		spawnRocks(10,430,905,591,774,50,15,20,10,5); // top left straight
-		spawnRocks(5,500,679,435,593,50,15,20,10,5); // top left corner
+	public void spawnLevelThreeEnemies() {
+
+	}
+
+	public void spawnLevelThreeRocks() {
+		spawnRocks(25, 1061, 1943, 1357, 1571, 50, 15, 20, 10, 5); // below spawn
+		spawnRocks(15, 1708, 2027, 910, 1355, 50, 15, 20, 10, 5); // right of spawn
+		spawnRocks(15, 1105, 1351, 1010, 1362, 50, 15, 20, 10, 5); // left of spawn
+		spawnRocks(8, 1426, 1561, 367, 974, 50, 15, 20, 10, 5); // middle corridor above nose
+		spawnRocks(15, 1923, 2606, 656, 834, 50, 15, 20, 10, 5);// top right straight
+		spawnRocks(6, 2391, 2600, 506, 656, 50, 15, 20, 10, 5); // top right corner
+		spawnRocks(10, 2021, 2689, 1172, 1581, 50, 15, 20, 10, 5); // bottom right corner
+		spawnRocks(7, 1555, 1820, 401, 640, 50, 15, 20, 10, 5); // top right of nose
+		spawnRocks(10, 1165, 1426, 376, 632, 50, 15, 20, 10, 5); // top left of nose
+		spawnRocks(13, 247, 963, 1159, 1549, 50, 15, 20, 10, 5); // bottom left corner
+		spawnRocks(7, 904, 1030, 587, 1156, 50, 15, 20, 10, 5); // left corridor
+		spawnRocks(10, 430, 905, 591, 774, 50, 15, 20, 10, 5); // top left straight
+		spawnRocks(5, 500, 679, 435, 593, 50, 15, 20, 10, 5); // top left corner
 	}
 
 	public void spawnRocks(int num, int x1, int x2, int y1, int y2, double basicProbability, double copperProbability,
