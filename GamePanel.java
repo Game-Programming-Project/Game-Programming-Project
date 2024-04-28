@@ -278,7 +278,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		Graphics2D g2 = (Graphics2D) getGraphics(); // get the graphics context for the panel
 
-		g2.drawImage(image, 0, 0, 1100, 500, null);
+		g2.drawImage(image, 0, 0, 1100, 700, null);
 
 		imageContext.dispose();
 		g2.dispose();
