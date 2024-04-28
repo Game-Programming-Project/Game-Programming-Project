@@ -4,12 +4,15 @@ import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
 public class Rock {
-    protected Image rockImage, destroyedRockImage;
+    protected Image rockImage, destroyedRockImage, ladderImage, fruitImage;
     private int width, height;
     private int x, y;
 
     private int mapX, mapY;
     private GamePanel gPanel;
+
+    protected int materialValue;
+    protected int scoreValue;
 
     private Background bg;
 
@@ -20,6 +23,10 @@ public class Rock {
 
     private DisappearFX disappearFX;
 
+    private Boolean hasLadder;
+    private Boolean hasFruit;
+    private Boolean fruitEaten;
+
     public Rock(GamePanel gPanel, int mapX, int mapY, Background bg) {
 
         this.mapX = mapX;
@@ -29,6 +36,9 @@ public class Rock {
 
         width = height = 30;
 
+        materialValue=0;
+        scoreValue=5;
+
         soundManager = SoundManager.getInstance();
 
         rockImage = ImageManager.loadImage("images/Rocks/basicRock.png");
@@ -37,14 +47,43 @@ public class Rock {
         disappearFX = null;
         destroyed = false;
         disappearCompleted = false;
+        hasLadder=false;
+        hasFruit=false;
+        fruitEaten=false;
+        fruitImage=null;
+    }
+
+    public Rock(GamePanel gPanel, int mapX, int mapY, Background bg, Boolean hasLadder){
+        this(gPanel, mapX, mapY, bg);
+
+        this.hasLadder=hasLadder;
+        if(hasLadder)
+            setLadderImage();
+    }
+
+    public Rock(GamePanel gPanel, int mapX, int mapY, Background bg, Boolean hasLadder, Boolean hasFruit){
+        this(gPanel, mapX, mapY, bg, hasLadder);
+
+        this.hasFruit=hasFruit;
+        if(hasFruit)
+            setFruitImage();
     }
 
     public void draw(Graphics2D g2) {
 
         updateScreenCoordinates();
 
-        if (destroyed) { // draw if rock is NOT destroyed
-            // g2.drawImage(destroyedRockImage, x, y, width, height, null);
+        if(destroyed && hasFruit && !fruitEaten){
+            g2.drawImage(fruitImage, x, y, width, height, null);
+            return;
+        }
+
+        if(destroyed && hasLadder){
+            g2.drawImage(ladderImage, x, y, width, height, null);
+            return;
+        }
+
+        if (destroyed) { // draw disappear effect if rock is destroyed
             if (disappearFX != null) {
                 disappearFX.draw(g2);
                 if (disappearFX.isCompleted())
@@ -59,6 +98,10 @@ public class Rock {
     // background map coordinates
     // the x and y that is updated are the coordinates to be drawn to the screen
     public void updateScreenCoordinates() { // meant to be called right before the entity is drawn to the screen
+
+        if(bg==null)
+            return;
+
         int bgX = bg.getbg1X();
         int bgY = bg.getbg1Y();
 
@@ -102,6 +145,26 @@ public class Rock {
         disappearFX = fx;
     }
 
+    public Boolean hasLadder(){
+        return hasLadder;
+    }
+
+    public void setHasLadder(Boolean hasLadder){
+        this.hasLadder=hasLadder;
+    }
+
+    public void setLadderImage(){
+        String level = gPanel.getCurrentLevel();
+        if(level=="1")
+            ladderImage=ImageManager.loadImage("images/Rocks/Level1_ladder.png");
+        
+        if(level=="2")
+            ladderImage=ImageManager.loadImage("images/Rocks/Level2_ladder.png");
+        
+        if(level=="3")
+            ladderImage=ImageManager.loadImage("images/Rocks/Level3_ladder.png");
+    }
+
     public String getRockImageString() { // method to return the current image of the rock(destroyed and alive)
         if (!destroyed)
             return "images/Rocks/basicRock.png";
@@ -139,6 +202,34 @@ public class Rock {
         return disappearCompleted;
     }
 
+    public Boolean hasFruit(){
+        return hasFruit;
+    }
+
+    public void setHasFruit(Boolean f){
+        
+        if(f && !hasFruit)
+            setFruitImage();
+
+        this.hasFruit=f;
+    }
+
+    public void setFruitEaten(Boolean fruitEaten){
+        this.fruitEaten=fruitEaten;
+    }
+
+    public void setFruitImage(){
+        String level = gPanel.getCurrentLevel();
+        if(level=="1")
+            fruitImage=ImageManager.loadImage("images/Player/Hearts/starfruit.png");
+        
+        if(level=="2")
+            fruitImage=ImageManager.loadImage("images/Player/Hearts/xxx.png");
+        
+        if(level=="3")
+            fruitImage=ImageManager.loadImage("images/Player/Hearts/Prismatic_Shard.png");
+    }
+
     public void updateFX() {
         if (disappearFX != null) {
             disappearFX.update();
@@ -146,6 +237,14 @@ public class Rock {
                 disappearFX = null;
             }
         }
+    }
+
+    public int getMaterialValue(){
+        return materialValue;
+    }
+
+    public int getScoreValue(){
+        return scoreValue;
     }
 
 }

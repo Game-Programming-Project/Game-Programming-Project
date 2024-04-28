@@ -3,7 +3,7 @@ import java.awt.image.BufferedImage;
 import java.awt.Graphics2D;
 import java.util.Random;
 
-public class TinyBee extends RedBee{
+public class TinyBee extends Enemy{
     
     public TinyBee(GamePanel gPanel, int mapX, int mapY, Background bg, Player p) {
 		super(gPanel, mapX, mapY, bg, p);
@@ -21,7 +21,21 @@ public class TinyBee extends RedBee{
 		dx = 2;
 		dy = 2;
 
+        health = 5;
+        attackDamage = 0;
+        scoreValue = 10;
 	}
+
+    public void update() {
+        if (!walkAnimation.isStillActive()) // if the animation is not active, no need to update
+            return;
+
+        walkAnimation.update();
+
+        if (health <= 0){
+            isAlive = false;
+        }   
+    }
 
     public void move() {
         int oldMapX = mapX;

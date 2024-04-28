@@ -31,7 +31,9 @@ public class Enemy {
 
     protected int aggression; // how aggressive the enemy is, how likely it is to attack the player
     protected int health;
-    private int attackDamage;
+    protected int attackDamage;
+
+    protected int scoreValue;
 
     protected Boolean isAlive;
 
@@ -54,6 +56,7 @@ public class Enemy {
 
         isAlive = true;
         attackDamage=1;
+        scoreValue=10;
     }
 
     public void loadWalkAnimation() {
@@ -182,6 +185,9 @@ public class Enemy {
         if (health < 0) {
             health = 0;
         }
+
+        if(!soundManager.isStillPlaying("enemyHit"))
+            soundManager.playClip("enemyHit", false);
     }
 
     // method used in detecting if player will collide with a solid object
@@ -215,6 +221,18 @@ public class Enemy {
             futureY = y + dy;
 
         return new Rectangle2D.Double(futureX, futureY, width, height);
+    }
+
+    public int getMapX() {
+        return mapX;
+    }
+
+    public int getMapY() {
+        return mapY;
+    }
+
+    public int getScoreValue() {
+        return scoreValue;
     }
 
 }

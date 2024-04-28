@@ -34,6 +34,9 @@ public class SoundManager { // a Singleton class
 		clip = loadClip("sounds/Level1/mushroomWalk.wav"); // played when a mushroom walks
 		clips.put("mushroomWalk", clip);
 
+		clip = loadClip("sounds/Level1/mushroomBoom.wav"); // played when a mushroom explodes
+		clips.put("mushroomBoom", clip);
+
 		clip = loadClip("sounds/Level1/grasshopperJump.wav"); // played when a grasshopper jumps
 		clips.put("grasshopperJump", clip);
 
@@ -51,6 +54,27 @@ public class SoundManager { // a Singleton class
 
 		clip = loadClip("sounds/Level2/dripping_water.wav");
 		clips.put("dripping", clip);
+
+		clip = loadClip("sounds/enemyHit.wav");
+		clips.put("enemyHit", clip);
+
+		clip = loadClip("sounds/ladderDown.wav");
+		clips.put("ladderDown", clip);
+
+		clip = loadClip("sounds/player/munch.wav");
+		clips.put("munch", clip);
+
+		clip = loadClip("sounds/Level3/bomberHit.wav");
+		clips.put("bomberHit", clip);
+
+		clip = loadClip("sounds/Player/damage.wav");
+		clips.put("damagePlayer", clip);
+
+		clip = loadClip("sounds/Level3/level3_background.wav");
+		clips.put("level3_background", clip);
+
+		clip = loadClip("sounds/Level3/batFlap.wav");
+		clips.put("batFlap", clip);
 
 		clip = loadClip("sounds/Level2/crawling.wav");
 		clips.put("crawling", clip);
@@ -126,6 +150,9 @@ public class SoundManager { // a Singleton class
 
 	public void setVolume(String title, float volume) {
 		Clip clip = getClip(title);
+
+		if(clip==null)
+			return;
 
 		FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 

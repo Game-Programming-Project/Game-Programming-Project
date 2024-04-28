@@ -52,7 +52,7 @@ public class Background {
 
 		bg1X = ((bgImageWidth - panelWidth) / 2) * -1; // position panel at centre of image
 		bg1Y = ((bgImageHeight - panelHeight) / 2) * -1;
-		
+
 		bg1X += offsetX;
 		bg1Y -= offsetY;
 
@@ -183,6 +183,10 @@ public class Background {
 
 	public int getbg1Y() {
 		return bg1Y;
+	}
+
+	public void setBgDX(int bgDX) {
+		this.bgDX = bgDX;
 	}
 
 }

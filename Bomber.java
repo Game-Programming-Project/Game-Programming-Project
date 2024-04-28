@@ -32,6 +32,9 @@ public class Bomber extends Enemy {
 
         dx=5;
         dy=3;
+
+        health = 18;
+        scoreValue = 100;
     }
 
     public void move() {
@@ -101,6 +104,18 @@ public class Bomber extends Enemy {
                     mapX -= dx;
                 }
             }
+        }
+    }
+
+    public void takeDamage(int damage) {
+        health -= damage;
+        if (health < 0) {
+            health = 0;
+        }
+
+        if(!soundManager.isStillPlaying("bomberHit")){
+            soundManager.setVolume("bomberHit", 0.6f);
+            soundManager.playClip("bomberHit", false);
         }
     }
 

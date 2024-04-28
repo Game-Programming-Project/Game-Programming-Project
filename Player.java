@@ -42,15 +42,19 @@ public class Player {
 
 	private Long invincibleStart;
 
+	private SoundManager soundManager;
 	private SolidObjectManager soManager;
 	private SolidObject solidObject;
 
-	private int centerX;
-	private int centerY;
+	private int centerX, centerY;
 
-	private int attackDamage;
-	private int health;
+	private int materials;
 
+	private int attackDamage, baseAttackDamage;
+	private int health, maxHealth;
+	private int speed;
+
+	private int score;
 
 	public Player(GamePanel p, int xPos, int yPos, String cType, SolidObjectManager soManager) {
 
@@ -68,15 +72,10 @@ public class Player {
 
 		panel = p;
 
-		setDimensions();
-
 		this.soManager = soManager;
 
 		x = centerX = xPos;
 		y = centerY = yPos;
-
-		dx = 8;
-		dy = 8;
 
 		// load images from strip files
 		loadImages();
@@ -88,8 +87,16 @@ public class Player {
 		solidObject = null;
 		invincible = false;
 
-		attackDamage = 5;
-		health = 10;
+		baseAttackDamage = attackDamage = 8;
+		health = maxHealth = 10;
+		speed = 5;
+		dx = dy = 5;
+
+		setDimensions();
+
+		soundManager = SoundManager.getInstance();
+
+		score = materials=0;
 	}
 
 	public void start() {
@@ -122,6 +129,9 @@ public class Player {
 
 		walkAnimation.update();
 
+		int dmgIncrease = materials/10;
+
+		attackDamage = baseAttackDamage + dmgIncrease;
 	}
 
 	public boolean attack() {
@@ -130,7 +140,6 @@ public class Player {
 		else
 			attacking = true;
 
-		
 		attackAnimation.start();
 		attackRegistered = false;
 
@@ -139,8 +148,9 @@ public class Player {
 
 	public int move(int direction) {
 
-		if(soManager!=null)
-			solidObject = collidesWithSolid(); // if the player collides with a solid object (map boundary) this will be !=null
+		if (soManager != null)
+			solidObject = collidesWithSolid(); // if the player collides with a solid object (map boundary) this will be
+												// !=null
 
 		if (!walkAnimation.isStillActive())
 			return 0;
@@ -243,17 +253,21 @@ public class Player {
 	}
 
 	public void setDirections(int direction) {
-		if (direction == 1 && directions.contains(Integer.valueOf(1))) // already moved left so can move right (back to centre)
+		if (direction == 1 && directions.contains(Integer.valueOf(1))) // already moved left so can move right (back to
+																		// centre)
 			directions.add(Integer.valueOf(2));
 
-		else if (direction == 2 && directions.contains(Integer.valueOf(2))) // already moved right so can move left (back to centre)
+		else if (direction == 2 && directions.contains(Integer.valueOf(2))) // already moved right so can move left
+																			// (back to centre)
 			directions.add(Integer.valueOf(1));
 
-		else if (direction == 3 && directions.contains(Integer.valueOf(3))) // already moved up so can move down (back to centre)
+		else if (direction == 3 && directions.contains(Integer.valueOf(3))) // already moved up so can move down (back
+																			// to centre)
 			directions.add(Integer.valueOf(4));
-		else if (direction == 4 && directions.contains(Integer.valueOf(4))) // already moved down so can move up (back to centre)
+		else if (direction == 4 && directions.contains(Integer.valueOf(4))) // already moved down so can move up (back
+																			// to centre)
 
-		directions.add(Integer.valueOf(3));
+			directions.add(Integer.valueOf(3));
 
 		if (direction > 0) { // new direction the bat can move in
 			directions.add(Integer.valueOf(direction));
@@ -264,18 +278,22 @@ public class Player {
 
 	public void draw(Graphics2D g2) {
 
-		if (!walkAnimation.isStillActive() && !attackAnimation.isStillActive()) // if animations are not active then
-																				// draw standing image instead
-			g2.drawImage(standImage, x, y, width, height, null);
-
 		// if(attackAnimation.isStillActive())
 		// g2.drawImage(attackAnimation.getImage(), x, y, width, height, null);
 
-		if (attackAnimation.isStillActive())
+		if (attackAnimation.isStillActive()){
 			g2.drawImage(attackAnimation.getImage(), x, y, attackWidth, attackHeight, null);
+			return;
+		}
 
-		if (walkAnimation.isStillActive())
+		if (walkAnimation.isStillActive()){
 			g2.drawImage(walkAnimation.getImage(), x, y, width, height, null);
+			return;
+		}
+
+		// if animations are not active then draw standing image instead
+		if (!walkAnimation.isStillActive() && !attackAnimation.isStillActive()) 
+			g2.drawImage(standImage, x, y, width, height, null);
 	}
 
 	private void loadAttackAnimations() { // loading animation for attacking
@@ -283,20 +301,15 @@ public class Player {
 				"images/Player/" + characterType + "/" + characterType + "_attackRight.png");
 		attackAnimationLeft = loadAnimation("images/Player/" + characterType + "/" + characterType + "_attackLeft.png");
 
-		// attackAnimationRight =
-		// loadAnimation("images/Player/"+characterType+"/"+characterType+"_attackRightTest.png");
-		// attackAnimationLeft =
-		// loadAnimation("images/Player/"+characterType+"/"+characterType+"_attackLeftTest.png");
+		attackAnimation = attackAnimationRight;
+	}
 
-        attackAnimation = attackAnimationRight;
-    }
+	private void loadWalkAnimations() {
+		walkAnimationRight = loadAnimation("images/Player/" + characterType + "/" + characterType + "_walkRight.png");
+		walkAnimationLeft = loadAnimation("images/Player/" + characterType + "/" + characterType + "_walkLeft.png");
 
-    private void loadWalkAnimations() {
-		walkAnimationRight = loadAnimation("images/Player/"+characterType+"/"+characterType+"_walkRight.png");
-		walkAnimationLeft = loadAnimation("images/Player/"+characterType+"/"+characterType+"_walkLeft.png");
-	
-        walkAnimation = walkAnimationRight;
-    }
+		walkAnimation = walkAnimationRight;
+	}
 
 	private void loadAllAnimations() {
 		loadWalkAnimations();
@@ -328,12 +341,14 @@ public class Player {
 		return Animation;
 	}
 
-    private void loadImages(){
-        standImageRight = ImageManager.loadImage("images/Player/"+characterType+"/"+characterType+"_standRight.png");
-		standImageLeft = ImageManager.loadImage("images/Player/"+characterType+"/"+characterType+"_standLeft.png");
+	private void loadImages() {
+		standImageRight = ImageManager
+				.loadImage("images/Player/" + characterType + "/" + characterType + "_standRight.png");
+		standImageLeft = ImageManager
+				.loadImage("images/Player/" + characterType + "/" + characterType + "_standLeft.png");
 
-		standImage=standImageRight;
-    }
+		standImage = standImageRight;
+	}
 
 	private void setDimensions() {
 		// player 1 is 27x38 walking and standing
@@ -344,6 +359,7 @@ public class Player {
 
 			attackWidth = 76;
 			attackHeight = 80;
+
 		}
 
 		// player 2 is 32x38 walking and standing
@@ -354,6 +370,10 @@ public class Player {
 
 			attackWidth = 76;
 			attackHeight = 80;
+
+			speed = 8;
+			dx = dy = 8;
+			baseAttackDamage = attackDamage = 6;
 		}
 
 		// player 3 is 27x38 walking and standing
@@ -364,22 +384,27 @@ public class Player {
 
 			attackWidth = 66;
 			attackHeight = 80;
+
+			speed = 6;
+			dx = dy = 6;
+			health = maxHealth = 16;
+			baseAttackDamage = attackDamage = 6;
 		}
 	}
 
-    public Rectangle2D.Double getBoundingRectangle() {
+	public Rectangle2D.Double getBoundingRectangle() {
 		int offset = 10; // used to make player range bigger, needed for collision detection
 
 		// if(characterType=="1" || characterType=="3")
-		// 	offset = 10;
+		// offset = 10;
 		// else
-		// 	offset = 0;
+		// offset = 0;
 
 		return new Rectangle2D.Double(x, y, width + offset, height);
 	}
 
-	//method used in detecting if player will collide with a solid object
-	public Rectangle2D.Double getFutureBoundingRectangle(int direction){
+	// method used in detecting if player will collide with a solid object
+	public Rectangle2D.Double getFutureBoundingRectangle(int direction) {
 
 		int futureX = x, futureY = y;
 
@@ -402,12 +427,22 @@ public class Player {
 
 	public void takeDamage(int damage) {
 		health -= damage;
-		
-		if(health<0)
+
+		if (health < 0)
 			health = 0;
 
 		invincibleStart = System.currentTimeMillis();
 		invincible = true;
+
+		if(!soundManager.isStillPlaying("damagePlayer"))
+			soundManager.playClip("damagePlayer",false);
+	}
+
+	public void heal(int h) {
+		health += h;
+
+		if (health > maxHealth)
+			health = maxHealth;
 	}
 
 	public Boolean isInvincible() {
@@ -419,7 +454,7 @@ public class Player {
 		return invincible;
 	}
 
-	public void setAttackDamage(int a){
+	public void setAttackDamage(int a) {
 		attackDamage = a;
 	}
 
@@ -428,10 +463,10 @@ public class Player {
 	}
 
 	public boolean attackRegistered() {
-		if (!attackRegistered) {
-            attackRegistered = true;
-            return true;
-        }
+		if (!attackRegistered && attackAnimation.isStillActive()) {
+			attackRegistered = true;
+			return true;
+		}
 
 		return false;
 	}
@@ -456,15 +491,39 @@ public class Player {
 		return y;
 	}
 
-	public int getWidth(){
+	public int getWidth() {
 		return width;
 	}
 
-	public int getHeight(){
+	public int getHeight() {
 		return height;
 	}
 
-	public int getHealth(){
+	public int getHealth() {
 		return health;
+	}
+
+	public void resetX(){
+		x = centerX;
+	}
+
+	public void resetY(){
+		y = centerY;
+	}
+
+	public int getSpeed(){
+		return speed;
+	}
+
+	public void addMaterials(int m){
+		materials+=m;
+	}
+
+	public int getScore(){
+		return score;
+	}
+
+	public void addScore(int s){
+		score+=s;
 	}
 }

@@ -18,11 +18,17 @@ public class FireBat extends Enemy {
 
         dx=7;
         dy=7;
+
+        health = 3;
+        scoreValue=22;
     }
 
     public void move() {
         int oldMapX = mapX;
         int oldMapY = mapY;
+
+        if(!soundManager.isStillPlaying("batFlap"))
+            soundManager.playClip("batFlap", false);
 
         double distance = Math.sqrt(Math.pow(player.getX() - x, 2) + Math.pow(player.getY() - y, 2));
 
@@ -36,14 +42,6 @@ public class FireBat extends Enemy {
             walkAnimation = walkAnimationLeft;
             standImage = standImageLeft;
         }
-
-        // if (oldMapY < mapY) { // moving down
-        //     walkAnimation = walkAnimationDown;
-        //     standImage = standImageForward;
-        // } else if (oldMapY > mapY) { // moving up
-        //     walkAnimation = walkAnimationUp;
-        //     standImage = standImageAway;
-        // }
 
     }
 

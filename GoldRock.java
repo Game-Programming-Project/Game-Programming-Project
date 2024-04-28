@@ -6,6 +6,8 @@ public class GoldRock extends Rock {
     public GoldRock(GamePanel gPanel, int mapX, int mapY, Background bg) {
         super(gPanel, mapX, mapY, bg);
         rockImage = ImageManager.loadImage("images/Rocks/goldRock.png");
+        materialValue = 3;
+        scoreValue = 30;
     }
 
 }

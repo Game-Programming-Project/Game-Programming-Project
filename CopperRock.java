@@ -9,7 +9,8 @@ public class CopperRock extends Rock {
     public CopperRock(GamePanel gPanel, int mapX, int mapY, Background bg) {
         super(gPanel, mapX, mapY, bg);
         rockImage = ImageManager.loadImage("images/Rocks/copperRock.png");
-
+        materialValue=1;
+        scoreValue = 10;
     }
 
 }

@@ -202,9 +202,7 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 		//gamePanel.add(playB); // Add play button to the bottom
 		// Set the action command for the play button
 		//playB.setActionCommand("Play");
-		
-		
-		
+	
 		// Create buttonPanel
 
 		JPanel buttonPanel = new JPanel();
@@ -351,6 +349,14 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 		// 99 means attack, so clicking makes player swing weapon
 		gamePanel.updatePlayer(99);
 
+		if (SwingUtilities.isLeftMouseButton(e)) {
+			// 99 means attack, so clicking makes player swing weapon
+			gamePanel.updatePlayer(99);
+
+        } else if (SwingUtilities.isRightMouseButton(e)) {
+			gamePanel.updatePlayer(88);
+        }
+
 	}
 
 	public void mouseEntered(MouseEvent e) {
@@ -373,5 +379,9 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
     public void setStartGameComponentsVisible(boolean isVisible) {
         startGameLabel.setVisible(isVisible);
     }
+
+	public void updateScore(int score) {
+		scoreTF.setText(String.valueOf(score));
+	}
 
 }
