@@ -383,4 +383,8 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
        // playB.setVisible(isVisible);
     }
 
+	public void updateScore(int score) {
+		scoreTF.setText(String.valueOf(score));
+	}
+
 }

@@ -7,7 +7,8 @@ public class IronRock extends Rock {
     public IronRock(GamePanel gPanel, int mapX, int mapY, Background bg) {
         super(gPanel, mapX, mapY, bg);
         rockImage = ImageManager.loadImage("images/Rocks/ironRock.png");
-        value = 2;
+        materialValue = 2;
+        scoreValue = 20;
     }
 
 }

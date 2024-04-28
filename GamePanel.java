@@ -120,7 +120,8 @@ public class GamePanel extends JPanel implements Runnable {
 			// if a player left clicks on a rock to destroy it
 			if (rock.collidesWithPlayer(player) && player.justAttacked() && !rock.isDestroyed()) {
 
-				player.addMaterials(rock.getValue());
+				player.addMaterials(rock.getMaterialValue());
+				player.addScore(rock.getScoreValue());
 
 				rock.destroy();
 				rock.setDestroyed(true);
@@ -175,6 +176,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 			// if enemy is dead then remove it from the game
 			if (!enemy.isAlive()) {
+				player.addScore(enemy.getScoreValue());
 				enemyIterator.remove();
 			}
 		}
@@ -183,7 +185,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		// remove solid objects associated with rocks, if their rock was destroyed
 		soManager.removeDestroyedRocks();
-
+		window.updateScore(player.getScore());
 	}
 
 	public void updatePlayer(int direction) {

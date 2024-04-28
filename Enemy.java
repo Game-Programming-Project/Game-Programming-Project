@@ -33,6 +33,8 @@ public class Enemy {
     protected int health;
     protected int attackDamage;
 
+    protected int scoreValue;
+
     protected Boolean isAlive;
 
     public Enemy(GamePanel gPanel, int mapX, int mapY, Background bg, Player player) {
@@ -54,6 +56,7 @@ public class Enemy {
 
         isAlive = true;
         attackDamage=1;
+        scoreValue=10;
     }
 
     public void loadWalkAnimation() {
@@ -226,6 +229,10 @@ public class Enemy {
 
     public int getMapY() {
         return mapY;
+    }
+
+    public int getScoreValue() {
+        return scoreValue;
     }
 
 }

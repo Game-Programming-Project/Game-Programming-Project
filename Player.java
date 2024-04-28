@@ -54,6 +54,8 @@ public class Player {
 	private int health, maxHealth;
 	private int speed;
 
+	private int score;
+
 	public Player(GamePanel p, int xPos, int yPos, String cType, SolidObjectManager soManager) {
 
 		directions = new HashSet<>(3);
@@ -94,7 +96,7 @@ public class Player {
 
 		soundManager = SoundManager.getInstance();
 
-		materials=0;
+		score = materials=0;
 	}
 
 	public void start() {
@@ -276,18 +278,22 @@ public class Player {
 
 	public void draw(Graphics2D g2) {
 
-		if (!walkAnimation.isStillActive() && !attackAnimation.isStillActive()) // if animations are not active then
-																				// draw standing image instead
-			g2.drawImage(standImage, x, y, width, height, null);
-
 		// if(attackAnimation.isStillActive())
 		// g2.drawImage(attackAnimation.getImage(), x, y, width, height, null);
 
-		if (attackAnimation.isStillActive())
+		if (attackAnimation.isStillActive()){
 			g2.drawImage(attackAnimation.getImage(), x, y, attackWidth, attackHeight, null);
+			return;
+		}
 
-		if (walkAnimation.isStillActive())
+		if (walkAnimation.isStillActive()){
 			g2.drawImage(walkAnimation.getImage(), x, y, width, height, null);
+			return;
+		}
+
+		// if animations are not active then draw standing image instead
+		if (!walkAnimation.isStillActive() && !attackAnimation.isStillActive()) 
+			g2.drawImage(standImage, x, y, width, height, null);
 	}
 
 	private void loadAttackAnimations() { // loading animation for attacking
@@ -511,5 +517,13 @@ public class Player {
 
 	public void addMaterials(int m){
 		materials+=m;
+	}
+
+	public int getScore(){
+		return score;
+	}
+
+	public void addScore(int s){
+		score+=s;
 	}
 }

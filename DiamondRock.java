@@ -6,7 +6,8 @@ public class DiamondRock extends Rock {
     public DiamondRock(GamePanel gPanel, int mapX, int mapY, Background bg) {
         super(gPanel, mapX, mapY, bg);
         rockImage = ImageManager.loadImage("images/Rocks/diamondRock.png");
-        value=4;
+        materialValue=4;
+        scoreValue = 40;
     }
 
 }

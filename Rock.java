@@ -11,7 +11,8 @@ public class Rock {
     private int mapX, mapY;
     private GamePanel gPanel;
 
-    protected int value;
+    protected int materialValue;
+    protected int scoreValue;
 
     private Background bg;
 
@@ -35,7 +36,8 @@ public class Rock {
 
         width = height = 30;
 
-        value=0;
+        materialValue=0;
+        scoreValue=5;
 
         soundManager = SoundManager.getInstance();
 
@@ -237,8 +239,12 @@ public class Rock {
         }
     }
 
-    public int getValue(){
-        return value;
+    public int getMaterialValue(){
+        return materialValue;
+    }
+
+    public int getScoreValue(){
+        return scoreValue;
     }
 
 }

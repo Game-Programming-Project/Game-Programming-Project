@@ -40,6 +40,7 @@ public class MushroomAnimation extends Enemy {
 		blowUpTime=null;
 
 		attackDamage = 2;
+		scoreValue = 40;
 	}
 
 	public void update() {

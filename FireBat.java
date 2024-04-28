@@ -22,7 +22,7 @@ public class FireBat extends Enemy {
         dy=7;
 
         health = 3;
-        
+        scoreValue=22;
     }
 
     public void move() {

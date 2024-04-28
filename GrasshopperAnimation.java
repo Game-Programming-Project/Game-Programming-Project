@@ -25,7 +25,7 @@ public class GrasshopperAnimation extends Enemy {
 
 		dx = 5;
 		dy = 5;
-
+		scoreValue = 20;
 	}
 
 	public void move() {
