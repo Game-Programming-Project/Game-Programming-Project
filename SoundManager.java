@@ -16,7 +16,7 @@ public class SoundManager { // a Singleton class
 		Clip clip = loadClip("sounds/break_rock.wav");
 		clips.put("break_rock", clip);
 
-		clip = loadClip("sounds/explosion.wav");
+		clip = loadClip("sounds/Level2/explosion.wav");
 		clips.put("explosion", clip);
 
 		clip = loadClip("sounds/game_over.wav");
@@ -49,7 +49,10 @@ public class SoundManager { // a Singleton class
 		clip = loadClip("sounds/lobby.wav");
 		clips.put("lobby", clip);
 
-		clip = loadClip("sounds/dripping_water.wav");
+		clip = loadClip("sounds/game_start.wav");
+		clips.put("start", clip);
+
+		clip = loadClip("sounds/Level2/dripping_water.wav");
 		clips.put("dripping", clip);
 
 		clip = loadClip("sounds/enemyHit.wav");
@@ -72,6 +75,25 @@ public class SoundManager { // a Singleton class
 
 		clip = loadClip("sounds/Level3/batFlap.wav");
 		clips.put("batFlap", clip);
+
+		clip = loadClip("sounds/Level2/crawling.wav");
+		clips.put("crawling", clip);
+
+		
+		clip = loadClip("sounds/Level2/background2.wav");
+		clips.put("background2", clip);
+
+			
+		clip = loadClip("sounds/Level2/explosion.wav");
+		clips.put("explosion", clip);
+
+			
+		clip = loadClip("sounds/Level2/scorpion.wav");
+		clips.put("scorpionRattle", clip);
+
+		clip = loadClip("sounds/Level2/bismuthRoar.wav");
+		clips.put("roar", clip);
+
 	}
 
 	public static SoundManager getInstance() { // class method to retrieve instance of Singleton
@@ -121,7 +143,8 @@ public class SoundManager { // a Singleton class
 
 	public void stopAllClips() {
 		for (Clip clip : clips.values()) {
-			clip.stop();
+			if(clip!=null)
+				clip.stop();
 		}
 	}
 

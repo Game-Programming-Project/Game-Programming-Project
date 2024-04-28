@@ -1,8 +1,6 @@
 import javax.swing.JPanel;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.awt.Color;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -77,6 +75,12 @@ public class GamePanel extends JPanel implements Runnable {
 		image = new BufferedImage(1100, 700, BufferedImage.TYPE_INT_RGB);
 		soManager = new SolidObjectManager();
 		healthDisplay = new HealthDisplay(10, 10); // position it at the top left corner
+
+		//backgroundImage = ImageManager.loadImage("images/landing.jpg");
+    	//image = new BufferedImage(1200, 500, BufferedImage.TYPE_INT_RGB);
+
+		image1 = new BufferedImage(1100, 700, BufferedImage.TYPE_INT_RGB);
+		//image2 = new BufferedImage(1100, 600, BufferedImage.TYPE_INT_RGB);
 	}
 
 	public void createGameEntities() {
@@ -185,7 +189,9 @@ public class GamePanel extends JPanel implements Runnable {
 
 		// remove solid objects associated with rocks, if their rock was destroyed
 		soManager.removeDestroyedRocks();
+
 		window.updateScore(player.getScore());
+
 	}
 
 	public void updatePlayer(int direction) {
@@ -250,7 +256,8 @@ public class GamePanel extends JPanel implements Runnable {
 	public void gameRender() {
 
 		// draw the game objects on the image
-		Graphics2D imageContext = (Graphics2D) image.getGraphics();
+
+		Graphics2D imageContext = (Graphics2D) image1.getGraphics();
 
 		if (background != null)
 			background.draw(imageContext);
@@ -285,8 +292,9 @@ public class GamePanel extends JPanel implements Runnable {
 	public void startGame() { // initialise and start the game thread
 
 		if (gameThread == null && characterSelected) {
+			soundManager.playClip("start", false);
 			createGameEntities();
-			levelInitializer.initLevelOne();
+			levelInitializer.initLevelTwo();
 			gameThread = new Thread(this);
 			gameThread.start();
 
@@ -299,9 +307,10 @@ public class GamePanel extends JPanel implements Runnable {
 		isPaused = false;
 
 		if (gameThread == null || !isRunning) {
-			// soundManager.playClip ("background", true);
+			soundManager.playClip("start", false);
 			createGameEntities();
-			levelInitializer.initLevelOne();
+			levelInitializer.initLevelTwo();
+
 			gameThread = new Thread(this);
 			gameThread.start();
 		}
@@ -372,4 +381,9 @@ public class GamePanel extends JPanel implements Runnable {
 	public void setRocks(ArrayList<Rock> rocks) {
 		this.rocks = rocks;
 	}
+
+	public void bombBismuth(){
+
+	}
+
 }

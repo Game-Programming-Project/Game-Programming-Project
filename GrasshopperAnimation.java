@@ -6,9 +6,6 @@ import java.awt.Graphics2D;
 
 public class GrasshopperAnimation extends Enemy {
 
-	private Image standImageForward;
-	private Image standImageAway;
-
 	private Animation walkAnimationUp;
 	private Animation walkAnimationDown;
 
@@ -91,7 +88,7 @@ public class GrasshopperAnimation extends Enemy {
 		standImageLeft = ImageManager.loadImage("images/Enemies/Level1/Grasshopper/grasshopperStandingLeft.png");
 		standImageRight = ImageManager.loadImage("images/Enemies/Level1/Grasshopper/grasshopperStandingRight.png");
 
-		standImage = standImageForward;
+		standImage = standImageLeft;
 	}
 
 	public void chasePlayer() {

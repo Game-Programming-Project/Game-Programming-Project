@@ -1,69 +1,184 @@
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.Graphics2D;
+import java.util.Random;
 
-/**
-    The BismuthAnimation class creates an animation from a strip file.
-*/
-public class BismuthAnimation {
-    
-    Animation animation;
+public class BismuthAnimation extends Enemy {
 
-    private int x;      // x position of animation
-    private int y;      // y position of animation
+	private static final int NORMAL = 0;
+	private static final int AGGRESSIVE = 1;
+	private static final int PASSIVE = 2;
 
-    private int width;
-    private int height;
+	// Probability of each behavior type (sum should be 100)
+	private static final int NORMAL_PROBABILITY = 60; // Higher chance of normal behavior
+	private static final int AGGRESSIVE_PROBABILITY = 20;
+	private static final int PASSIVE_PROBABILITY = 20;
 
-    private int dx;     // increment to move along x-axis
-    private int dy;     // increment to move along y-axis
+	// Random object for generating random behavior
+	private static final Random random = new Random();
+    private SolidObjectManager soManager;
 
-    public BismuthAnimation() {
+	public BismuthAnimation(GamePanel gPanel, int mapX, int mapY, Background bg, Player p, SolidObjectManager soManager) {
+		super(gPanel, mapX, mapY, bg, p);
 
-        animation = new Animation(false);   // run animation once
+        this.soManager = soManager;
 
-        dx = 0;     // increment to move along x-axis
-        dy = -10;   // increment to move along y-axis
+		initBehavior();
+		loadImages();
+		loadWalkAnimations();
 
-        // load images from strip file
-        Image stripImage = ImageManager.loadImage("images/Enemies/Level2/Bismuth/bismuth.png");
+		width = 50;
+        height = 60;
 
-        int imageWidth = stripImage.getWidth(null) / 10; // Assuming 10 frames in the strip
+		dx = 5;
+		dy = 5;
+
+	}
+
+
+	private void initBehavior() {
+		int behavior = selectBehavior();
+		setBehavior(behavior);
+	}
+
+
+	// Method to select bee behavior randomly based on probabilities
+	private int selectBehavior() {
+		int randomNumber = random.nextInt(100); // Generate random number between 0 and 99
+
+		if (randomNumber < NORMAL_PROBABILITY) {
+			return NORMAL;
+		} else if (randomNumber < NORMAL_PROBABILITY + AGGRESSIVE_PROBABILITY) {
+			return AGGRESSIVE;
+		} else {
+			return PASSIVE;
+		}
+	}
+
+	// Method to set behavior based on behavior type
+	private void setBehavior(int behavior) {
+		switch (behavior) {
+			case NORMAL:
+				// Set normal behavior
+				break;
+			case AGGRESSIVE:
+				// Set aggressive behavior
+				break;
+			case PASSIVE:
+				// Set passive behavior
+				break;
+			default:
+				// Default behavior
+				break;
+		}
+	}
+
+	public void chasePlayer() {
+		int playerX = player.getX();
+		int playerY = player.getY();
+
+		// Calculate the distance between the bee and the player
+		double distance = Math.sqrt(Math.pow(playerX - x, 2) + Math.pow(playerY - y, 2));
+
+		// If the player is within a certain range (e.g., 100 pixels)
+		if (distance <= 250) {
+			if (walkAnimation.isStillActive() && !soundManager.isStillPlaying("beeSound")) {
+				playWalkSound();
+			}
+			if (playerX > x) { // player is to the right
+				mapX += dx;
+				walkAnimation = walkAnimationRight;
+				standImage = standImageRight;
+			
+			} else if (playerX - player.getWidth() < x) { // player is to the left
+				mapX -= dx;
+				walkAnimation = walkAnimationLeft;
+				standImage = standImageLeft;
+				
+			}
+
+			if (playerY - player.getHeight() > y) { // player is below
+				mapY += dy;
+				walkAnimation = walkAnimationLeft;
+			
+			} else if (playerY + player.getHeight() < y) { // player is above
+				mapY -= dy;
+				walkAnimation = walkAnimationLeft;
+			
+			}
+		} else {
+			walkAnimation = walkAnimationRight;
+			standImage = standImageRight;
+
+		}
+	}
+
+	public void move() {
+		int oldMapX = mapX;
+		int oldMapY = mapY;
+
+		Boolean wouldCollide = soManager.collidesWithSolid(getFutureBoundingRectangle());
+        if(!wouldCollide) 
+            chasePlayer();
+
+		if (oldMapX < mapX) { // moving right
+			walkAnimation = walkAnimationRight;
+			standImage = standImageRight;
+			playWalkSound();
+		} else if (oldMapX > mapX) { // moving left
+			walkAnimation = walkAnimationLeft;
+			standImage = standImageLeft;
+			playWalkSound();
+		}
+        if (oldMapX == mapX && oldMapY == mapY) {
+            walkAnimation.stop();
+        }
+	}
+
+
+	public void loadWalkAnimations() {
+        walkAnimationLeft = loadAnimation("images/Enemies/Level2/Bismuth/bismuthLeft.png");
+        walkAnimationRight = loadAnimation("images/Enemies/Level2/Bismuth/bismuthRight.png");
+
+        walkAnimation = walkAnimationLeft;
+	}
+
+
+	public Animation loadAnimation(String stripFilePath) {
+
+		Animation animation = new Animation(false);
+        Image stripImage = ImageManager.loadImage(stripFilePath);
+        int imageWidth = (int) stripImage.getWidth(null) / 10;
         int imageHeight = stripImage.getHeight(null);
 
         for (int i = 0; i < 10; i++) {
             BufferedImage frameImage = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
             Graphics2D g = (Graphics2D) frameImage.getGraphics();
-     
-            g.drawImage(stripImage, 
-                        0, 0, imageWidth, imageHeight,
-                        i * imageWidth, 0, (i * imageWidth) + imageWidth, imageHeight,
-                        null);
 
-            animation.addFrame(frameImage, 100);
+            g.drawImage(stripImage,
+                    0, 0, imageWidth, imageHeight,
+                    i * imageWidth, 0, (i * imageWidth) + imageWidth, imageHeight,
+                    null);
+
+            animation.addFrame(frameImage, 200);
         }
-    
+
+        return animation;
+	}
+
+	public void loadImages() {
+        standImageRight = ImageManager.loadImage("images/Enemies/Level2/Bismuth/bismuthStandRight.png");
+        standImageLeft = ImageManager.loadImage("images/Enemies/Level2/Bismuth/bismuthStandLeft.png");
+
+        standImage = standImageLeft;
+	}
+
+	private void playWalkSound() {
+		soundManager.playClip("roar", false);
+	}
+
+    public int getCurrentXPosition() {
+                return mapX; 
     }
-
-    public void start() {
-        x = 250;
-        y = 250;
-        animation.start();
-    }
-
-    public void update() {
-        if (!animation.isStillActive())
-            return;
-
-        animation.update();
-        x = x + dx;
-        y = y + dy;
-    }
-
-    public void draw(Graphics2D g2) {
-        if (!animation.isStillActive())
-            return;
-
-        g2.drawImage(animation.getImage(), x, y, 70, 50, null);
-    }
+            
 }

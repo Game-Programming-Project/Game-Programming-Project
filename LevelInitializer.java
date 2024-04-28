@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.Point;
+import java.util.Random;
+
 
 public class LevelInitializer {
 	private GamePanel gamePanel;
@@ -10,6 +12,7 @@ public class LevelInitializer {
 	private List<Enemy> enemies;
 	private Background background;
 	private Player player;
+	private Random random;
 
 	private EntitySpawner entitySpawner;
 
@@ -42,7 +45,9 @@ public class LevelInitializer {
 	}
 
 	public void initLevelOne() {
-		soundManager.stopAllClips();
+		soundManager.stopClip("lobby");
+		soundManager.playClip("start", false);
+
 		rocks.clear();
 		enemies.clear();
 
@@ -78,16 +83,41 @@ public class LevelInitializer {
 		rocks.clear();
 		enemies.clear();
 
-		// background = new Background(this, xxxxxx);
-		player.resetX();
+		background = new Background(gamePanel, "images/Maps/Testing/Level2MapTest.png", 96, 300, 50);
+    
+    player.resetX();
 		player.resetY();
-
+    
 		soManager.setBg(background);
 		gamePanel.setBackground(background);
 		entitySpawner.setBg(background);
 
 		soManager.initLevelTwo(); // set up map boundaries
 		soManager.setAllObjectsVisible(false);
+		
+		// Add level 2 background sound
+		soundManager.playClip("background2", true);
+		soundManager.setVolume("background2", 1.0f);
+
+		gamePanel.spawnRocks(6, 662, 1018, 182, 546);
+		gamePanel.spawnRocks(15, 384, 1298, 937, 1210);
+		gamePanel.spawnRocks(8, 1107, 1892, 31, 576);
+		gamePanel.spawnRocks(12, 1283, 1853, 942, 1182);
+		gamePanel.spawnRocks(12, 1979, 2789, 318, 581);
+		gamePanel.spawnRocks(10, 2090, 2803, 586, 969);
+		gamePanel.spawnRocks(12, 2241, 2766, 940, 1156);
+
+		// add enemies under here
+		enemies.add(new ScorpionAnimation(gamePanel, 620, 930, background, player, soManager));
+
+		enemies.add(new SpiderAnimation(gamePanel, 1320, 809, background, player, soManager));
+		enemies.add(new SpiderAnimation(gamePanel, 1526, 1010, background, player, soManager));
+		enemies.add(new SpiderAnimation(gamePanel, 1627, 566, background, player, soManager));
+
+		enemies.add(new MotherSpiderAnimation(gamePanel, 1583, 300, background, player, soManager));
+
+		enemies.add(new BismuthAnimation(gamePanel, 2437, 900, background, player, soManager));
+
 	}
 
 	public void initLevelThree() {
