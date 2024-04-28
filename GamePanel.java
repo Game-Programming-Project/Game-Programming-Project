@@ -44,6 +44,7 @@ public class GamePanel extends JPanel implements Runnable {
 	private String currentLevel;
 
 	private List<Enemy> tempEnemies;
+	private Chest chest;
 
 	private int numEnemies;
 
@@ -67,10 +68,12 @@ public class GamePanel extends JPanel implements Runnable {
 
 		isRunning = false;
 		isPaused = false;
+		chest=null;
+
 		soundManager = SoundManager.getInstance();
 
 		currentLevel = "1";
-		numEnemies=0;
+		numEnemies=-1;
 
 		image = new BufferedImage(1100, 700, BufferedImage.TYPE_INT_RGB);
 		soManager = new SolidObjectManager();
@@ -181,6 +184,10 @@ public class GamePanel extends JPanel implements Runnable {
 			if (!enemy.isAlive()) {
 				player.addScore(enemy.getScoreValue());
 				enemyIterator.remove();
+
+				System.out.println("NumEnemies "+numEnemies);
+				if(numEnemies!=-1)
+					numEnemies--;
 			}
 		}
 		enemies.addAll(tempEnemies);
@@ -189,8 +196,13 @@ public class GamePanel extends JPanel implements Runnable {
 		// remove solid objects associated with rocks, if their rock was destroyed
 		soManager.removeDestroyedRocks();
 
-		window.updateScore(player.getScore());
+		if(numEnemies<1 && chest==null){
+			chest = new Chest(this, player.getX()-player.getHeight(), player.getY(), background);
+			soundManager.playClip("chestSpawn",false);
+			System.out.println("chestSpawned");
+		}
 
+		window.updateScore(player.getScore());
 	}
 
 	public void updatePlayer(int direction) {
@@ -238,6 +250,13 @@ public class GamePanel extends JPanel implements Runnable {
 
 				r.setFruitEaten(true);
 			}
+
+			if (direction == 88 && playerOnChest()) {
+				if(!chest.isOpen()){
+					chest.setOpen(true);
+					player.addScore(1000000);
+				}
+			}
 		}
 
 		if (background != null && player != null && !isPaused && direction != 99 && direction != 88) {
@@ -273,6 +292,9 @@ public class GamePanel extends JPanel implements Runnable {
 			for (int i = 0; i < enemies.size(); i++)
 				enemies.get(i).draw(imageContext);
 		}
+
+		if(chest !=null)
+			chest.draw(imageContext);
 
 		if (player != null)
 			player.draw(imageContext);
@@ -329,25 +351,6 @@ public class GamePanel extends JPanel implements Runnable {
 		// soundManager.stopClip ("background");
 	}
 
-	public boolean playerOnLadder() {
-		for (Rock rock : rocks) {
-			if (rock.hasLadder() && rock.collidesWithPlayer(player)) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public Rock playerOnFruit() {
-		for (Rock rock : rocks) {
-			if (rock.hasFruit() && rock.collidesWithPlayer(player)) {
-				return rock;
-			}
-		}
-		return null;
-
-	}
-
 	// method sets which character the player will be using
 	public void setCharacter(String character) {
 		this.character = character;
@@ -389,4 +392,27 @@ public class GamePanel extends JPanel implements Runnable {
 		this.numEnemies = numEnemies;
 	}
 
+	public boolean playerOnLadder() {
+		for (Rock rock : rocks) {
+			if (rock.hasLadder() && rock.collidesWithPlayer(player)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public Rock playerOnFruit() {
+		for (Rock rock : rocks) {
+			if (rock.hasFruit() && rock.collidesWithPlayer(player)) {
+				return rock;
+			}
+		}
+		return null;
+	}
+
+	public boolean playerOnChest(){
+		if(chest!=null && chest.collidesWithPlayer(player))
+			return true;
+		return false;
+	}
 }

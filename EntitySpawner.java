@@ -74,7 +74,7 @@ public class EntitySpawner {
 			if (p != null) {
 				enemies.add(new RedBee(gamePanel, p.x, p.y, background, player));
 			}
-		}
+		} 
 
 		for (int i=0; i < 2; i++){ // run twice
 			Point p = getRandomPoint(221, 2741, 210, 1590);
