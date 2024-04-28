@@ -14,6 +14,7 @@ public class Chest {
     private int openWidth, openHeight;
     private int x, y;
     private int mapX, mapY;
+    private int scoreValue;
     private GamePanel gPanel;
     private Background bg;
     private SoundManager soundManager;
@@ -24,6 +25,8 @@ public class Chest {
         this.y = y;
         this.gPanel = gPanel;
         this.bg = bg;
+
+        scoreValue=1000000;
 
         int bgX = bg.getbg1X();
         int bgY = bg.getbg1Y();
@@ -94,6 +97,10 @@ public class Chest {
 
     public boolean isVisible() {
         return visible;
+    }
+
+    public int getScoreValue() {
+        return scoreValue;
     }
 
     public Rectangle2D.Double getBoundingRectangle() {

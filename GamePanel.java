@@ -254,7 +254,7 @@ public class GamePanel extends JPanel implements Runnable {
 			if (direction == 88 && playerOnChest()) {
 				if(!chest.isOpen()){
 					chest.setOpen(true);
-					player.addScore(1000000);
+					player.addScore(chest.getScoreValue());
 				}
 			}
 		}
