@@ -2,19 +2,19 @@ import java.util.List;
 import java.util.Random;
 import java.util.Random;
 import java.awt.Point;
+import java.util.ArrayList;
 
 public class EntitySpawner {
 	private GamePanel gamePanel;
 	private SoundManager soundManager;
 	private SolidObjectManager soManager;
-	private List<Rock> rocks;
+	private ArrayList<Rock> rocks;
 	private List<Enemy> enemies;
 	private Background background;
 	private Player player;
 	private Random random;
 
-	public EntitySpawner(GamePanel gamePanel, SoundManager soundManager, SolidObjectManager soManager,
-			List<Rock> rocks, List<Enemy> enemies, Background background, Player player) {
+	public EntitySpawner(GamePanel gamePanel, SoundManager soundManager, SolidObjectManager soManager, ArrayList<Rock> rocks, List<Enemy> enemies, Background background, Player player) {
 		this.gamePanel = gamePanel;
 		this.soundManager = soundManager;
 		this.soManager = soManager;
@@ -124,7 +124,7 @@ public class EntitySpawner {
 				if (new Random().nextInt(100) < 3) {
 					rock.setHasFruit(true);
 				}
-
+				
 				rocks.add(rock);
 
 				// adds a solid object for each rock and associates the rock with the object
@@ -171,5 +171,9 @@ public class EntitySpawner {
 
 	public void setBg(Background bg) {
 		background = bg;
+	}
+
+	public ArrayList<Rock> getRocks(){
+		return rocks;
 	}
 }

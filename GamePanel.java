@@ -29,6 +29,7 @@ public class GamePanel extends JPanel implements Runnable {
 	private SolidObjectManager soManager;
 
 	private LevelInitializer levelInitializer;
+	private EntitySpawner entitySpawner;
 
 	private Player player;
 
@@ -87,7 +88,9 @@ public class GamePanel extends JPanel implements Runnable {
 		healthDisplay.setPlayer(player);
 		healthDisplay.setMaxHealth(player.getHealth());
 
-		levelInitializer = new LevelInitializer(this, soundManager, soManager, rocks, enemies, background, player);
+		entitySpawner = new EntitySpawner(this, soundManager, soManager, rocks, enemies, background, player);
+
+		levelInitializer = new LevelInitializer(this, soundManager, soManager, rocks, enemies, background, player, entitySpawner);
 	}
 
 	public void run() {
@@ -209,7 +212,8 @@ public class GamePanel extends JPanel implements Runnable {
 			if(direction == 88 && playerOnLadder()){
 
 				//send player to next level if right click on ladder
-				currentLevel = levelInitializer.initNextLevel(currentLevel);
+				levelInitializer.initLevelThree();
+				//currentLevel = levelInitializer.initNextLevel(currentLevel);
 
 				if(!soundManager.isStillPlaying("ladderDown"))
 					soundManager.playClip("ladderDown", false);
@@ -279,7 +283,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		if (gameThread == null && characterSelected) {
 			createGameEntities();
-			levelInitializer.initLevelThree();
+			levelInitializer.initLevelOne();
 			gameThread = new Thread(this);
 			gameThread.start();
 
@@ -356,5 +360,13 @@ public class GamePanel extends JPanel implements Runnable {
 
 	public void addEnemy(Enemy e) {
 		enemies.add(e);
+	}
+
+	public void addRock(Rock r) {
+		rocks.add(r);
+	}
+
+	public void setRocks(ArrayList<Rock> rocks) {
+		this.rocks = rocks;
 	}
 }

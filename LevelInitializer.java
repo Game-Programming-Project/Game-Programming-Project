@@ -12,8 +12,7 @@ public class LevelInitializer {
 
 	private EntitySpawner entitySpawner;
 
-	public LevelInitializer(GamePanel gamePanel, SoundManager soundManager, SolidObjectManager soManager,
-			List<Rock> rocks, List<Enemy> enemies, Background background, Player player) {
+	public LevelInitializer(GamePanel gamePanel, SoundManager soundManager, SolidObjectManager soManager, ArrayList<Rock> rocks, List<Enemy> enemies, Background background, Player player, EntitySpawner entitySpawner) {
 		this.gamePanel = gamePanel;
 		this.soundManager = soundManager;
 		this.soManager = soManager;
@@ -22,7 +21,7 @@ public class LevelInitializer {
 		this.background = background;
 		this.player = player;
 
-		entitySpawner = new EntitySpawner(gamePanel, soundManager, soManager, rocks, enemies, background, player);
+		this.entitySpawner = entitySpawner;
 	}
 
 	public String initNextLevel(String currentLevel) {
@@ -57,7 +56,7 @@ public class LevelInitializer {
 		soManager.setAllObjectsVisible(false);
 
 		soundManager.playClip("background", true);
-		soundManager.setVolume("background", 0.7f);
+		//soundManager.setVolume("background", 0.7f);
 
 		// add rocks here
 
@@ -108,11 +107,13 @@ public class LevelInitializer {
 		soManager.initLevelThree(); // set up map boundaries
 		soManager.setAllObjectsVisible(false);
 
-		// soundManager.playClip("background", true);
-		// soundManager.setVolume("background", 0.7f);
+		soundManager.setVolume("level3_background", 1f);
+		soundManager.playClip("level3_background", true);
+		
 
 		// rocks under here
 		entitySpawner.spawnLevelThreeRocks();
+		// gamePanel.setRocks(entitySpawner.getRocks());
 		
 		// enemies under here
 		entitySpawner.spawnLevelThreeEnemies();
