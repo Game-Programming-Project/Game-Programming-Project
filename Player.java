@@ -46,10 +46,11 @@ public class Player {
 	private SolidObjectManager soManager;
 	private SolidObject solidObject;
 
-	private int centerX;
-	private int centerY;
+	private int centerX, centerY;
 
-	private int attackDamage;
+	private int materials;
+
+	private int attackDamage, baseAttackDamage;
 	private int health, maxHealth;
 	private int speed;
 
@@ -84,7 +85,7 @@ public class Player {
 		solidObject = null;
 		invincible = false;
 
-		attackDamage = 8;
+		baseAttackDamage = attackDamage = 8;
 		health = maxHealth = 10;
 		speed = 5;
 		dx = dy = 5;
@@ -92,6 +93,8 @@ public class Player {
 		setDimensions();
 
 		soundManager = SoundManager.getInstance();
+
+		materials=0;
 	}
 
 	public void start() {
@@ -124,6 +127,9 @@ public class Player {
 
 		walkAnimation.update();
 
+		int dmgIncrease = materials/10;
+
+		attackDamage = baseAttackDamage + dmgIncrease;
 	}
 
 	public boolean attack() {
@@ -289,11 +295,6 @@ public class Player {
 				"images/Player/" + characterType + "/" + characterType + "_attackRight.png");
 		attackAnimationLeft = loadAnimation("images/Player/" + characterType + "/" + characterType + "_attackLeft.png");
 
-		// attackAnimationRight =
-		// loadAnimation("images/Player/"+characterType+"/"+characterType+"_attackRightTest.png");
-		// attackAnimationLeft =
-		// loadAnimation("images/Player/"+characterType+"/"+characterType+"_attackLeftTest.png");
-
 		attackAnimation = attackAnimationRight;
 	}
 
@@ -366,7 +367,7 @@ public class Player {
 
 			speed = 8;
 			dx = dy = 8;
-			attackDamage = 6;
+			baseAttackDamage = attackDamage = 6;
 		}
 
 		// player 3 is 27x38 walking and standing
@@ -381,7 +382,7 @@ public class Player {
 			speed = 6;
 			dx = dy = 6;
 			health = maxHealth = 16;
-			attackDamage = 6;
+			baseAttackDamage = attackDamage = 6;
 		}
 	}
 
@@ -506,5 +507,9 @@ public class Player {
 
 	public int getSpeed(){
 		return speed;
+	}
+
+	public void addMaterials(int m){
+		materials+=m;
 	}
 }

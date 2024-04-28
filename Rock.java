@@ -11,6 +11,8 @@ public class Rock {
     private int mapX, mapY;
     private GamePanel gPanel;
 
+    protected int value;
+
     private Background bg;
 
     private SoundManager soundManager;
@@ -32,6 +34,8 @@ public class Rock {
         this.bg = bg;
 
         width = height = 30;
+
+        value=0;
 
         soundManager = SoundManager.getInstance();
 
@@ -231,6 +235,10 @@ public class Rock {
                 disappearFX = null;
             }
         }
+    }
+
+    public int getValue(){
+        return value;
     }
 
 }

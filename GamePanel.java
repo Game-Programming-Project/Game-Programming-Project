@@ -120,6 +120,8 @@ public class GamePanel extends JPanel implements Runnable {
 			// if a player left clicks on a rock to destroy it
 			if (rock.collidesWithPlayer(player) && player.justAttacked() && !rock.isDestroyed()) {
 
+				player.addMaterials(rock.getValue());
+
 				rock.destroy();
 				rock.setDestroyed(true);
 				player.setJustAttacked(false);
@@ -149,7 +151,7 @@ public class GamePanel extends JPanel implements Runnable {
 			// if the player attacked while enemy collides then dmg enemy
 			if (enemy.collidesWithPlayer(player) && player.attackRegistered() && enemy.isAlive()) {
 
-				System.out.println("enemy HIT for " + player.getAttackDamage() + " damage");
+				//System.out.println("enemy HIT for " + player.getAttackDamage() + " damage");
 				enemy.takeDamage(player.getAttackDamage());
 
 				if (!player.isInvincible())
