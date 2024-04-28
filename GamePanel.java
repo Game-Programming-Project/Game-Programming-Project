@@ -1,6 +1,6 @@
 import javax.swing.JPanel;
-import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.awt.geom.Rectangle2D;
-import java.util.Random;
 import java.awt.Point;
 
 public class GamePanel extends JPanel implements Runnable {
@@ -33,12 +32,10 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private boolean characterSelected;
 	private CharacterSelection charSelect;
+	//private GameLobby gameLobby;
 	private String character;
 
-	private Background background;
-
-	private GrasshopperAnimation animGrasshopper;
-	private MushroomAnimation animMushroom;
+	private Background background;;
 
 	private GameWindow window;
 
@@ -55,7 +52,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 		setLayout(new GridBagLayout());
 		GridBagConstraints gbc = new GridBagConstraints();
-
+		this.setBackground(Color.DARK_GRAY);
+		
 		charSelect = new CharacterSelection(this);
 
 		gbc.gridx = 0;
@@ -66,6 +64,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		add(charSelect, gbc);
 
+		
 		isRunning = false;
 		isPaused = false;
 		soundManager = SoundManager.getInstance();
@@ -76,10 +75,6 @@ public class GamePanel extends JPanel implements Runnable {
 		soManager = new SolidObjectManager();
 		healthDisplay = new HealthDisplay(10, 10); // position it at the top left corner
 
-		//backgroundImage = ImageManager.loadImage("images/landing.jpg");
-    	//image = new BufferedImage(1200, 500, BufferedImage.TYPE_INT_RGB);
-
-		//image2 = new BufferedImage(1100, 600, BufferedImage.TYPE_INT_RGB);
 	}
 
 	public void createGameEntities() {
@@ -258,6 +253,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		Graphics2D imageContext = (Graphics2D) image.getGraphics();
 
+
 		if (background != null)
 			background.draw(imageContext);
 
@@ -282,7 +278,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		Graphics2D g2 = (Graphics2D) getGraphics(); // get the graphics context for the panel
 
-		g2.drawImage(image, 0, 0, 1100, 700, null);
+		g2.drawImage(image, 0, 0, 1100, 500, null);
 
 		imageContext.dispose();
 		g2.dispose();
@@ -293,7 +289,7 @@ public class GamePanel extends JPanel implements Runnable {
 		if (gameThread == null && characterSelected) {
 			soundManager.playClip("start", false);
 			createGameEntities();
-			levelInitializer.initLevelOne();
+			levelInitializer.initLevelTwo();
 			gameThread = new Thread(this);
 			gameThread.start();
 

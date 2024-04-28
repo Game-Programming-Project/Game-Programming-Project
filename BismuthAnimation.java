@@ -33,6 +33,9 @@ public class BismuthAnimation extends Enemy {
 		dx = 5;
 		dy = 5;
 
+		health = 30;
+		scoreValue = 80; 
+
 	}
 
 
@@ -75,64 +78,75 @@ public class BismuthAnimation extends Enemy {
 
 	public void chasePlayer() {
 		int playerX = player.getX();
-		int playerY = player.getY();
+        int playerY = player.getY();
 
-		// Calculate the distance between the bee and the player
-		double distance = Math.sqrt(Math.pow(playerX - x, 2) + Math.pow(playerY - y, 2));
+        //this code makes the enemy target the middle of the player sprite instead of the top left
+        playerX += player.getWidth()/2;
+        playerY += player.getHeight()/2;
 
-		// If the player is within a certain range (e.g., 100 pixels)
-		if (distance <= 250) {
-			if (walkAnimation.isStillActive() && !soundManager.isStillPlaying("beeSound")) {
-				playWalkSound();
-			}
-			if (playerX > x) { // player is to the right
-				mapX += dx;
-				walkAnimation = walkAnimationRight;
-				standImage = standImageRight;
+        Random rand = new Random();
+        int random = rand.nextInt(aggression);
+
+        updateScreenCoordinates();
+
+        if(random == 0){
+
+            if(Math.abs(playerX - x) > 35){ // check if the difference is more than 10 pixels
+                if(playerX > x){ // player is to the right
+                    mapX += dx;
+                }
+                if(playerX < x){ // player is to the left
+                    mapX -= dx;
+                }
+            }
+            else{
+                if(playerY > y){ // player is below
+                    mapY += dy;
+                }
+    
+                if(playerY < y){ // player is above
+                    mapY -= dy;
+                }
+            }
+        }
+	}	
 			
-			} else if (playerX - player.getWidth() < x) { // player is to the left
-				mapX -= dx;
-				walkAnimation = walkAnimationLeft;
-				standImage = standImageLeft;
-				
-			}
-
-			if (playerY - player.getHeight() > y) { // player is below
-				mapY += dy;
-				walkAnimation = walkAnimationLeft;
-			
-			} else if (playerY + player.getHeight() < y) { // player is above
-				mapY -= dy;
-				walkAnimation = walkAnimationLeft;
-			
-			}
-		} else {
-			walkAnimation = walkAnimationRight;
-			standImage = standImageRight;
-
-		}
-	}
 
 	public void move() {
+		
 		int oldMapX = mapX;
-		int oldMapY = mapY;
+        int oldMapY = mapY;
 
-		Boolean wouldCollide = soManager.collidesWithSolid(getFutureBoundingRectangle());
-        if(!wouldCollide) 
-            chasePlayer();
+        double distance = Math.sqrt(Math.pow(player.getX() - x, 2) + Math.pow(player.getY() - y, 2));
 
-		if (oldMapX < mapX) { // moving right
-			walkAnimation = walkAnimationRight;
-			standImage = standImageRight;
-			playWalkSound();
-		} else if (oldMapX > mapX) { // moving left
-			walkAnimation = walkAnimationLeft;
-			standImage = standImageLeft;
-			playWalkSound();
-		}
-        if (oldMapX == mapX && oldMapY == mapY) {
-            walkAnimation.stop();
+        Boolean wouldCollide = soManager.collidesWithSolid(getFutureBoundingRectangle());
+        if(!wouldCollide && distance < 400){
+			playRoar();
+			chasePlayer();
+		} 
+            
+
+        if(oldMapX<mapX){ //moving right
+            walkAnimation = walkAnimationRight;
+            standImage = standImageRight;
+        } else if (oldMapX > mapX) { // moving left
+            walkAnimation = walkAnimationLeft;
+            standImage = standImageLeft;
         }
+
+        if (oldMapY < mapY) { // moving down
+            walkAnimation = walkAnimationRight;
+			standImage = standImageRight;
+        } else if (oldMapY > mapY) { // moving up
+            walkAnimation = walkAnimationLeft;
+            standImage = standImageLeft;;
+        }
+
+        //stop animation if enemy is blocked or not moving
+        if(oldMapX == mapX && oldMapY == mapY){
+            walkAnimation.stop();
+        } 
+
 	}
 
 
@@ -173,7 +187,7 @@ public class BismuthAnimation extends Enemy {
         standImage = standImageLeft;
 	}
 
-	private void playWalkSound() {
+	private void playRoar() {
 		soundManager.playClip("roar", false);
 	}
 

@@ -1,10 +1,9 @@
 import java.awt.Image;
-import java.awt.image.BufferedImage;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
 
 public class Rock {
-    protected Image rockImage, destroyedRockImage, ladderImage, fruitImage;
+    protected Image rockImage, destroyedRockImage, ladderImage, fruitImage, potionImage;
     private int width, height;
     private int x, y;
 
@@ -51,6 +50,7 @@ public class Rock {
         hasFruit=false;
         fruitEaten=false;
         fruitImage=null;
+
     }
 
     public Rock(GamePanel gPanel, int mapX, int mapY, Background bg, Boolean hasLadder){
@@ -68,6 +68,7 @@ public class Rock {
         if(hasFruit)
             setFruitImage();
     }
+
 
     public void draw(Graphics2D g2) {
 

@@ -1,17 +1,11 @@
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.Random;
 
 public class BeeAnimation extends Enemy {
 
 	private Image standImageForward;
-	private Image standImageAway;
-
-	private Animation walkAnimationAway;
-	private Animation walkAnimationForward;
 
 	// Constants for different behavior types
 	private static final int NORMAL = 0;
@@ -26,11 +20,12 @@ public class BeeAnimation extends Enemy {
 	// Random object for generating random behavior
 	private static final Random random = new Random();
 
+
 	public BeeAnimation(GamePanel gPanel, int mapX, int mapY, Background bg, Player p) {
 		super(gPanel, mapX, mapY, bg, p);
 
-		walkAnimationAway = new Animation(false);
-		walkAnimationForward = new Animation(false);
+		//walkAnimationAway = new Animation(false);
+		//walkAnimationForward = new Animation(false);
 		initBehavior();
 
 		loadImages();
@@ -43,11 +38,13 @@ public class BeeAnimation extends Enemy {
 
 	}
 
+
 	// Method to initialize bee behavior
 	private void initBehavior() {
 		int behavior = selectBehavior();
 		setBehavior(behavior);
 	}
+
 
 	// Method to select bee behavior randomly based on probabilities
 	private int selectBehavior() {
@@ -61,6 +58,7 @@ public class BeeAnimation extends Enemy {
 			return PASSIVE;
 		}
 	}
+
 
 	// Method to set behavior based on behavior type
 	private void setBehavior(int behavior) {
@@ -80,6 +78,7 @@ public class BeeAnimation extends Enemy {
 		}
 	}
 
+
 	public void chasePlayer() {
 		int playerX = player.getX();
 		int playerY = player.getY();
@@ -96,26 +95,25 @@ public class BeeAnimation extends Enemy {
 				mapX += dx;
 				walkAnimation = walkAnimationRight;
 				standImage = standImageRight;
-				// playWalkSound();
+				
 			} else if (playerX - player.getWidth() < x) { // player is to the left
 				mapX -= dx;
 				walkAnimation = walkAnimationLeft;
 				standImage = standImageLeft;
-				// playWalkSound();
+				
 			}
 
 			if (playerY - player.getHeight() > y) { // player is below
 				mapY += dy;
 				walkAnimation = walkAnimationLeft;
-				// playWalkSound();
+				
 			} else if (playerY + player.getHeight() < y) { // player is above
 				mapY -= dy;
 				walkAnimation = walkAnimationLeft;
-				// playWalkSound();
+				
 			}
 		} else {
 			// If the player is not within range, the bee should be standing
-			// walkAnimation = null;
 			walkAnimation = walkAnimationRight;
 			standImage = standImageRight;
 

@@ -42,6 +42,9 @@ public class SpiderAnimation extends Enemy {
 		dx = 2;
 		dy = 2;
 
+		health = 20; 
+		scoreValue = 60; 
+
 	}
 
 

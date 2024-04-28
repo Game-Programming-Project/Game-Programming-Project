@@ -1,8 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.Point;
-import java.util.Random;
-
 
 public class LevelInitializer {
 	private GamePanel gamePanel;
@@ -12,8 +10,6 @@ public class LevelInitializer {
 	private List<Enemy> enemies;
 	private Background background;
 	private Player player;
-	private Random random;
-
 	private EntitySpawner entitySpawner;
 
 	public LevelInitializer(GamePanel gamePanel, SoundManager soundManager, SolidObjectManager soManager, ArrayList<Rock> rocks, List<Enemy> enemies, Background background, Player player, EntitySpawner entitySpawner) {
@@ -83,7 +79,7 @@ public class LevelInitializer {
 		rocks.clear();
 		enemies.clear();
 
-		background = new Background(gamePanel, "images/Maps/Testing/Level2MapTest.png", 96, 300, 50);
+		background = new Background(gamePanel, "images/Maps/Testing/Level2MapTest1.png", 96, 690, -300);
     
     	player.resetX();
 		player.resetY();
@@ -96,28 +92,18 @@ public class LevelInitializer {
 		soManager.setAllObjectsVisible(false);
 		
 		// Add level 2 background sound
-		soundManager.setVolume("background2", 1.0f);
 		soundManager.playClip("background2", true);
 
-		entitySpawner.spawnRocks(6, 662, 1018, 182, 546, 65, 8, 20, 5, 2);
-		entitySpawner.spawnRocks(15, 384, 1298, 937, 1210, 65, 8, 20, 5, 2);
-		entitySpawner.spawnRocks(8, 1107, 1892, 31, 576, 65, 8, 20, 5, 2);
-		entitySpawner.spawnRocks(12, 1283, 1853, 942, 1182, 65, 8, 20, 5, 2);
-		entitySpawner.spawnRocks(12, 1979, 2789, 318, 581, 65, 8, 20, 5, 2);
-		entitySpawner.spawnRocks(10, 2090, 2803, 586, 969, 65, 8, 20, 5, 2);
-		entitySpawner.spawnRocks(12, 2241, 2766, 940, 1156, 65, 8, 20, 5, 2);
+		// Spawns the ladder randomly 
+		Point p = entitySpawner.getRandomPoint(2684, 3070, 1018, 1484);
+		rocks.add(new Rock(gamePanel, p.x, p.y, background, true));
+
+		// spawn rocks under here
+		entitySpawner.spawnLevelTwoRocks();
 
 		// add enemies under here
-		enemies.add(new ScorpionAnimation(gamePanel, 620, 930, background, player, soManager));
-
-		enemies.add(new SpiderAnimation(gamePanel, 1320, 809, background, player, soManager));
-		enemies.add(new SpiderAnimation(gamePanel, 1526, 1010, background, player, soManager));
-		enemies.add(new SpiderAnimation(gamePanel, 1627, 566, background, player, soManager));
-
-		enemies.add(new MotherSpiderAnimation(gamePanel, 1583, 300, background, player, soManager));
-
-		enemies.add(new BismuthAnimation(gamePanel, 2437, 900, background, player, soManager));
-
+		entitySpawner.spawnLevelTwoEnemies();
+		
 	}
 
 	public void initLevelThree() {
