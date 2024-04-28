@@ -51,6 +51,8 @@ public class Rock {
         hasFruit=false;
         fruitEaten=false;
         fruitImage=null;
+
+        setFruitImage();
     }
 
     public Rock(GamePanel gPanel, int mapX, int mapY, Background bg, Boolean hasLadder){
@@ -65,8 +67,6 @@ public class Rock {
         this(gPanel, mapX, mapY, bg, hasLadder);
 
         this.hasFruit=hasFruit;
-        if(hasFruit)
-            setFruitImage();
     }
 
     public void draw(Graphics2D g2) {
@@ -154,14 +154,14 @@ public class Rock {
     }
 
     public void setLadderImage(){
-        String level = gPanel.getCurrentLevel();
-        if(level=="1")
+        int level = gPanel.getCurrentLevel();
+        if(level==1)
             ladderImage=ImageManager.loadImage("images/Rocks/Level1_ladder.png");
         
-        if(level=="2")
+        if(level==2)
             ladderImage=ImageManager.loadImage("images/Rocks/Level2_ladder.png");
         
-        if(level=="3")
+        if(level==3)
             ladderImage=ImageManager.loadImage("images/Rocks/Level3_ladder.png");
     }
 
@@ -223,14 +223,14 @@ public class Rock {
     }
 
     public void setFruitImage(){
-        String level = gPanel.getCurrentLevel();
-        if(level=="1")
+        int level = gPanel.getCurrentLevel();
+        if(level==1)
             fruitImage=ImageManager.loadImage("images/Player/Hearts/starfruit.png");
         
-        if(level=="2")
-            fruitImage=ImageManager.loadImage("images/Potions/Level2/level2Potion.png");
+        if(level==2)
+            fruitImage=ImageManager.loadImage("images/Potions/level2Potion.png");
         
-        if(level=="3")
+        if(level==3)
             fruitImage=ImageManager.loadImage("images/Player/Hearts/Prismatic_Shard.png");
     }
 

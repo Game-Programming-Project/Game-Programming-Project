@@ -41,7 +41,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private HealthDisplay healthDisplay;
 
-	private String currentLevel;
+	private int currentLevel;
 
 	private List<Enemy> tempEnemies;
 	private Chest chest;
@@ -72,7 +72,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		soundManager = SoundManager.getInstance();
 
-		currentLevel = "1";
+		currentLevel = 1;
 		numEnemies = -1;
 
 		image = new BufferedImage(1100, 700, BufferedImage.TYPE_INT_RGB);
@@ -200,7 +200,7 @@ public class GamePanel extends JPanel implements Runnable {
 		// remove solid objects associated with rocks, if their rock was destroyed
 		soManager.removeDestroyedRocks();
 
-		if (numEnemies < 1 && chest == null) {
+		if (numEnemies > 0 && numEnemies < 1 && chest == null) {
 			chest = new Chest(this, player.getX() - player.getHeight(), player.getY(), background);
 			soundManager.playClip("chestSpawn", false);
 			System.out.println("chestSpawned");
@@ -238,8 +238,9 @@ public class GamePanel extends JPanel implements Runnable {
 			if (direction == 88 && playerOnLadder()) {
 
 				// send player to next level if right click on ladder
-				currentLevel = levelInitializer.initNextLevel(currentLevel);
-
+				System.out.println("CURRENT LEVEL "+currentLevel);
+				levelInitializer.initNextLevel(currentLevel);
+				System.out.println("CURRENT LEVEL AFTER "+currentLevel);
 				if (!soundManager.isStillPlaying("ladderDown"))
 					soundManager.playClip("ladderDown", false);
 			}
@@ -322,7 +323,7 @@ public class GamePanel extends JPanel implements Runnable {
 		if (gameThread == null && characterSelected) {
 			soundManager.playClip("start", false);
 			createGameEntities();
-			levelInitializer.initLevelThree();
+			levelInitializer.initLevelOne();
 			gameThread = new Thread(this);
 			gameThread.start();
 
@@ -375,8 +376,12 @@ public class GamePanel extends JPanel implements Runnable {
 		background = bg;
 	}
 
-	public String getCurrentLevel() {
+	public int getCurrentLevel() {
 		return currentLevel;
+	}
+
+	public void setCurrentLevel(int level) {
+		currentLevel = level;
 	}
 
 	public void addEnemy(Enemy e) {

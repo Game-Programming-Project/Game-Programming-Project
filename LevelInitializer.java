@@ -28,19 +28,17 @@ public class LevelInitializer {
 		this.entitySpawner = entitySpawner;
 	}
 
-	public String initNextLevel(String currentLevel) {
-		if (currentLevel.equals("1")) {
+	public void initNextLevel(int currentLevel) {
+
+		if (currentLevel == 1) {
+			gamePanel.setCurrentLevel(2);
 			initLevelTwo();
-			currentLevel = "2";
-			return "2";
-		} else if (currentLevel.equals("2")) {
+			
+		}
+		else if (currentLevel == 2) {
+			gamePanel.setCurrentLevel(3);
 			initLevelThree();
-			currentLevel = "3";
-			return "3";
-		} else if (currentLevel.equals("3")) {
-			return "win";
-		} else {
-			return "Error";
+			
 		}
 	}
 
@@ -99,6 +97,7 @@ public class LevelInitializer {
 		soundManager.setVolume("background2", 1.0f);
 		soundManager.playClip("background2", true);
 
+		rocks.add(new Rock(gamePanel,620, 930, background, true));
 		entitySpawner.spawnRocks(6, 662, 1018, 182, 546, 65, 8, 20, 5, 2);
 		entitySpawner.spawnRocks(15, 384, 1298, 937, 1210, 65, 8, 20, 5, 2);
 		entitySpawner.spawnRocks(8, 1107, 1892, 31, 576, 65, 8, 20, 5, 2);
