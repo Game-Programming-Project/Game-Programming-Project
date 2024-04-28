@@ -24,19 +24,15 @@ public class LevelInitializer {
 		this.entitySpawner = entitySpawner;
 	}
 
-	public String initNextLevel(String currentLevel) {
-		if (currentLevel.equals("1")) {
+	public void initNextLevel(int currentLevel) {
+
+		if (currentLevel == 1) {
+			gamePanel.setCurrentLevel(2);
 			initLevelTwo();
-			currentLevel = "2";
-			return "2";
-		} else if (currentLevel.equals("2")) {
+		}
+		else if (currentLevel == 2) {
+			gamePanel.setCurrentLevel(3);
 			initLevelThree();
-			currentLevel = "3";
-			return "3";
-		} else if (currentLevel.equals("3")) {
-			return "win";
-		} else {
-			return "Error";
 		}
 	}
 
@@ -63,11 +59,11 @@ public class LevelInitializer {
 		// add rocks here
 		Point p = entitySpawner.getRandomPoint(1946, 2083, 798, 1137);
 		rocks.add(new Rock(gamePanel, p.x, p.y, background, true));
-		entitySpawner.spawnRocks(15, 620, 844, 839, 1138, 75, 13, 8, 3, 1);
-		entitySpawner.spawnRocks(6, 873, 1127, 850, 1106, 75, 13, 8, 3, 1);
-		entitySpawner.spawnRocks(25, 1075, 1622, 682, 1225, 75, 13, 8, 3, 1);
-		entitySpawner.spawnRocks(7, 1605, 1807, 914, 1062, 75, 13, 8, 3, 1);
-		entitySpawner.spawnRocks(15, 1806, 2088, 790, 1299, 75, 13, 8, 3, 1);
+		entitySpawner.spawnRocks(15, 633, 847, 808, 1138, 75, 13, 8, 3, 1); // left area
+		entitySpawner.spawnRocks(6, 873, 1127, 850, 1106, 75, 13, 8, 3, 1); // left corridor
+		entitySpawner.spawnRocks(25, 1075, 1622, 682, 1225, 75, 13, 8, 3, 1); // middle area
+		entitySpawner.spawnRocks(7, 1605, 1807, 914, 1062, 75, 13, 8, 3, 1); // right corridor
+		entitySpawner.spawnRocks(15, 1806, 2088, 790, 1299, 75, 13, 8, 3, 1); // right area
 
 		// add enemies under here
 		entitySpawner.spawnLevelOneEnemies();
@@ -133,5 +129,9 @@ public class LevelInitializer {
 
 		// enemies under here
 		entitySpawner.spawnLevelThreeEnemies();
+
+		int numEnemies = enemies.size();
+		gamePanel.setNumEnemies(numEnemies);
+		System.out.println("numEnemies: " + numEnemies);
 	}
 }
