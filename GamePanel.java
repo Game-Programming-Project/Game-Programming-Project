@@ -37,9 +37,6 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private Background background;
 
-	private GrasshopperAnimation animGrasshopper;
-	private MushroomAnimation animMushroom;
-
 	private GameWindow window;
 
 	private HealthDisplay healthDisplay;
