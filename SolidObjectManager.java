@@ -171,7 +171,7 @@ public class SolidObjectManager {
       solidObjects.add(new SolidObject(1210, 1192, 34, 56, Color.WHITE, false, bg));
       solidObjects.add(new SolidObject(1184, 1145, 43, 48, Color.YELLOW, false, bg));
       solidObjects.add(new SolidObject(1127, 1127, 57, 55, Color.BLUE, false, bg));
-   }
+   
 
       solidObjects.add(new SolidObject(815,1091,33,48,Color.RED,false,bg));
       solidObjects.add(new SolidObject(780,1122,82,49,Color.RED,false,bg));
@@ -183,7 +183,6 @@ public class SolidObjectManager {
       solidObjects.add(new SolidObject(1785,1118,45,112,Color.RED,false,bg));
       solidObjects.add(new SolidObject(2070,1135,69,114,Color.RED,false,bg));
       //solidObjects.add(new SolidObject(,Color.RED,false,bg));
-
    }
 
    public void initLevelTwo(){

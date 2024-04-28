@@ -6,6 +6,7 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 
 	private static final int initialTimeInSeconds = 120;		
 	// Labels declaration 
+	private JLabel startGameLabel;
 	private JLabel gameL;
 	private JLabel materialLabel;
 
