@@ -41,6 +41,8 @@ public class BeeAnimation extends Enemy {
 		dx = 2;
 		dy = 2;
 
+		health = 5;
+
 	}
 
 	// Method to initialize bee behavior
