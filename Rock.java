@@ -224,7 +224,7 @@ public class Rock {
             fruitImage=ImageManager.loadImage("images/Player/Hearts/starfruit.png");
         
         if(level=="2")
-            fruitImage=ImageManager.loadImage("images/Player/Hearts/xxx.png");
+            fruitImage=ImageManager.loadImage("images/Potions/Level2/level2Potion.png");
         
         if(level=="3")
             fruitImage=ImageManager.loadImage("images/Player/Hearts/Prismatic_Shard.png");
