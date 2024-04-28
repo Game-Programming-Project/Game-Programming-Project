@@ -30,7 +30,7 @@ public class LevelInitializer {
 
 	public String initNextLevel(String currentLevel) {
 		if (currentLevel.equals("1")) {
-			initLevelThree();
+			initLevelTwo();
 			currentLevel = "2";
 			return "2";
 		} else if (currentLevel.equals("2")) {
@@ -85,7 +85,7 @@ public class LevelInitializer {
 
 		background = new Background(gamePanel, "images/Maps/Testing/Level2MapTest.png", 96, 300, 50);
     
-    player.resetX();
+    	player.resetX();
 		player.resetY();
     
 		soManager.setBg(background);
@@ -99,13 +99,13 @@ public class LevelInitializer {
 		soundManager.playClip("background2", true);
 		soundManager.setVolume("background2", 1.0f);
 
-		gamePanel.spawnRocks(6, 662, 1018, 182, 546);
-		gamePanel.spawnRocks(15, 384, 1298, 937, 1210);
-		gamePanel.spawnRocks(8, 1107, 1892, 31, 576);
-		gamePanel.spawnRocks(12, 1283, 1853, 942, 1182);
-		gamePanel.spawnRocks(12, 1979, 2789, 318, 581);
-		gamePanel.spawnRocks(10, 2090, 2803, 586, 969);
-		gamePanel.spawnRocks(12, 2241, 2766, 940, 1156);
+		entitySpawner.spawnRocks(6, 662, 1018, 182, 546, 65, 8, 20, 5, 2);
+		entitySpawner.spawnRocks(15, 384, 1298, 937, 1210, 65, 8, 20, 5, 2);
+		entitySpawner.spawnRocks(8, 1107, 1892, 31, 576, 65, 8, 20, 5, 2);
+		entitySpawner.spawnRocks(12, 1283, 1853, 942, 1182, 65, 8, 20, 5, 2);
+		entitySpawner.spawnRocks(12, 1979, 2789, 318, 581, 65, 8, 20, 5, 2);
+		entitySpawner.spawnRocks(10, 2090, 2803, 586, 969, 65, 8, 20, 5, 2);
+		entitySpawner.spawnRocks(12, 2241, 2766, 940, 1156, 65, 8, 20, 5, 2);
 
 		// add enemies under here
 		enemies.add(new ScorpionAnimation(gamePanel, 620, 930, background, player, soManager));

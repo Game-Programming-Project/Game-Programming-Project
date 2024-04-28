@@ -79,7 +79,6 @@ public class GamePanel extends JPanel implements Runnable {
 		//backgroundImage = ImageManager.loadImage("images/landing.jpg");
     	//image = new BufferedImage(1200, 500, BufferedImage.TYPE_INT_RGB);
 
-		image1 = new BufferedImage(1100, 700, BufferedImage.TYPE_INT_RGB);
 		//image2 = new BufferedImage(1100, 600, BufferedImage.TYPE_INT_RGB);
 	}
 
@@ -203,7 +202,7 @@ public class GamePanel extends JPanel implements Runnable {
 		Boolean wouldCollide = soManager.collidesWithSolid(futurePosition);
 
 		// this makes the player walk through any solid object
-		wouldCollide = false; // for testing purposes, comment out when done
+		// wouldCollide = false; // for testing purposes, comment out when done
 
 		if (player != null && !isPaused) {
 			if (direction != 99 & direction != 88) {
@@ -257,7 +256,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		// draw the game objects on the image
 
-		Graphics2D imageContext = (Graphics2D) image1.getGraphics();
+		Graphics2D imageContext = (Graphics2D) image.getGraphics();
 
 		if (background != null)
 			background.draw(imageContext);
@@ -294,7 +293,7 @@ public class GamePanel extends JPanel implements Runnable {
 		if (gameThread == null && characterSelected) {
 			soundManager.playClip("start", false);
 			createGameEntities();
-			levelInitializer.initLevelTwo();
+			levelInitializer.initLevelOne();
 			gameThread = new Thread(this);
 			gameThread.start();
 

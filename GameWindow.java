@@ -165,7 +165,7 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 
 		// // Create the gamePanel for game entities and set properties
 		gamePanel = new GamePanel(this);
-		gamePanel.setPreferredSize(new Dimension(1100, 500));
+		gamePanel.setPreferredSize(new Dimension(1100, 600));
 	
 		// Create the start game label and add it to the panel
 		startGameLabel = new JLabel("Click Play To Start Game");
