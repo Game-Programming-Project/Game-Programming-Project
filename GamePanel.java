@@ -45,6 +45,8 @@ public class GamePanel extends JPanel implements Runnable {
 
 	private List<Enemy> tempEnemies;
 
+	private int numEnemies;
+
 	public GamePanel(GameWindow w) {
 
 		this.window = w;
@@ -68,6 +70,7 @@ public class GamePanel extends JPanel implements Runnable {
 		soundManager = SoundManager.getInstance();
 
 		currentLevel = "1";
+		numEnemies=0;
 
 		image = new BufferedImage(1100, 700, BufferedImage.TYPE_INT_RGB);
 		soManager = new SolidObjectManager();
@@ -133,7 +136,7 @@ public class GamePanel extends JPanel implements Runnable {
 			}
 
 			rock.updateFX(); // update rock FX if any going on
-			if (rock.isDisappearCompleted()) { // if rock is destroyed and the effect is completed
+			if (rock.isDisappearCompleted() || rock.isFruitEaten()) { // if rock is destroyed and the effect is completed
 				rockIterator.remove(); // then remove it from the game since it's no longer needed
 			}
 		}
@@ -290,7 +293,7 @@ public class GamePanel extends JPanel implements Runnable {
 		if (gameThread == null && characterSelected) {
 			soundManager.playClip("start", false);
 			createGameEntities();
-			levelInitializer.initLevelOne();
+			levelInitializer.initLevelThree();
 			gameThread = new Thread(this);
 			gameThread.start();
 
@@ -380,6 +383,10 @@ public class GamePanel extends JPanel implements Runnable {
 
 	public void bombBismuth(){
 
+	}
+
+	public void setNumEnemies(int numEnemies){
+		this.numEnemies = numEnemies;
 	}
 
 }

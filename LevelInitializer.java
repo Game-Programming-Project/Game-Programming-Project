@@ -147,5 +147,9 @@ public class LevelInitializer {
 
 		// enemies under here
 		entitySpawner.spawnLevelThreeEnemies();
+
+		int numEnemies = enemies.size();
+		gamePanel.setNumEnemies(numEnemies);
+		System.out.println("numEnemies: " + numEnemies);
 	}
 }

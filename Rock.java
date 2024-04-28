@@ -218,6 +218,10 @@ public class Rock {
         this.fruitEaten=fruitEaten;
     }
 
+    public Boolean isFruitEaten(){
+        return fruitEaten;
+    }
+
     public void setFruitImage(){
         String level = gPanel.getCurrentLevel();
         if(level=="1")

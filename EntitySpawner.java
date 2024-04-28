@@ -76,7 +76,7 @@ public class EntitySpawner {
 			}
 		}
 
-		for (int i=0; i < 2; i++){
+		for (int i=0; i < 2; i++){ // run twice
 			Point p = getRandomPoint(221, 2741, 210, 1590);
 			if (p != null) {
 				enemies.add(new FireBat(gamePanel, p.x, p.y, background, player));
@@ -128,7 +128,7 @@ public class EntitySpawner {
 				}
 
 				// 5% chance to have a fruit
-				if (new Random().nextInt(100) < 5) {
+				if (new Random().nextInt(100) < 99) {
 					rock.setHasFruit(true);
 				}
 				
