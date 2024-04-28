@@ -170,8 +170,10 @@ public class GamePanel extends JPanel implements Runnable {
 			// if enemy collides with player damage player
 			if (enemy.collidesWithPlayer(player) && enemy.isAlive()) {
 
-				if (!player.isInvincible())
+				if (!player.isInvincible()) {
 					player.takeDamage(enemy.getAttackDamage());
+
+				}
 			}
 
 			if ((enemy instanceof RedBee) && !enemy.isAlive()) {

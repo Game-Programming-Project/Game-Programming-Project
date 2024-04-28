@@ -18,20 +18,20 @@ public class Bomber extends Enemy {
     private SolidObjectManager soManager;
 
     public Bomber(GamePanel gPanel, int mapX, int mapY, Background bg, Player p, SolidObjectManager soManager) {
-        super(gPanel,mapX,mapY,bg,p);
+        super(gPanel, mapX, mapY, bg, p);
         player = p;
         this.soManager = soManager;
 
-        walkAnimationUp= new Animation(false);
-        walkAnimationDown= new Animation(false);
-        
+        walkAnimationUp = new Animation(false);
+        walkAnimationDown = new Animation(false);
+
         loadImages();
         loadWalkAnimations();
 
-        width=height=30;
+        width = height = 30;
 
-        dx=5;
-        dy=3;
+        dx = 5;
+        dy = 3;
 
         health = 18;
         scoreValue = 100;
@@ -44,10 +44,11 @@ public class Bomber extends Enemy {
         double distance = Math.sqrt(Math.pow(player.getX() - x, 2) + Math.pow(player.getY() - y, 2));
 
         Boolean wouldCollide = soManager.collidesWithSolid(getFutureBoundingRectangle());
-        if(!wouldCollide && distance < 400) // only move if Bomber won't collide with a solid and if the player is within range
+        if (!wouldCollide && distance < 400) // only move if Bomber won't collide with a solid and if the player is
+                                             // within range
             chasePlayer();
 
-        if(oldMapX<mapX){ //moving right
+        if (oldMapX < mapX) { // moving right
 
             walkAnimation = walkAnimationRight;
             standImage = standImageRight;
@@ -64,10 +65,10 @@ public class Bomber extends Enemy {
             standImage = standImageAway;
         }
 
-        //stop animation if enemy is blocked or not moving
-        if(oldMapX == mapX && oldMapY == mapY){
+        // stop animation if enemy is blocked or not moving
+        if (oldMapX == mapX && oldMapY == mapY) {
             walkAnimation.stop();
-        } 
+        }
 
     }
 
@@ -75,32 +76,33 @@ public class Bomber extends Enemy {
         int playerX = player.getX();
         int playerY = player.getY();
 
-        //this code makes the enemy target the middle of the player sprite instead of the top left
-        playerX += player.getWidth()/2;
-        playerY += player.getHeight()/2;
+        // this code makes the enemy target the middle of the player sprite instead of
+        // the top left
+        playerX += player.getWidth() / 2;
+        playerY += player.getHeight() / 2;
 
         Random rand = new Random();
         int random = rand.nextInt(aggression);
 
         updateScreenCoordinates();
 
-        if(random == 0){
+        if (random == 0) {
 
             // check if the difference is more than 10 pixels
-            if(Math.abs(playerY - y) > 50){ // this makes it so that the enemy does not just target the top left of the player, but the entire height of the player
-                if(playerY > y){ // player is below
+            if (Math.abs(playerY - y) > 50) { // this makes it so that the enemy does not just target the top left of
+                                              // the player, but the entire height of the player
+                if (playerY > y) { // player is below
                     mapY += dy;
                 }
-    
-                if(playerY < y){ // player is above
+
+                if (playerY < y) { // player is above
                     mapY -= dy;
                 }
-            }
-            else if(Math.abs(playerX - x) > 20){
-                if(playerX > x){ // player is to the right
+            } else if (Math.abs(playerX - x) > 20) {
+                if (playerX > x) { // player is to the right
                     mapX += dx;
                 }
-                if(playerX < x){ // player is to the left
+                if (playerX < x) { // player is to the left
                     mapX -= dx;
                 }
             }
@@ -113,8 +115,8 @@ public class Bomber extends Enemy {
             health = 0;
         }
 
-        if(!soundManager.isStillPlaying("bomberHit")){
-            soundManager.setVolume("bomberHit", 0.6f);
+        if (!soundManager.isStillPlaying("bomberHit")) {
+            soundManager.setVolume("bomberHit", 0.8f);
             soundManager.playClip("bomberHit", false);
         }
     }
