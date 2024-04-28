@@ -61,6 +61,17 @@ public class SoundManager { // a Singleton class
 		clip = loadClip("sounds/player/munch.wav");
 		clips.put("munch", clip);
 
+		clip = loadClip("sounds/Level3/bomberHit.wav");
+		clips.put("bomberHit", clip);
+
+		clip = loadClip("sounds/Player/damage.wav");
+		clips.put("damagePlayer", clip);
+
+		clip = loadClip("sounds/Level3/level3_background.wav");
+		clips.put("level3_background", clip);
+
+		clip = loadClip("sounds/Level3/batFlap.wav");
+		clips.put("batFlap", clip);
 	}
 
 	public static SoundManager getInstance() { // class method to retrieve instance of Singleton
@@ -116,6 +127,9 @@ public class SoundManager { // a Singleton class
 
 	public void setVolume(String title, float volume) {
 		Clip clip = getClip(title);
+
+		if(clip==null)
+			return;
 
 		FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 

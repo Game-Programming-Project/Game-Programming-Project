@@ -2,19 +2,19 @@ import java.util.List;
 import java.util.Random;
 import java.util.Random;
 import java.awt.Point;
+import java.util.ArrayList;
 
 public class EntitySpawner {
 	private GamePanel gamePanel;
 	private SoundManager soundManager;
 	private SolidObjectManager soManager;
-	private List<Rock> rocks;
+	private ArrayList<Rock> rocks;
 	private List<Enemy> enemies;
 	private Background background;
 	private Player player;
 	private Random random;
 
-	public EntitySpawner(GamePanel gamePanel, SoundManager soundManager, SolidObjectManager soManager,
-			List<Rock> rocks, List<Enemy> enemies, Background background, Player player) {
+	public EntitySpawner(GamePanel gamePanel, SoundManager soundManager, SolidObjectManager soManager, ArrayList<Rock> rocks, List<Enemy> enemies, Background background, Player player) {
 		this.gamePanel = gamePanel;
 		this.soundManager = soundManager;
 		this.soManager = soManager;
@@ -51,9 +51,38 @@ public class EntitySpawner {
 
 	public void spawnLevelTwoEnemies() {
 
-	}
+	} 	
 
 	public void spawnLevelThreeEnemies() {
+
+		for (int i = 0; i < 5; i++) { // run 5 times
+			Point p = getRandomPoint(221, 2741, 210, 1590);
+			if (p != null) {
+				enemies.add(new Bomber(gamePanel, p.x, p.y, background, player, soManager));
+			}
+		}
+
+		for (int i = 0; i < 4; i++) { // run 4 times
+			Point p = getRandomPoint(221, 2741, 210, 1590);
+			if (p != null) {
+				enemies.add(new Shaman(gamePanel, p.x, p.y, background, player, soManager));
+			}
+		}
+
+		for (int i = 0; i < 3; i++) { // run 3 times
+			Point p = getRandomPoint(221, 2741, 210, 1590);
+			if (p != null) {
+				enemies.add(new RedBee(gamePanel, p.x, p.y, background, player));
+			}
+		}
+
+		for (int i=0; i < 2; i++){
+			Point p = getRandomPoint(221, 2741, 210, 1590);
+			if (p != null) {
+				enemies.add(new FireBat(gamePanel, p.x, p.y, background, player));
+			}
+		
+		}
 
 	}
 
@@ -102,7 +131,7 @@ public class EntitySpawner {
 				if (new Random().nextInt(100) < 5) {
 					rock.setHasFruit(true);
 				}
-
+				
 				rocks.add(rock);
 
 				// adds a solid object for each rock and associates the rock with the object
@@ -149,5 +178,9 @@ public class EntitySpawner {
 
 	public void setBg(Background bg) {
 		background = bg;
+	}
+
+	public ArrayList<Rock> getRocks(){
+		return rocks;
 	}
 }

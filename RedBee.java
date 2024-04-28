@@ -23,11 +23,28 @@ public class RedBee extends BeeAnimation{
 
 	}
 
+    public void update() {
+        if (!walkAnimation.isStillActive()) // if the animation is not active, no need to update
+            return;
+
+        walkAnimation.update();
+
+        if (health <= 0){
+            isAlive = false;
+        }   
+    }
+
     public void move() {
         int oldMapX = mapX;
         int oldMapY = mapY;
 
         double distance = Math.sqrt(Math.pow(player.getX() - x, 2) + Math.pow(player.getY() - y, 2));
+
+        if(distance <=150){
+            if(!soundManager.isStillPlaying("beeSound")){
+                soundManager.playClip("beeSound", false);
+            }
+        }
 
         if(distance < 400) // only move if Bee won't collide with a solid and if the player is within range
             chasePlayer();

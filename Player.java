@@ -42,6 +42,7 @@ public class Player {
 
 	private Long invincibleStart;
 
+	private SoundManager soundManager;
 	private SolidObjectManager soManager;
 	private SolidObject solidObject;
 
@@ -89,6 +90,8 @@ public class Player {
 		dx = dy = 5;
 
 		setDimensions();
+
+		soundManager = SoundManager.getInstance();
 	}
 
 	public void start() {
@@ -423,6 +426,9 @@ public class Player {
 
 		invincibleStart = System.currentTimeMillis();
 		invincible = true;
+
+		if(!soundManager.isStillPlaying("damagePlayer"))
+			soundManager.playClip("damagePlayer",false);
 	}
 
 	public void heal(int h) {
