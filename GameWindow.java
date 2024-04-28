@@ -21,11 +21,13 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 	private static final int initialTimeInSeconds = 120;		
 	// Labels declaration 
 	private JLabel gameL;
+	private JLabel materialLabel;
 	private JLabel scoreLabel;
 	private JLabel timeLabel;
 	private JLabel startGameLabel;
 	
 	// Text fields declaration 
+	private JTextField materialTF;
 	private JTextField scoreTF;
 	private JTextField timeTF;
 
@@ -105,16 +107,21 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 		headerImagePanel.add(new JLabel(gameTitleIcon)); // Add the image to the panel
 
 		// Create the score, lives and time labels of the infoPanel
+		materialLabel = new JLabel (" MATERIALS COLLECTED ");
 		scoreLabel = new JLabel (" CURRENT SCORE  ");
 		timeLabel = new JLabel(" TIME REMAINING ");
 
 		// Create text fields and set properties
+		materialTF = new JTextField("0");
 		scoreTF = new JTextField(Integer.toString(score));
 		timeTF = new JTextField(Integer.toString(remainingTime));
 
+		materialTF.setEditable(false);
 		scoreTF.setEditable(false);
 		timeTF.setEditable(false);
 
+		// Set the background color of the text fields
+		materialTF.setBackground(Color.WHITE);
 		scoreTF.setBackground(Color.WHITE);
 		timeTF.setBackground(Color.WHITE);
 
@@ -225,6 +232,9 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 		infoPanel.setBackground(new Color(186, 181, 147));
 
 		// Add user interface objects to infoPanel
+		infoPanel.add (materialLabel);
+		infoPanel.add (materialTF);
+
 		infoPanel.add (scoreLabel);
 		infoPanel.add (scoreTF);		
 
@@ -382,6 +392,10 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 
 	public void updateScore(int score) {
 		scoreTF.setText(String.valueOf(score));
+	}
+
+	public void updateMaterials(int materials) {
+		materialTF.setText(String.valueOf(materials));
 	}
 
 }

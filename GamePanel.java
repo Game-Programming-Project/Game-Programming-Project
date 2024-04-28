@@ -207,6 +207,7 @@ public class GamePanel extends JPanel implements Runnable {
 		}
 
 		window.updateScore(player.getScore());
+		window.updateMaterials(player.getMaterials());
 	}
 
 	public void updatePlayer(int direction) {

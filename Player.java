@@ -519,6 +519,10 @@ public class Player {
 		materials+=m;
 	}
 
+	public int getMaterials(){
+		return materials;
+	}
+
 	public int getScore(){
 		return score;
 	}
