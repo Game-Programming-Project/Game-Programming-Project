@@ -190,7 +190,7 @@ public class GamePanel extends JPanel implements Runnable {
 				enemyIterator.remove();
 
 				System.out.println("NumEnemies " + numEnemies);
-				if (numEnemies != -1)
+				if (numEnemies != -1 && !(enemy instanceof TinyBee))
 					numEnemies--;
 			}
 		}
@@ -200,7 +200,7 @@ public class GamePanel extends JPanel implements Runnable {
 		// remove solid objects associated with rocks, if their rock was destroyed
 		soManager.removeDestroyedRocks();
 
-		if (numEnemies > 0 && numEnemies < 1 && chest == null) {
+		if (numEnemies !=-1 && numEnemies < 1 && chest == null) {
 			chest = new Chest(this, player.getX() - player.getHeight(), player.getY(), background);
 			soundManager.playClip("chestSpawn", false);
 			System.out.println("chestSpawned");
@@ -219,7 +219,7 @@ public class GamePanel extends JPanel implements Runnable {
 		Boolean wouldCollide = soManager.collidesWithSolid(futurePosition);
 
 		// this makes the player walk through any solid object
-		// wouldCollide = false; // for testing purposes, comment out when done
+		wouldCollide = false; // for testing purposes, comment out when done
 
 		if (player != null && !isPaused) {
 			if (direction != 99 & direction != 88) {
