@@ -1,84 +1,152 @@
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
+import java.awt.Graphics2D;
 import java.util.Random;
 
 public class BismuthAnimation extends Enemy {
 
-    private final int minX = 2207;
-    private final int maxX = 3024;
-    private final int minY = 843;
-    private final int maxY = 1249;
-    private final int aggression = 10; 
+	private static final int NORMAL = 0;
+	private static final int AGGRESSIVE = 1;
+	private static final int PASSIVE = 2;
 
-    private Animation walkAnimationLeft;
-    private Animation walkAnimationRight;
+	// Probability of each behavior type (sum should be 100)
+	private static final int NORMAL_PROBABILITY = 60; // Higher chance of normal behavior
+	private static final int AGGRESSIVE_PROBABILITY = 20;
+	private static final int PASSIVE_PROBABILITY = 20;
 
-    private Player player;
+	// Random object for generating random behavior
+	private static final Random random = new Random();
     private SolidObjectManager soManager;
 
-    // Constructor
-    public BismuthAnimation(GamePanel gPanel, int mapX, int mapY, Background bg, Player p, SolidObjectManager soManager) {
-        super(gPanel, mapX, mapY, bg, p);
-        this.player = p;
+	public BismuthAnimation(GamePanel gPanel, int mapX, int mapY, Background bg, Player p, SolidObjectManager soManager) {
+		super(gPanel, mapX, mapY, bg, p);
+
         this.soManager = soManager;
 
-        dx = 5;
-        dy = 5;
+		initBehavior();
+		loadImages();
+		loadWalkAnimations();
 
-        width = 40;
-        height = 55;
+		width = 50;
+        height = 60;
 
-        loadImages();
-        loadWalkAnimations();
-    }
+		dx = 5;
+		dy = 5;
+
+	}
 
 
-    public void move() {
-        int oldMapX = mapX;
-        int oldMapY = mapY;
+	private void initBehavior() {
+		int behavior = selectBehavior();
+		setBehavior(behavior);
+	}
 
-        double distance = Math.sqrt(Math.pow(player.getX() - x, 2) + Math.pow(player.getY() - y, 2));
 
-        Boolean wouldCollide = soManager.collidesWithSolid(getFutureBoundingRectangle());
+	// Method to select bee behavior randomly based on probabilities
+	private int selectBehavior() {
+		int randomNumber = random.nextInt(100); // Generate random number between 0 and 99
 
-        if (!wouldCollide && distance < 300) {
-            blockPlayer(); // Invoke blockPlayer() method to block the player's path
-        }
+		if (randomNumber < NORMAL_PROBABILITY) {
+			return NORMAL;
+		} else if (randomNumber < NORMAL_PROBABILITY + AGGRESSIVE_PROBABILITY) {
+			return AGGRESSIVE;
+		} else {
+			return PASSIVE;
+		}
+	}
 
-        else if (oldMapX < mapX) {
-            walkAnimation = walkAnimationRight;
-            standImage = standImageRight;
-        } 
-        else if (oldMapX > mapX) {
-            walkAnimation = walkAnimationLeft;
-            standImage = standImageLeft;
-        }
+	// Method to set behavior based on behavior type
+	private void setBehavior(int behavior) {
+		switch (behavior) {
+			case NORMAL:
+				// Set normal behavior
+				break;
+			case AGGRESSIVE:
+				// Set aggressive behavior
+				break;
+			case PASSIVE:
+				// Set passive behavior
+				break;
+			default:
+				// Default behavior
+				break;
+		}
+	}
 
+	public void chasePlayer() {
+		int playerX = player.getX();
+		int playerY = player.getY();
+
+		// Calculate the distance between the bee and the player
+		double distance = Math.sqrt(Math.pow(playerX - x, 2) + Math.pow(playerY - y, 2));
+
+		// If the player is within a certain range (e.g., 100 pixels)
+		if (distance <= 250) {
+			if (walkAnimation.isStillActive() && !soundManager.isStillPlaying("beeSound")) {
+				playWalkSound();
+			}
+			if (playerX > x) { // player is to the right
+				mapX += dx;
+				walkAnimation = walkAnimationRight;
+				standImage = standImageRight;
+			
+			} else if (playerX - player.getWidth() < x) { // player is to the left
+				mapX -= dx;
+				walkAnimation = walkAnimationLeft;
+				standImage = standImageLeft;
+				
+			}
+
+			if (playerY - player.getHeight() > y) { // player is below
+				mapY += dy;
+				walkAnimation = walkAnimationLeft;
+			
+			} else if (playerY + player.getHeight() < y) { // player is above
+				mapY -= dy;
+				walkAnimation = walkAnimationLeft;
+			
+			}
+		} else {
+			walkAnimation = walkAnimationRight;
+			standImage = standImageRight;
+
+		}
+	}
+
+	public void move() {
+		int oldMapX = mapX;
+		int oldMapY = mapY;
+
+		Boolean wouldCollide = soManager.collidesWithSolid(getFutureBoundingRectangle());
+        if(!wouldCollide) 
+            chasePlayer();
+
+		if (oldMapX < mapX) { // moving right
+			walkAnimation = walkAnimationRight;
+			standImage = standImageRight;
+			playWalkSound();
+		} else if (oldMapX > mapX) { // moving left
+			walkAnimation = walkAnimationLeft;
+			standImage = standImageLeft;
+			playWalkSound();
+		}
         if (oldMapX == mapX && oldMapY == mapY) {
             walkAnimation.stop();
         }
-    }
+	}
 
 
-    public void loadWalkAnimations() {
+	public void loadWalkAnimations() {
         walkAnimationLeft = loadAnimation("images/Enemies/Level2/Bismuth/bismuthLeft.png");
         walkAnimationRight = loadAnimation("images/Enemies/Level2/Bismuth/bismuthRight.png");
 
         walkAnimation = walkAnimationLeft;
-    }
-
-    
-    public void loadImages() {
-        standImageRight = ImageManager.loadImage("images/Enemies/Level2/Bismuth/bismuthStandRight.png");
-        standImageLeft = ImageManager.loadImage("images/Enemies/Level2/Bismuth/bismuthStandLeft.png");
-
-        standImage = standImageLeft;
-    }
+	}
 
 
-    public Animation loadAnimation(String stripFilePath) {
-        Animation animation = new Animation(false);
+	public Animation loadAnimation(String stripFilePath) {
+
+		Animation animation = new Animation(false);
         Image stripImage = ImageManager.loadImage(stripFilePath);
         int imageWidth = (int) stripImage.getWidth(null) / 10;
         int imageHeight = stripImage.getHeight(null);
@@ -96,44 +164,21 @@ public class BismuthAnimation extends Enemy {
         }
 
         return animation;
-    }
+	}
 
+	public void loadImages() {
+        standImageRight = ImageManager.loadImage("images/Enemies/Level2/Bismuth/bismuthStandRight.png");
+        standImageLeft = ImageManager.loadImage("images/Enemies/Level2/Bismuth/bismuthStandLeft.png");
 
-    private void blockPlayer() {
-        int playerX = player.getX() + player.getWidth() / 2;
-        int playerY = player.getY() + player.getHeight() / 2;
-    
-        Random rand = new Random();
-        int random = rand.nextInt(aggression);
-    
-        updateScreenCoordinates();
-    
-        if (random == 0) {
-            int distanceX = Math.abs(playerX - x);
-            int distanceY = Math.abs(playerY - y);
-    
-            if (distanceX > 35) { // Check if the difference is more than 10 pixels
-                if (playerX > x && mapX < maxX) { // Player is to the right and within maxX
-                    mapX += dx;
-                }
-                if (playerX < x && mapX > minX) { // Player is to the left and within minX
-                    mapX -= dx;
-                }
-            } else {
-                if (distanceY > 35) { // Check if the difference is more than 10 pixels
-                    if (playerY > y && mapY < maxY) { // Player is below and within maxY
-                        mapY += dy;
-                    }
-                    if (playerY < y && mapY > minY) { // Player is above and within minY
-                        mapY -= dy;
-                    }
-                }
-            }
-        }
-    }
+        standImage = standImageLeft;
+	}
+
+	private void playWalkSound() {
+		soundManager.playClip("roar", false);
+	}
 
     public int getCurrentXPosition() {
-        return mapX; 
+                return mapX; 
     }
-    
+            
 }

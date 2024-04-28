@@ -20,11 +20,11 @@ public class Dynamite {
 
    private Random random;
 
-   //private Sheriff sheriff;
+   private BismuthAnimation bismuth;
    private SoundManager soundManager;
    private Image dynamiteImage;
 
-    public Dynamite(GamePanel p, int xPos, int yPos, Sheriff sheriff) {
+    public Dynamite(GamePanel p, int xPos, int yPos, BismuthAnimation b) {
         gPanel = p;
     
         width = 30;
@@ -40,7 +40,7 @@ public class Dynamite {
         dx = 0;			
         dy = 5;			
 
-        this.sheriff = sheriff;
+        this.bismuth = b;
         dynamiteImage = ImageManager.loadImage ("images/dynamite.png");
         soundManager = SoundManager.getInstance();
     }
@@ -51,7 +51,7 @@ public class Dynamite {
     
     public void setLocation() {
         int panelWidth = gPanel.getWidth();
-        x = random.nextInt (panelWidth - width);
+        x = bismuth.getCurrentXPosition();
         y = 10;
     }
 
@@ -75,7 +75,7 @@ public class Dynamite {
         if (collision){
             soundManager.playClip("explode", false);
             soundManager.playClip("lose life", false);
-            gPanel.updateLives();
+            //gPanel.updatePoints(50);
             setLocation();
         }
 

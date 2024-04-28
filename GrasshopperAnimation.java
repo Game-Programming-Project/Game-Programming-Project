@@ -88,6 +88,7 @@ public class GrasshopperAnimation extends Enemy {
 		standImageLeft = ImageManager.loadImage("images/Enemies/Level1/Grasshopper/grasshopperStandingLeft.png");
 		standImageRight = ImageManager.loadImage("images/Enemies/Level1/Grasshopper/grasshopperStandingRight.png");
 
+		standImage = standImageLeft;
 	}
 
 	public void chasePlayer() {

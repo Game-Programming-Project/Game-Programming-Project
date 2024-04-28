@@ -59,6 +59,16 @@ public class SoundManager { // a Singleton class
 		clip = loadClip("sounds/Level2/background2.wav");
 		clips.put("background2", clip);
 
+			
+		clip = loadClip("sounds/Level2/explosion.wav");
+		clips.put("explosion", clip);
+
+			
+		clip = loadClip("sounds/Level2/scorpion.wav");
+		clips.put("scorpionRattle", clip);
+
+		clip = loadClip("sounds/Level2/bismuthRoar.wav");
+		clips.put("roar", clip);
 
 	}
 

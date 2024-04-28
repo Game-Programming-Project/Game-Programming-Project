@@ -22,8 +22,8 @@ public class Shaman extends Enemy {
         player = p;
         this.soManager = soManager;
 
-        walkAnimationUp= new Animation(false);
-        walkAnimationDown= new Animation(false);
+       // walkAnimationUp= new Animation(false);
+       // walkAnimationDown= new Animation(false);
         
         loadImages();
         loadWalkAnimations();
