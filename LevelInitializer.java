@@ -45,8 +45,7 @@ public class LevelInitializer {
 		enemies.clear();
 
 		// offsetX is 360, offsetY is 80
-		background = new Background(gamePanel, "images/Maps/Testing/Level1MapTest.png", 96 + player.getSpeed(), 390,
-				-30);
+		background = new Background(gamePanel, "images/Maps/Testing/Level1MapTest.png", 96 + player.getSpeed(), 390, -30);
 
 		soManager.setBg(background);
 		gamePanel.setBackground(background);
@@ -76,7 +75,7 @@ public class LevelInitializer {
 		rocks.clear();
 		enemies.clear();
 
-		background = new Background(gamePanel, "images/Maps/Testing/Level2MapTest1.png", 96, 690, -300);
+		background = new Background(gamePanel, "images/Maps/Testing/Level2MapTest1.png", 96, 850, -380);
 
 		player.resetX();
 		player.resetY();
