@@ -4,119 +4,96 @@ import java.awt.image.BufferedImage;
 
 public class TintFX implements ImageFX {
 
-	private int x;
-	private int y;
+    private static final int WIDTH = 1100;      // width of the image
+    private static final int HEIGHT = 500;     // height of the image
+    private static final int YPOS = 0;       // vertical position of the image
+    private static final int XPOS = 0;       // vertical position of the image
 
-	private int WIDTH;
-	private int HEIGHT;
+    private GamePanel panel;
 
-	private BufferedImage spriteImage;		// image for sprite effect
-	private BufferedImage copy;			// copy of image
+    private int x;
+    private int y;
 
-	private boolean completed;
+    private BufferedImage spriteImage;         // image for sprite effect
+    private BufferedImage copy;                // copy of image
 
-	Graphics2D g2;
+    Graphics2D g2;
 
-	int tint, tintChange;				// to alter the brightness of the image
+    int tint, tintChange;                       // to alter the brightness of the image
 
-	public TintFX (int xPos, int yPos, int width, int height, String imagePath) {
+    public TintFX(GamePanel p) {
+        panel = p;
 
-		x = xPos;
-		y = yPos;
+        x = XPOS;
+        y = YPOS;
 
-		WIDTH = width;
-		HEIGHT = height;
+        tint = -100;                             // lower values darken the image
+        tintChange = 1;                          // increase of tint in each update
 
-		tint = 0;				// range is 0 to 255; negative values darken the
-							// image and positive values brighten the image
- 
-		tintChange = 255;				// increase of tint in each update
+        spriteImage = ImageManager.loadBufferedImage("images/MineEntrance.png");
+    }
 
-		spriteImage = ImageManager.loadBufferedImage(imagePath);
+    private int truncate(int colourValue) {     // keeps colourValue within [0..255] range
+        if (colourValue > 255)
+            return 255;
 
-		completed=false;
-	}
+        if (colourValue < 0)
+            return 0;
 
+        return colourValue;
+    }
 
-	private int truncate (int colourValue) {	// keeps colourValue within [0..255] range
-		if (colourValue > 255)
-			return 255;
+    private int applyTint(int pixel) {
+        int alpha, red, green, blue;
+        int newPixel;
 
-		if (colourValue < 0)
-			return 0;
+        alpha = (pixel >> 24) & 255;
+        red = (pixel >> 16) & 255;
+        green = (pixel >> 8) & 255;
+        blue = pixel & 255;
 
-		return colourValue;
-	}
+        // Decrease the value of the red component based on the value of tint
+        red = truncate(red + tint);
 
+        // Check the boundaries for 8-bit red component [0..255]
 
-	private int applyTint (int pixel) {
+        newPixel = blue | (green << 8) | (red << 16) | (alpha << 24);
 
-    	int alpha, red, green, blue;
-		int newPixel;
-		
-		alpha = (pixel >> 24) & 255;
-		red = (pixel >> 16) & 255;
-		green = (pixel >> 8) & 255;
-		blue = pixel & 255;
+        return newPixel;
+    }
 
-		// Increase the value of the red component based on the value of tint
+    public void draw(Graphics2D g2) {
+        copy = ImageManager.copyImage(spriteImage);
+        // make copy of image for brightness effect
 
-		red = red + tint;
+        int imWidth = copy.getWidth();
+        int imHeight = copy.getHeight();
 
-		// Check the boundaries for 8-bit red component [0..255]
+        int[] pixels = new int[imWidth * imHeight];
+        copy.getRGB(0, 0, imWidth, imHeight, pixels, 0, imWidth);
 
-		red = truncate (red);
-		
-		newPixel = blue | (green << 8) | (red << 16) | (alpha << 24);
+        int alpha, red, green, blue;
 
-		return newPixel;
-	}
+        for (int i = 0; i < pixels.length; i++) {
+            pixels[i] = applyTint(pixels[i]);
+        }
 
+        copy.setRGB(0, 0, imWidth, imHeight, pixels, 0, imWidth);
 
-	public void draw (Graphics2D g2) {
+        g2.drawImage(copy, x, y, WIDTH, HEIGHT, null);
 
-		if(copy==null)
-			copy=ImageManager.copyImage(spriteImage); // make copy of image for brightness effect
-		
-		if(copy==null) return;
-		
-		int imWidth = copy.getWidth();
-		int imHeight = copy.getHeight();
+    }
 
-    		int [] pixels = new int[imWidth * imHeight];
-    		copy.getRGB(0, 0, imWidth, imHeight, pixels, 0, imWidth);
+    public Rectangle2D.Double getBoundingRectangle() {
+        return new Rectangle2D.Double(x, y, WIDTH, HEIGHT);
+    }
 
-		for (int i=0; i<pixels.length; i++) {
-			pixels[i] = applyTint(pixels[i]);
-		}
+    public void update() {                      // modify brightness (-255 to 255)
 
-    		copy.setRGB(0, 0, imWidth, imHeight, pixels, 0, imWidth);	
+        tint = tint + tintChange;
 
-		g2.drawImage(copy, x, y, WIDTH, HEIGHT, null);
-
-	}
-
-
-	public Rectangle2D.Double getBoundingRectangle() {
-		return new Rectangle2D.Double (x, y, WIDTH, HEIGHT);
-	}
-
-
-	public void update() {				// modify brightness (-255 to 255)
-	
-		tint = tint + tintChange;
-
-		if (tint > 255) {
-			completed=true;
-			tint=0;
-		}		
-	}
-
-	public boolean isCompleted(){
-		return completed;
-	}
-
-	public int getTint(){
-		return tint;
-	}
+        if (tint > 255) {
+            tint = 0;
+        }
+    }
 }

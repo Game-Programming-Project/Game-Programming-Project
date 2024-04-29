@@ -1,12 +1,12 @@
 import javax.swing.*; // need this for GUI objects
 import java.awt.*; // need this for Layout Managers
 import java.awt.event.*; // need this to respond to GUI events
+;
+
 
 public class GameWindow extends JFrame implements ActionListener, KeyListener, MouseListener {
-
-	private static final int initialTimeInSeconds = 120;		
+	
 	// Labels declaration 
-	private JLabel gameL;
 	private JLabel materialLabel;
 
 	private JLabel startGameLabel;
@@ -15,8 +15,8 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 
 	// Text fields declaration 
 	private JTextField materialTF;
-	private JTextField scoreTF;
-	private JTextField timeTF;
+	public JTextField scoreTF;
+	public JTextField timeTF;
 
 	// Buttons declaration 
 	private JButton playB; 
@@ -28,13 +28,10 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 	// Variable declarations
 	private int score; 
 	private int remainingTime;
-	private boolean gameOver;
-	private boolean isTimerPaused;
 
 	private Container c;
 	private JPanel mainPanel;
 	private GamePanel gamePanel;
-	private Timer timer;
 
 	@SuppressWarnings({ "unchecked" })
 	public GameWindow() {
@@ -99,7 +96,7 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 
 		// // Create the gamePanel for game entities and set properties
 		gamePanel = new GamePanel(this);
-		gamePanel.setPreferredSize(new Dimension(1100, 600));
+		gamePanel.setPreferredSize(new Dimension(1100, 500));
 	
 		// Create the start game label and add it to the panel
 		startGameLabel = new JLabel("Click Play To Start Game");
@@ -109,7 +106,7 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 		
 		// Create the gamePanel for game entities and set properties
 		gamePanel = new GamePanel(this);
-		gamePanel.setPreferredSize(new Dimension(1100, 600));
+		gamePanel.setPreferredSize(new Dimension(1100, 500));
 	
 	
 		// Create buttonPanel
@@ -169,11 +166,10 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 
 		// Setting the initial values 
 		score = 0;
-		gameOver = false; 
 
 		// Set the default values of the score, lives and time text fields in the infoPanel
 		scoreTF.setText(" 0 ");
-		timeTF.setText(" 00:00 ");
+		timeTF.setText(" 15:00 ");
 	}
 
 	// implement single method in ActionListener interface
@@ -187,17 +183,16 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 
 		if (command.equals("Pause Game")) {
 			gamePanel.pauseGame();
-			isTimerPaused = false;
 			pauseB.setText ("Resume Game");
 		}
 
 		if (command.equals("Resume Game")) {
 			gamePanel.pauseGame();
-			isTimerPaused = true;
+			//isTimerPaused = true;
 			pauseB.setText ("Pause Game");
 		}
 		
-		if (command.equals(endB.getText())) {
+		if (command.equals("End Game")) {
 			gamePanel.endGame();
 			remainingTime = 0;
 		}
@@ -233,9 +228,6 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 			gamePanel.updatePlayer(4);
 		}
 
-		if(keyCode == KeyEvent.VK_B){
-			gamePanel.bombBismuth();
-		}
 	}
 
 	public void keyReleased(KeyEvent e) {
@@ -289,4 +281,5 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 		materialTF.setText(String.valueOf(materials));
 	}
 
+	
 }
