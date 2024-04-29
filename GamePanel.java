@@ -1,19 +1,31 @@
 import javax.swing.JPanel;
 import java.awt.image.BufferedImage;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Image;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.awt.geom.Rectangle2D;
 import java.awt.Point;
+import java.awt.RenderingHints;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
 
 public class GamePanel extends JPanel implements Runnable {
 
+	private static final int initialTimeInSeconds = 900;	
+
 	private boolean isRunning;
 	private boolean isPaused;
+	private boolean characterSelected;
+	private boolean isGameOver;
 
 	private ArrayList<Rock> rocks;
 	private ArrayList<Enemy> enemies;
@@ -29,10 +41,11 @@ public class GamePanel extends JPanel implements Runnable {
 	private EntitySpawner entitySpawner;
 
 	private Player player;
+	private Timer timer;
 
-	private boolean characterSelected;
+	private int remainingTime;
+	
 	private CharacterSelection charSelect;
-	//private GameLobby gameLobby;
 	private String character;
 
 	private Background background;
@@ -47,6 +60,7 @@ public class GamePanel extends JPanel implements Runnable {
 	private Chest chest;
 
 	private int numEnemies;
+
 
 	public GamePanel(GameWindow w) {
 
@@ -70,14 +84,16 @@ public class GamePanel extends JPanel implements Runnable {
 		
 		isRunning = false;
 		isPaused = false;
+		isGameOver = false;
 		chest = null;
+
 
 		soundManager = SoundManager.getInstance();
 
 		currentLevel = 1;
 		numEnemies = -1;
 
-		image = new BufferedImage(1100, 700, BufferedImage.TYPE_INT_RGB);
+		image = new BufferedImage(1100, 500, BufferedImage.TYPE_INT_RGB);
 		soManager = new SolidObjectManager();
 		healthDisplay = new HealthDisplay(10, 10); // position it at the top left corner
 
@@ -277,84 +293,160 @@ public class GamePanel extends JPanel implements Runnable {
 		}
 	}
 
+
 	public void gameRender() {
 
 		// draw the game objects on the image
-
 		Graphics2D imageContext = (Graphics2D) image.getGraphics();
 
-		if (background != null)
-			background.draw(imageContext);
+		if(!isGameOver){
+			if (isPaused) {
+				printGamePaused(imageContext);
+			} 
+			else{
+	
+				if (background != null)
+				background.draw(imageContext);
+	
+			if (soManager != null)
+				soManager.draw(imageContext);
+	
+			if (rocks != null) {
+				for (int i = 0; i < rocks.size(); i++)
+					rocks.get(i).draw(imageContext);
+			}
+	
+			if (enemies != null) {
+				for (int i = 0; i < enemies.size(); i++)
+					enemies.get(i).draw(imageContext);
+			}
+	
+			if (chest != null)
+				chest.draw(imageContext);
+	
+			if (player != null)
+				player.draw(imageContext);
+	
+			if (healthDisplay != null)
+				healthDisplay.draw(imageContext, player.getHealth(), getWidth());
+			}
 
-		if (soManager != null)
-			soManager.draw(imageContext);
-
-		if (rocks != null) {
-			for (int i = 0; i < rocks.size(); i++)
-				rocks.get(i).draw(imageContext);
+		}
+		else if (isGameOver) {
+			displayScoreBoard(imageContext);
 		}
 
-		if (enemies != null) {
-			for (int i = 0; i < enemies.size(); i++)
-				enemies.get(i).draw(imageContext);
-		}
-
-		if (chest != null)
-			chest.draw(imageContext);
-
-		if (player != null)
-			player.draw(imageContext);
-
-		if (healthDisplay != null)
-			healthDisplay.draw(imageContext, player.getHealth(), getWidth());
-
+		
 		Graphics2D g2 = (Graphics2D) getGraphics(); // get the graphics context for the panel
-
-		g2.drawImage(image, 0, 0, 1100, 700, null);
+		g2.drawImage(image, 0, 0, 1100, 500, null);
 
 		imageContext.dispose();
 		g2.dispose();
 	}
 
 	public void startGame() { // initialise and start the game thread
-
+		isGameOver = false;
 		if (gameThread == null && characterSelected) {
 			soundManager.playClip("start", false);
 			createGameEntities();
 			levelInitializer.initLevelTwo();
 			gameThread = new Thread(this);
 			gameThread.start();
+			startTimer();
 
 		}
 
 	}
+
 
 	public void startNewGame() { // initialise and start a new game thread
-
+		isGameOver = false;
 		isPaused = false;
-
+	
+		soundManager.stopClip("gameover"); // Stop game over sound
+		Graphics2D g2d = (Graphics2D) getGraphics();
+		g2d.clearRect(0, 0, getWidth(), getHeight()); // Clear any residual drawings
+	
 		if (gameThread == null || !isRunning) {
 			soundManager.playClip("start", false);
+			int level = getCurrentLevel();
+	
+			if (level == 1) {
+				soundManager.playClip("background", true);
+			} else if (level == 2) {
+				soundManager.playClip("background2", true);
+			} else if (level == 3) {
+				soundManager.playClip("level3_background", true);
+			}
 			createGameEntities();
 			levelInitializer.initLevelTwo();
-
+	
 			gameThread = new Thread(this);
 			gameThread.start();
+	
+			startTimer();
+		} else {
+			if (isPaused) {
+				// Stop the pause music
+				soundManager.stopClip("pause");
+				int level = getCurrentLevel();
+	
+				// Play the appropriate background music based on the current level
+				if (level == 1) {
+					soundManager.playClip("background", true);
+				} else if (level == 2) {
+					soundManager.playClip("background2", true);
+				} else if (level == 3) {
+					soundManager.playClip("level3_background", true);
+				}
+	
+				// Resume the timer
+				startOrResumeTimer();
+				isPaused = false;
+			}
 		}
 	}
+	
 
 	public void pauseGame() { // pause the game (don't update game entities)
 		if (isRunning) {
-			if (isPaused)
+			if (isPaused){
+				startOrResumeTimer();
+				soundManager.stopClip("pause"); 
+				int level = getCurrentLevel();
+
+				if(level == 1){
+					soundManager.playClip("background", true);
+				}
+				else if(level == 2){
+					soundManager.playClip("background2", true);
+				}
+				else if(level == 3){
+					soundManager.playClip("level3_background", true);
+				}
 				isPaused = false;
-			else
-				isPaused = true;
+			}
+				
+			else{
+				printGamePaused((Graphics2D) image.getGraphics());
+                soundManager.stopAllClips();
+                soundManager.playClip("pause", true); 
+				pauseTimer();
+                isPaused = true;
+			}
+				
 		}
 	}
 
 	public void endGame() { // end the game thread
 		isRunning = false;
 		// soundManager.stopClip ("background");
+		isGameOver = true;
+        isRunning = false;
+
+		pauseTimer();
+		displayGameOver();
+
 	}
 
 	// method sets which character the player will be using
@@ -394,9 +486,6 @@ public class GamePanel extends JPanel implements Runnable {
 		this.rocks = rocks;
 	}
 
-	public void bombBismuth() {
-
-	}
 
 	public void setNumEnemies(int numEnemies) {
 		this.numEnemies = numEnemies;
@@ -425,4 +514,173 @@ public class GamePanel extends JPanel implements Runnable {
 			return true;
 		return false;
 	}
+
+	public void displayScoreBoard(Graphics2D g2d) {
+		if(isGameOver == true){
+			int panelWidth = getWidth();
+			int panelHeight = getHeight();
+
+			Image woodFrame = ImageManager.loadImage("images/scoreboard.png");
+			int frameWidth = 300; // Adjust width as needed
+        	int frameHeight = 250; // Adjust height as needed
+
+			int frameX = (panelWidth - frameWidth) / 2; // Calculate X position for centering
+			int frameY = (panelHeight - frameHeight) / 2; // Calculate Y position for centering
+
+			g2d.drawImage(woodFrame, frameX, frameY, frameWidth, frameHeight, null); // Draw the wood frame
+		}
+	}
+
+	
+    // Prints "Game Paused" message
+    public void printGamePaused(Graphics2D g2) {
+        g2.setColor(Color.WHITE); // Set the color to white
+        g2.setFont(new Font("Arial", Font.BOLD, 42)); // Set the font and size
+
+        String message = "GAME PAUSED";
+        FontMetrics fontMetrics = g2.getFontMetrics();
+        int stringWidth = fontMetrics.stringWidth(message);
+        int x = (getWidth() - stringWidth) / 2; // Calculate x-coordinate for center alignment
+        int y = getHeight() / 2; // Center vertically
+
+        g2.drawString(message, x, y); // Draw the message at the calculated position
+    }
+
+	// Method to start or resume the timer
+	public void startOrResumeTimer() {
+		if (timer == null) {
+			// Timer not yet initialized, start from initial time
+			startTimer(); // Start timer with initial time of 120 seconds (2 minutes)
+		} else {
+			// Timer already initialized, resume from remaining time
+			resumeTimer(remainingTime);
+		}
+	}
+
+	// Method to pause the timer
+	public void pauseTimer() {
+		if (timer != null) {
+			timer.cancel(); // Cancel the timer task
+		}
+	}
+
+	// Method to start the timer with the specified initial time
+	public void startTimer() {
+		timer = new Timer(); // Initialize new Timer object
+		int delay = 500; // Adjust delay as needed
+		remainingTime = initialTimeInSeconds;
+		timer.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				if (remainingTime == 0 || player.getHealth() == 0) {
+					window.timeTF.setText(String.format("%02d:%02d", 0, 0));
+					timer.cancel(); // Stop the timer when time reaches 0
+					endGame();
+					remainingTime = 900;
+					isGameOver = true;
+					checkGameOver();
+				} else {
+					int minutes = remainingTime / 60;
+					int seconds = remainingTime % 60;
+					window.timeTF.setText(String.format("%02d:%02d", minutes, seconds));
+					remainingTime--;
+				}
+			}
+		}, delay, delay);
+	}
+
+
+	// Method to resume the timer with the specified remaining time
+	private void resumeTimer(int remainingTimeInSeconds) {
+		timer = new Timer(); // Initialize new Timer object
+		int delay = 500; // Adjust delay as needed
+		remainingTime = remainingTimeInSeconds;
+		timer.scheduleAtFixedRate(new TimerTask() {
+			@Override
+			public void run() {
+				if (remainingTime == 0 || player.getHealth() == 0) {
+					window.timeTF.setText(String.format("%02d:%02d", 0, 0));
+					timer.cancel(); // Stop the timer when time reaches 0
+					endGame();
+					remainingTime = 900;
+					isGameOver = true;
+					checkGameOver();
+				} else {
+					int minutes = remainingTime / 60;
+					int seconds = remainingTime % 60;
+					window.timeTF.setText(String.format("%02d:%02d", minutes, seconds));
+					remainingTime--;
+				}
+			}
+		}, delay, delay);
+	}
+
+	public boolean checkGameOver() {
+		if (player.getHealth() == 0 || remainingTime == 0) {
+			isGameOver = true;
+		}
+		else
+			isGameOver = false;
+
+		return isGameOver;
+	}
+
+
+	// Method to display the game over screen details
+	public void displayGameOver(){
+		if(checkGameOver() == true){
+			soundManager.stopAllClips();
+			soundManager.playClip("gameover", false);
+			Graphics g = this.getGraphics();
+			Graphics2D g2 = (Graphics2D) g;
+	
+			// Set rendering hints for smoother edges
+			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+	
+			// Set font properties for "Game Over!" message
+			Font gameOverFont = new Font("Arial", Font.BOLD, 36);
+			g2.setFont(gameOverFont);
+			g2.setColor(Color.RED);
+	
+			// Get the size of the panel
+			Dimension panelSize = this.getSize();
+	
+			// Calculate the position to center the "Game Over!" message
+			FontMetrics metrics = g2.getFontMetrics(gameOverFont);
+			int x = (panelSize.width - metrics.stringWidth("Game Over!")) / 2;
+			int y = (panelSize.height - metrics.getHeight()) / 2 + metrics.getAscent();
+
+			// Calculate positions for score and lives
+			int scoreX = ((panelSize.width - metrics.stringWidth("SCORE " + player.getScore())) / 2) + 45;
+			int scoreY = y + metrics.getHeight() - 10; // Offset from "Game Over!" text
+	
+			int livesX = ((panelSize.width - metrics.stringWidth("LIVES " + player.getHealth())) / 2) + 32;
+			int livesY = scoreY + metrics.getHeight() - 15; // Offset from score text
+	
+		
+			// Draw the "Game Over!" text
+			g2.drawString("Game Over!", x, y);
+
+			// Set font properties for score
+			Font scoreFont = new Font("Helvetica", Font.BOLD, 20);
+			g2.setFont(scoreFont);
+			g2.setColor(Color.WHITE);
+	
+			// Draw score and lives
+			g2.drawString("Score " + player.getScore(), scoreX, scoreY);
+			g2.drawString("Health " + player.getHealth(), livesX, livesY);
+	
+			// Dispose the graphics object
+			g.dispose();
+	
+		}
+		
+	}
+
+	public void resetGame(){
+		window.materialTF.setText(" 0 ");
+		window.scoreTF.setText(" 0 ");
+		window.timeTF.setText(" 15:00 ");
+	}
+
 }

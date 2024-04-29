@@ -185,6 +185,7 @@ public class SolidObjectManager {
 
    }
 
+
    public void initLevelTwo() {
       solidObjects.clear();
 
