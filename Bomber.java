@@ -34,7 +34,7 @@ public class Bomber extends Enemy {
         dy = 3;
 
         health = 18;
-        scoreValue = 100;
+        scoreValue = 150;
     }
 
     public void move() {

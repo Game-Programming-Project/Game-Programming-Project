@@ -23,7 +23,7 @@ public class TinyBee extends Enemy{
 
         health = 5;
         attackDamage = 0;
-        scoreValue = 10;
+        scoreValue = 80;
 	}
 
     public void update() {

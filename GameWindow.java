@@ -7,7 +7,6 @@ import java.awt.event.*; // need this to respond to GUI events
 public class GameWindow extends JFrame implements ActionListener, KeyListener, MouseListener {
 	
 	// Labels declaration 
-	private JLabel startGameLabel;
 	private JLabel gameL;
 
 	private JLabel materialLabel;
@@ -99,7 +98,7 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 
 		// // Create the gamePanel for game entities and set properties
 		gamePanel = new GamePanel(this);
-		gamePanel.setPreferredSize(new Dimension(1100, 500));
+		gamePanel.setPreferredSize(new Dimension(1100, 600));
 	
 		// Create the start game label and add it to the panel
 		startGameLabel = new JLabel("Click Play To Start Game");
@@ -109,7 +108,7 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 		
 		// Create the gamePanel for game entities and set properties
 		gamePanel = new GamePanel(this);
-		gamePanel.setPreferredSize(new Dimension(1100, 500));
+		gamePanel.setPreferredSize(new Dimension(1100, 600));
 	
 	
 		// Create buttonPanel
@@ -172,7 +171,7 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 
 		// Set the default values of the score, lives and time text fields in the infoPanel
 		scoreTF.setText(" 0 ");
-		timeTF.setText(" 15:00 ");
+		timeTF.setText(" 30:00 ");
 	}
 
 	// implement single method in ActionListener interface

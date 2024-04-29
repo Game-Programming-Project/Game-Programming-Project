@@ -20,7 +20,7 @@ import java.awt.Graphics;
 
 public class GamePanel extends JPanel implements Runnable {
 
-	private static final int initialTimeInSeconds = 900;	
+	private static final int initialTimeInSeconds = 1800;	
 
 	private boolean isRunning;
 	private boolean isPaused;
@@ -93,7 +93,7 @@ public class GamePanel extends JPanel implements Runnable {
 		currentLevel = 1;
 		numEnemies = -1;
 
-		image = new BufferedImage(1100, 500, BufferedImage.TYPE_INT_RGB);
+		image = new BufferedImage(1100, 700, BufferedImage.TYPE_INT_RGB);
 		soManager = new SolidObjectManager();
 		healthDisplay = new HealthDisplay(10, 10); // position it at the top left corner
 
@@ -233,7 +233,7 @@ public class GamePanel extends JPanel implements Runnable {
 		Boolean wouldCollide = soManager.collidesWithSolid(futurePosition);
 
 		// this makes the player walk through any solid object
-		 wouldCollide = false; // for testing purposes, comment out when done
+		// wouldCollide = false; // for testing purposes, comment out when done
 
 		if (player != null && !isPaused) {
 			if (direction != 99 & direction != 88) {
@@ -338,7 +338,7 @@ public class GamePanel extends JPanel implements Runnable {
 
 		
 		Graphics2D g2 = (Graphics2D) getGraphics(); // get the graphics context for the panel
-		g2.drawImage(image, 0, 0, 1100, 500, null);
+		g2.drawImage(image, 0, 0, 1100, 700, null);
 
 		imageContext.dispose();
 		g2.dispose();
@@ -349,7 +349,7 @@ public class GamePanel extends JPanel implements Runnable {
 		if (gameThread == null && characterSelected) {
 			soundManager.playClip("start", false);
 			createGameEntities();
-			levelInitializer.initLevelTwo();
+			levelInitializer.initLevelOne();
 			gameThread = new Thread(this);
 			gameThread.start();
 			startTimer();
@@ -379,7 +379,7 @@ public class GamePanel extends JPanel implements Runnable {
 				soundManager.playClip("level3_background", true);
 			}
 			createGameEntities();
-			levelInitializer.initLevelTwo();
+			levelInitializer.initLevelOne();
 	
 			gameThread = new Thread(this);
 			gameThread.start();
@@ -576,7 +576,7 @@ public class GamePanel extends JPanel implements Runnable {
 					window.timeTF.setText(String.format("%02d:%02d", 0, 0));
 					timer.cancel(); // Stop the timer when time reaches 0
 					endGame();
-					remainingTime = 900;
+					remainingTime = 1800;
 					isGameOver = true;
 					checkGameOver();
 				} else {
@@ -602,7 +602,7 @@ public class GamePanel extends JPanel implements Runnable {
 					window.timeTF.setText(String.format("%02d:%02d", 0, 0));
 					timer.cancel(); // Stop the timer when time reaches 0
 					endGame();
-					remainingTime = 900;
+					remainingTime = 1800;
 					isGameOver = true;
 					checkGameOver();
 				} else {
@@ -680,7 +680,7 @@ public class GamePanel extends JPanel implements Runnable {
 	public void resetGame(){
 		window.materialTF.setText(" 0 ");
 		window.scoreTF.setText(" 0 ");
-		window.timeTF.setText(" 15:00 ");
+		window.timeTF.setText(" 30:00 ");
 	}
 
 }

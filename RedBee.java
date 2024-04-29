@@ -22,7 +22,7 @@ public class RedBee extends BeeAnimation{
 		dy = 2;
 
         health = 15;
-        scoreValue=50;
+        scoreValue=125;
 	}
 
     public void update() {

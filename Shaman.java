@@ -34,7 +34,7 @@ public class Shaman extends Enemy {
         dx=4;
         dy=4;
         direction = 0;
-        scoreValue = 73;
+        scoreValue = 100;
     }
 
     public void move() {
