@@ -14,7 +14,7 @@ public class GameWindow extends JFrame implements ActionListener, KeyListener, M
 	private JLabel timeLabel;
 
 	// Text fields declaration 
-	private JTextField materialTF;
+	public JTextField materialTF;
 	public JTextField scoreTF;
 	public JTextField timeTF;
 

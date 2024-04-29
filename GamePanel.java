@@ -20,7 +20,7 @@ import java.awt.Graphics;
 
 public class GamePanel extends JPanel implements Runnable {
 
-	private static final int initialTimeInSeconds = 100;	
+	private static final int initialTimeInSeconds = 900;	
 
 	private boolean isRunning;
 	private boolean isPaused;
@@ -60,9 +60,7 @@ public class GamePanel extends JPanel implements Runnable {
 	private Chest chest;
 
 	private int numEnemies;
-	
-	private Image backgroundImage;
-	private ImageFX bgImageFX;
+
 
 	public GamePanel(GameWindow w) {
 
@@ -95,8 +93,6 @@ public class GamePanel extends JPanel implements Runnable {
 		currentLevel = 1;
 		numEnemies = -1;
 
-		backgroundImage = ImageManager.loadImage("images/MineEntrance.png");
-
 		image = new BufferedImage(1100, 500, BufferedImage.TYPE_INT_RGB);
 		soManager = new SolidObjectManager();
 		healthDisplay = new HealthDisplay(10, 10); // position it at the top left corner
@@ -116,8 +112,6 @@ public class GamePanel extends JPanel implements Runnable {
 
 		levelInitializer = new LevelInitializer(this, soundManager, soManager, rocks, enemies, background, player,
 				entitySpawner);
-
-		bgImageFX = new TintFX(this);
 	}
 
 	public void run() {
@@ -339,7 +333,6 @@ public class GamePanel extends JPanel implements Runnable {
 
 		}
 		else if (isGameOver) {
-			bgImageFX.draw(imageContext);
 			displayScoreBoard(imageContext);
 		}
 
@@ -365,20 +358,55 @@ public class GamePanel extends JPanel implements Runnable {
 
 	}
 
+
 	public void startNewGame() { // initialise and start a new game thread
 		isGameOver = false;
 		isPaused = false;
-
+	
+		soundManager.stopClip("gameover"); // Stop game over sound
+		Graphics2D g2d = (Graphics2D) getGraphics();
+		g2d.clearRect(0, 0, getWidth(), getHeight()); // Clear any residual drawings
+	
 		if (gameThread == null || !isRunning) {
 			soundManager.playClip("start", false);
+			int level = getCurrentLevel();
+	
+			if (level == 1) {
+				soundManager.playClip("background", true);
+			} else if (level == 2) {
+				soundManager.playClip("background2", true);
+			} else if (level == 3) {
+				soundManager.playClip("level3_background", true);
+			}
 			createGameEntities();
 			levelInitializer.initLevelTwo();
-
+	
 			gameThread = new Thread(this);
 			gameThread.start();
-			startOrResumeTimer();
+	
+			startTimer();
+		} else {
+			if (isPaused) {
+				// Stop the pause music
+				soundManager.stopClip("pause");
+				int level = getCurrentLevel();
+	
+				// Play the appropriate background music based on the current level
+				if (level == 1) {
+					soundManager.playClip("background", true);
+				} else if (level == 2) {
+					soundManager.playClip("background2", true);
+				} else if (level == 3) {
+					soundManager.playClip("level3_background", true);
+				}
+	
+				// Resume the timer
+				startOrResumeTimer();
+				isPaused = false;
+			}
 		}
 	}
+	
 
 	public void pauseGame() { // pause the game (don't update game entities)
 		if (isRunning) {
@@ -386,6 +414,7 @@ public class GamePanel extends JPanel implements Runnable {
 				startOrResumeTimer();
 				soundManager.stopClip("pause"); 
 				int level = getCurrentLevel();
+
 				if(level == 1){
 					soundManager.playClip("background", true);
 				}
@@ -547,6 +576,7 @@ public class GamePanel extends JPanel implements Runnable {
 					window.timeTF.setText(String.format("%02d:%02d", 0, 0));
 					timer.cancel(); // Stop the timer when time reaches 0
 					endGame();
+					remainingTime = 900;
 					isGameOver = true;
 					checkGameOver();
 				} else {
@@ -572,6 +602,7 @@ public class GamePanel extends JPanel implements Runnable {
 					window.timeTF.setText(String.format("%02d:%02d", 0, 0));
 					timer.cancel(); // Stop the timer when time reaches 0
 					endGame();
+					remainingTime = 900;
 					isGameOver = true;
 					checkGameOver();
 				} else {
@@ -609,7 +640,7 @@ public class GamePanel extends JPanel implements Runnable {
 			// Set font properties for "Game Over!" message
 			Font gameOverFont = new Font("Arial", Font.BOLD, 36);
 			g2.setFont(gameOverFont);
-			g2.setColor(Color.WHITE);
+			g2.setColor(Color.RED);
 	
 			// Get the size of the panel
 			Dimension panelSize = this.getSize();
@@ -633,7 +664,7 @@ public class GamePanel extends JPanel implements Runnable {
 			// Set font properties for score
 			Font scoreFont = new Font("Helvetica", Font.BOLD, 20);
 			g2.setFont(scoreFont);
-			g2.setColor(Color.BLUE);
+			g2.setColor(Color.WHITE);
 	
 			// Draw score and lives
 			g2.drawString("Score " + player.getScore(), scoreX, scoreY);
@@ -643,6 +674,13 @@ public class GamePanel extends JPanel implements Runnable {
 			g.dispose();
 	
 		}
+		
+	}
+
+	public void resetGame(){
+		window.materialTF.setText(" 0 ");
+		window.scoreTF.setText(" 0 ");
+		window.timeTF.setText(" 15:00 ");
 	}
 
 }
