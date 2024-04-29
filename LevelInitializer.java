@@ -86,7 +86,7 @@ public class LevelInitializer {
 		entitySpawner.setBg(background);
 
 		soManager.initLevelTwo(); // set up map boundaries
-		soManager.setAllObjectsVisible(false);
+		soManager.setAllObjectsVisible(true);
 
 		// Add level 2 background sound
 		soundManager.playClip("background2", true);
