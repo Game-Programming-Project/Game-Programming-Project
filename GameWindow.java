@@ -7,6 +7,9 @@ import java.awt.event.*; // need this to respond to GUI events
 public class GameWindow extends JFrame implements ActionListener, KeyListener, MouseListener {
 	
 	// Labels declaration 
+	private JLabel startGameLabel;
+	private JLabel gameL;
+
 	private JLabel materialLabel;
 
 	private JLabel startGameLabel;

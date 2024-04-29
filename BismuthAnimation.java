@@ -27,8 +27,8 @@ public class BismuthAnimation extends Enemy {
 		loadImages();
 		loadWalkAnimations();
 
-		width = 50;
-        height = 60;
+		width = 32;
+        height = 70;
 
 		dx = 5;
 		dy = 5;

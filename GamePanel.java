@@ -233,7 +233,7 @@ public class GamePanel extends JPanel implements Runnable {
 		Boolean wouldCollide = soManager.collidesWithSolid(futurePosition);
 
 		// this makes the player walk through any solid object
-		// wouldCollide = false; // for testing purposes, comment out when done
+		 wouldCollide = false; // for testing purposes, comment out when done
 
 		if (player != null && !isPaused) {
 			if (direction != 99 & direction != 88) {
@@ -349,7 +349,7 @@ public class GamePanel extends JPanel implements Runnable {
 		if (gameThread == null && characterSelected) {
 			soundManager.playClip("start", false);
 			createGameEntities();
-			levelInitializer.initLevelOne();
+			levelInitializer.initLevelTwo();
 			gameThread = new Thread(this);
 			gameThread.start();
 			startTimer();
