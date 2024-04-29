@@ -12,7 +12,9 @@ public class LevelInitializer {
 	private Player player;
 	private EntitySpawner entitySpawner;
 
-	public LevelInitializer(GamePanel gamePanel, SoundManager soundManager, SolidObjectManager soManager, ArrayList<Rock> rocks, List<Enemy> enemies, Background background, Player player, EntitySpawner entitySpawner) {
+	public LevelInitializer(GamePanel gamePanel, SoundManager soundManager, SolidObjectManager soManager,
+			ArrayList<Rock> rocks, List<Enemy> enemies, Background background, Player player,
+			EntitySpawner entitySpawner) {
 		this.gamePanel = gamePanel;
 		this.soundManager = soundManager;
 		this.soManager = soManager;
@@ -29,8 +31,7 @@ public class LevelInitializer {
 		if (currentLevel == 1) {
 			gamePanel.setCurrentLevel(2);
 			initLevelTwo();
-		}
-		else if (currentLevel == 2) {
+		} else if (currentLevel == 2) {
 			gamePanel.setCurrentLevel(3);
 			initLevelThree();
 		}
@@ -76,21 +77,21 @@ public class LevelInitializer {
 		enemies.clear();
 
 		background = new Background(gamePanel, "images/Maps/Testing/Level2MapTest1.png", 96, 690, -300);
-    
-    	player.resetX();
+
+		player.resetX();
 		player.resetY();
-    
+
 		soManager.setBg(background);
 		gamePanel.setBackground(background);
 		entitySpawner.setBg(background);
 
 		soManager.initLevelTwo(); // set up map boundaries
 		soManager.setAllObjectsVisible(false);
-		
+
 		// Add level 2 background sound
 		soundManager.playClip("background2", true);
 
-		// Spawns the ladder randomly 
+		// Spawns the ladder randomly
 		Point p = entitySpawner.getRandomPoint(2684, 3070, 1018, 1484);
 		rocks.add(new Rock(gamePanel, p.x, p.y, background, true));
 
@@ -99,7 +100,7 @@ public class LevelInitializer {
 
 		// add enemies under here
 		entitySpawner.spawnLevelTwoEnemies();
-		
+
 	}
 
 	public void initLevelThree() {
