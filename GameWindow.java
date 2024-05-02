@@ -1,190 +1,208 @@
 import javax.swing.*; // need this for GUI objects
 import java.awt.*; // need this for Layout Managers
 import java.awt.event.*; // need this to respond to GUI events
+;
 
-public class GameWindow extends JFrame
-		implements ActionListener,
-		KeyListener,
-		MouseListener {
-	// declare instance variables for user interface objects
 
-	// declare labels
+public class GameWindow extends JFrame implements ActionListener, KeyListener, MouseListener {
+	
+	// Labels declaration 
+	private JLabel gameL;
 
-	private JLabel statusBarL;
-	private JLabel keyL;
-	private JLabel mouseL;
+	private JLabel materialLabel;
 
-	// declare text fields
+	private JLabel startGameLabel;
+	private JLabel scoreLabel;
+	private JLabel timeLabel;
 
-	private JTextField statusBarTF;
-	private JTextField keyTF;
-	private JTextField mouseTF;
+	// Text fields declaration 
+	public JTextField materialTF;
+	public JTextField scoreTF;
+	public JTextField timeTF;
 
-	// declare buttons
-
-	private JButton startB;
-	private JButton pauseB;
+	// Buttons declaration 
+	private JButton playB; 
+	private JButton pauseB; 
 	private JButton endB;
-	private JButton startNewB;
-	private JButton focusB;
-	private JButton exitB;
+	private JButton restartB;   
+	private JButton exitB; 
+
+	// Variable declarations
+	private int score; 
+	private int remainingTime;
 
 	private Container c;
-
 	private JPanel mainPanel;
 	private GamePanel gamePanel;
 
 	@SuppressWarnings({ "unchecked" })
 	public GameWindow() {
 
-		setTitle("A Game With Aliens, Image Effects, and Animations");
-		setSize(500, 575);
+		setTitle ("A Game of a Miner's Exploration"); // window name
+		setSize (1920, 800); // window size
 
-		// create user interface objects
+		// Load image for header panel
+		Image originalImage = ImageManager.loadImage("images/Game Title.png");
+		int panelWidth = 600; // Adjust this to match the desired width of the panel
+		int panelHeight = 100; // Adjust this to match the desired height of the panel
+		Image scaledImage = originalImage.getScaledInstance(panelWidth, panelHeight, Image.SCALE_SMOOTH);
+		ImageIcon gameTitleIcon = new ImageIcon(scaledImage);
 
-		// create labels
+		// Create the header panel 
+		JPanel headerImagePanel = new JPanel();
+		headerImagePanel.setPreferredSize(new Dimension(panelWidth, panelHeight));
+		headerImagePanel.setBackground(new Color(71, 78, 111)); // Set background color if needed
+		headerImagePanel.add(new JLabel(gameTitleIcon)); // Add the image to the panel
 
-		statusBarL = new JLabel("Application Status: ");
-		keyL = new JLabel("Key Pressed: ");
-		mouseL = new JLabel("Location of Mouse Click: ");
+		// Create the score, lives and time labels of the infoPanel
+		materialLabel = new JLabel (" MATERIALS COLLECTED ");
+		scoreLabel = new JLabel (" CURRENT SCORE  ");
+		timeLabel = new JLabel(" TIME REMAINING ");
 
-		// create text fields and set their colour, etc.
+		// Create text fields and set properties
+		materialTF = new JTextField("0");
+		scoreTF = new JTextField(Integer.toString(score));
+		timeTF = new JTextField(Integer.toString(remainingTime));
 
-		statusBarTF = new JTextField(25);
-		keyTF = new JTextField(25);
-		mouseTF = new JTextField(25);
+		materialTF.setEditable(false);
+		scoreTF.setEditable(false);
+		timeTF.setEditable(false);
 
-		statusBarTF.setEditable(false);
-		keyTF.setEditable(false);
-		mouseTF.setEditable(false);
+		// Set the background color of the text fields
+		materialTF.setBackground(Color.WHITE);
+		scoreTF.setBackground(Color.WHITE);
+		timeTF.setBackground(Color.WHITE);
 
-		statusBarTF.setBackground(Color.CYAN);
-		keyTF.setBackground(Color.YELLOW);
-		mouseTF.setBackground(Color.GREEN);
+		// Creating buttons 
+		playB = new JButton ("Play");
+		pauseB = new JButton ("Pause Game");
+		endB = new JButton ("End Game");
+		restartB = new JButton ("New Game"); 
+		exitB = new JButton ("Exit");
 
-		// create buttons
+		// Adding action listeners to each button
+		playB.addActionListener(this);
 
-		startB = new JButton("Start Game");
-		pauseB = new JButton("Pause Game");
-		endB = new JButton("End Game");
-		startNewB = new JButton("Start New Game");
-		focusB = new JButton("Shoot Cat");
-		exitB = new JButton("Exit");
-
-		// add listener to each button (same as the current object)
-
-		startB.addActionListener(this);
 		pauseB.addActionListener(this);
 		endB.addActionListener(this);
-		startNewB.addActionListener(this);
-		focusB.addActionListener(this);
+		restartB.addActionListener(this);
 		exitB.addActionListener(this);
-
-		// create mainPanel
-
+		
+		// Create mainPanel
 		mainPanel = new JPanel();
 		FlowLayout flowLayout = new FlowLayout();
 		mainPanel.setLayout(flowLayout);
 
 		GridLayout gridLayout;
 
-		// create the gamePanel for game entities
 
-		gamePanel = new GamePanel();
-		gamePanel.setPreferredSize(new Dimension(400, 400));
-
-		// create infoPanel
-
-		JPanel infoPanel = new JPanel();
-		gridLayout = new GridLayout(3, 2);
-		infoPanel.setLayout(gridLayout);
-		infoPanel.setBackground(Color.ORANGE);
-
-		// add user interface objects to infoPanel
-
-		infoPanel.add(statusBarL);
-		infoPanel.add(statusBarTF);
-
-		infoPanel.add(keyL);
-		infoPanel.add(keyTF);
-
-		infoPanel.add(mouseL);
-		infoPanel.add(mouseTF);
-
-		// create buttonPanel
-
+		// // Create the gamePanel for game entities and set properties
+		gamePanel = new GamePanel(this);
+		gamePanel.setPreferredSize(new Dimension(1100, 600));
+	
+		// Create the start game label and add it to the panel
+		startGameLabel = new JLabel("Click Play To Start Game");
+		startGameLabel.setHorizontalAlignment(SwingConstants.CENTER);
+		startGameLabel.setFont(new Font("Arial", Font.BOLD, 20));
+		startGameLabel.setForeground(Color.BLACK);
+		
+		// Create the gamePanel for game entities and set properties
+		gamePanel = new GamePanel(this);
+		gamePanel.setPreferredSize(new Dimension(1100, 600));
+	
+	
+		// Create buttonPanel
 		JPanel buttonPanel = new JPanel();
-		gridLayout = new GridLayout(2, 3);
-		buttonPanel.setLayout(gridLayout);
+		FlowLayout f = new FlowLayout();
+		buttonPanel.setLayout(f);
+		buttonPanel.setPreferredSize(new Dimension(1200, 35));
+		buttonPanel.setBackground(new Color(71, 78, 111));
 
-		// add buttons to buttonPanel
-
-		buttonPanel.add(startB);
+		// Adding buttons to buttonPanel
+		buttonPanel.add(playB);
 		buttonPanel.add(pauseB);
 		buttonPanel.add(endB);
-		buttonPanel.add(startNewB);
-		buttonPanel.add(focusB);
+		buttonPanel.add(restartB);
 		buttonPanel.add(exitB);
 
-		// add sub-panels with GUI objects to mainPanel and set its colour
+		// Create infoPanel
+		JPanel infoPanel = new JPanel();
+		gridLayout = new GridLayout(1, 6);
+		infoPanel.setLayout(gridLayout);
+		infoPanel.setBackground(new Color(186, 181, 147));
 
-		mainPanel.add(infoPanel);
-		mainPanel.add(gamePanel);
+		// Add user interface objects to infoPanel
+		infoPanel.add (materialLabel);
+		infoPanel.add (materialTF);
+
+		infoPanel.add (scoreLabel);
+		infoPanel.add (scoreTF);		
+
+		infoPanel.add (timeLabel);
+		infoPanel.add (timeTF);
+		
+		// Add sub-panels with GUI objects to mainPanel and set its colour
+		mainPanel.add(headerImagePanel);
 		mainPanel.add(buttonPanel);
-		mainPanel.setBackground(Color.PINK);
+		mainPanel.add(gamePanel);
+		mainPanel.add(infoPanel); 
+		mainPanel.setBackground(new Color(71, 78, 111));
 
-		// set up mainPanel to respond to keyboard and mouse
-
+		// Set up mainPanel to respond to keyboard and gamePanel to mouse
 		gamePanel.addMouseListener(this);
 		mainPanel.addKeyListener(this);
+		mainPanel.setFocusable(true);
+		mainPanel.requestFocusInWindow(); // Request focus when window is shown
 
-		// add mainPanel to window surface
-
+		// Add mainPanel to window surface
 		c = getContentPane();
 		c.add(mainPanel);
 
-		// set properties of window
-
+		// Set properties of window
 		setResizable(true);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
 
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setLocationRelativeTo(null); // Center the window on the screen
 		setVisible(true);
 
-		// set status bar message
+		// Setting the initial values 
+		score = 0;
 
-		statusBarTF.setText("Application started.");
+		// Set the default values of the score, lives and time text fields in the infoPanel
+		scoreTF.setText(" 0 ");
+		timeTF.setText(" 30:00 ");
 	}
 
 	// implement single method in ActionListener interface
-
 	public void actionPerformed(ActionEvent e) {
 
 		String command = e.getActionCommand();
 
-		statusBarTF.setText(command + " button clicked.");
-
-		if (command.equals(startB.getText())) {
+		if (command.equals("Play")) {
 			gamePanel.startGame();
 		}
 
-		if (command.equals(pauseB.getText())) {
+		if (command.equals("Pause Game")) {
 			gamePanel.pauseGame();
-			if (command.equals("Pause Game"))
-				pauseB.setText("Resume");
-			else
-				pauseB.setText("Pause Game");
-
+			pauseB.setText ("Resume Game");
 		}
 
-		if (command.equals(endB.getText())) {
+		if (command.equals("Resume Game")) {
+			gamePanel.pauseGame();
+			//isTimerPaused = true;
+			pauseB.setText ("Pause Game");
+		}
+		
+		if (command.equals("End Game")) {
 			gamePanel.endGame();
+			remainingTime = 0;
 		}
 
-		if (command.equals(startNewB.getText()))
+		if (command.equals(restartB.getText())){
+			pauseB.setText ("Pause Game");
 			gamePanel.startNewGame();
-
-		if (command.equals(focusB.getText()))
-			gamePanel.shootCat();
+		}
 
 		if (command.equals(exitB.getText()))
 			System.exit(0);
@@ -193,28 +211,25 @@ public class GameWindow extends JFrame
 	}
 
 	// implement methods in KeyListener interface
-
 	public void keyPressed(KeyEvent e) {
 		int keyCode = e.getKeyCode();
 
-		String keyText = e.getKeyText(keyCode);
-		keyTF.setText(keyText + " pressed.");
-
-		if (keyCode == KeyEvent.VK_A) {
+		if (keyCode == KeyEvent.VK_A || keyCode == KeyEvent.VK_LEFT) {
 			gamePanel.updatePlayer(1);
 		}
 
-		if (keyCode == KeyEvent.VK_D) {
+		if (keyCode == KeyEvent.VK_D || keyCode == KeyEvent.VK_RIGHT) {
 			gamePanel.updatePlayer(2);
 		}
 
-		if (keyCode == KeyEvent.VK_W) {
+		if (keyCode == KeyEvent.VK_W || keyCode == KeyEvent.VK_UP) {
 			gamePanel.updatePlayer(3);
 		}
 
-		if (keyCode == KeyEvent.VK_S) {
+		if (keyCode == KeyEvent.VK_S || keyCode == KeyEvent.VK_DOWN) {
 			gamePanel.updatePlayer(4);
 		}
+
 	}
 
 	public void keyReleased(KeyEvent e) {
@@ -228,14 +243,20 @@ public class GameWindow extends JFrame
 	// implement methods in MouseListener interface
 
 	public void mouseClicked(MouseEvent e) {
-
 		int x = e.getX();
 		int y = e.getY();
 
 		// 99 means attack, so clicking makes player swing weapon
 		gamePanel.updatePlayer(99);
 
-		mouseTF.setText("(" + x + ", " + y + ")");
+		if (SwingUtilities.isLeftMouseButton(e)) {
+			// 99 means attack, so clicking makes player swing weapon
+			gamePanel.updatePlayer(99);
+
+        } else if (SwingUtilities.isRightMouseButton(e)) {
+			gamePanel.updatePlayer(88);
+        }
+
 	}
 
 	public void mouseEntered(MouseEvent e) {
@@ -254,4 +275,13 @@ public class GameWindow extends JFrame
 
 	}
 
+	public void updateScore(int score) {
+		scoreTF.setText(String.valueOf(score));
+	}
+
+	public void updateMaterials(int materials) {
+		materialTF.setText(String.valueOf(materials));
+	}
+
+	
 }

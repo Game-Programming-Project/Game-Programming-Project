@@ -9,19 +9,18 @@ import java.util.HashSet;
 
 public class Player {
 
-	Animation walkAnimationRight;
-	Animation walkAnimationLeft;
-	Animation walkAnimation;
+	private Animation walkAnimationRight;
+	private Animation walkAnimationLeft;
+	private Animation walkAnimation;
 
-	Animation attackAnimationRight;
-	Animation attackAnimationLeft;
-	Animation attackAnimation;
+	private Animation attackAnimationRight;
+	private Animation attackAnimationLeft;
+	private Animation attackAnimation;
 
-	private int x;
-	private int y;
+	private int x, y;
 
-	private int width;
-	private int height;
+	private int width, height;
+	private int attackWidth, attackHeight;
 
 	private GamePanel panel;
 
@@ -36,11 +35,28 @@ public class Player {
 
 	private HashSet directions;
 
-
 	private Boolean attacking;
 	private Boolean justAttacked;
-    
-    public Player(GamePanel p, int xPos, int yPos, String cType) {
+	private Boolean attackRegistered;
+	private Boolean invincible;
+
+	private Long invincibleStart;
+
+	private SoundManager soundManager;
+	private SolidObjectManager soManager;
+	private SolidObject solidObject;
+
+	private int centerX, centerY;
+
+	private int materials;
+
+	private int attackDamage, baseAttackDamage;
+	private int health, maxHealth;
+	private int speed;
+
+	private int score;
+
+	public Player(GamePanel p, int xPos, int yPos, String cType, SolidObjectManager soManager) {
 
 		directions = new HashSet<>(3);
 
@@ -56,53 +72,56 @@ public class Player {
 
 		panel = p;
 
-		width = height = 48;
+		this.soManager = soManager;
 
-        width=height=100;
-        
-        x = xPos;		
-        y = yPos;		
-
-        dx = 8;	
-        dy = 8;	
-
+		x = centerX = xPos;
+		y = centerY = yPos;
 
 		// load images from strip files
 		loadImages();
-		loadAnimations();
+		loadAllAnimations();
 
-		
 		attacking = false;
 		justAttacked = false;
+		attackRegistered = false;
+		solidObject = null;
+		invincible = false;
 
+		baseAttackDamage = attackDamage = 8;
+		health = maxHealth = 10;
+		speed = 5;
+		dx = dy = 5;
+
+		setDimensions();
+
+		soundManager = SoundManager.getInstance();
+
+		score = materials=0;
 	}
 
 	public void start() {
 		if (walkAnimation.isStillActive())
 			return;
 
-		System.out.println("start");
-
+		// System.out.println("start");
 		walkAnimation.start();
 	}
 
 	public void update() {
 
-
-		if(!walkAnimation.isStillActive() && !attackAnimation.isStillActive()){ // if animations are not active no need to update
+		if (!walkAnimation.isStillActive() && !attackAnimation.isStillActive()) { // if animations are not active no
+																					// need to update
 			if (attacking)
-				justAttacked = true; //just finished attacking so set to true
-			
-			attacking = false;
+				justAttacked = true; // just finished attacking so set to true
 
+			attacking = false;
 			return;
 		}
 
 		// set to false every time update is called cause didn't just finish attacking
-		justAttacked = false; //need this or else it will falsely think it just finished attacking
+		justAttacked = false; // need this or else it will falsely think it just finished attacking
 
 		if (attackAnimation.isStillActive()) { // if attack animation is active update it
-			System.out.println("attack update");
 			attacking = true;
 			attackAnimation.update();
 			return;
@@ -110,23 +129,28 @@ public class Player {
 
 		walkAnimation.update();
 
+		int dmgIncrease = materials/10;
+
+		attackDamage = baseAttackDamage + dmgIncrease;
 	}
 
-    public boolean attack() {
-
+	public boolean attack() {
 		if (attackAnimation.isStillActive()) // if an attack is currently going on return, else start the animation
 			return false; // indicates that attack did not go off
 		else
 			attacking = true;
 
-		System.out.println("attack");
 		attackAnimation.start();
+		attackRegistered = false;
+
 		return true; // attack went off
 	}
 
-
-
 	public int move(int direction) {
+
+		if (soManager != null)
+			solidObject = collidesWithSolid(); // if the player collides with a solid object (map boundary) this will be
+												// !=null
 
 		if (!walkAnimation.isStillActive())
 			return 0;
@@ -147,11 +171,11 @@ public class Player {
 
 			if (directions.contains(Integer.valueOf(1))) { // can move left
 				x = x - dx;
-				if (x < 20)
-					x = 20;
+				if (x < 33)
+					x = 33;
 
-				if (x <= 190 && oldX > 190) { // check if was moving left and reaches centre
-					x = 190; // reposition at centre
+				if (x <= centerX && oldX > centerX) { // check if was moving left and reaches centre
+					x = centerX;// x = 190; // reposition at centre
 					directions.remove(Integer.valueOf(1)); // stop moving left
 					directions.remove(Integer.valueOf(2)); // and right
 					return 10; // background can start scrolling left and right
@@ -168,13 +192,14 @@ public class Player {
 			standImage = standImageRight;
 			walkAnimation = walkAnimationRight;
 			attackAnimation = attackAnimationRight;
+
 			if (directions.contains(Integer.valueOf(1))) { // can move right
 				x = x + dx; // move right
 				if (x + width > panel.getWidth() - 33)
 					x = panel.getWidth() - width - 33;
 
-				if (x >= 190 && oldX < 190) { // check if was moving left and reaches centre
-					x = 190; // reposition at centre
+				if (x >= centerX && oldX < centerX) { // check if was moving left and reaches centre
+					x = centerX;// x = 190; // reposition at centre
 					directions.remove(Integer.valueOf(1)); // stop moving left
 					directions.remove(Integer.valueOf(2)); // and right
 					return 10; // background can start scrolling left and right
@@ -192,8 +217,8 @@ public class Player {
 				if (y < 82)
 					y = 82;
 
-				if (y <= 180 && oldY > 180) { // check if was moving up and reaches centre
-					y = 180; // reposition at centre
+				if (y <= centerY && oldY > centerY) { // check if was moving up and reaches centre
+					y = centerY;// y = 180; // reposition at centre
 					directions.remove(Integer.valueOf(3)); // stop moving up
 					directions.remove(Integer.valueOf(4)); // and down
 					return 30; // background can start scrolling up and down
@@ -210,8 +235,8 @@ public class Player {
 				if (y + height > panel.getHeight() - 33)
 					y = panel.getHeight() - height - 33;
 
-				if (y >= 180 && oldY < 180) { // check if was moving up and reaches centre
-					y = 180; // reposition at centre
+				if (y >= centerY && oldY < centerY) { // check if was moving up and reaches centre
+					y = centerY;// y = 180; // reposition at centre
 					directions.remove(Integer.valueOf(3)); // stop moving up
 					directions.remove(Integer.valueOf(4)); // and down
 					return 30; // background can start scrolling up and down
@@ -231,14 +256,17 @@ public class Player {
 		if (direction == 1 && directions.contains(Integer.valueOf(1))) // already moved left so can move right (back to
 																		// centre)
 			directions.add(Integer.valueOf(2));
+
 		else if (direction == 2 && directions.contains(Integer.valueOf(2))) // already moved right so can move left
 																			// (back to centre)
 			directions.add(Integer.valueOf(1));
+
 		else if (direction == 3 && directions.contains(Integer.valueOf(3))) // already moved up so can move down (back
 																			// to centre)
 			directions.add(Integer.valueOf(4));
 		else if (direction == 4 && directions.contains(Integer.valueOf(4))) // already moved down so can move up (back
 																			// to centre)
+
 			directions.add(Integer.valueOf(3));
 
 		if (direction > 0) { // new direction the bat can move in
@@ -250,62 +278,49 @@ public class Player {
 
 	public void draw(Graphics2D g2) {
 
-		if (!walkAnimation.isStillActive() && !attackAnimation.isStillActive()) // if animations are not active then
-																				// draw standing image instead
-			g2.drawImage(standImage, x, y, width, height, null);
+		// if(attackAnimation.isStillActive())
+		// g2.drawImage(attackAnimation.getImage(), x, y, width, height, null);
 
-		if (attackAnimation.isStillActive())
-			g2.drawImage(attackAnimation.getImage(), x, y, width, height, null);
+		if (attackAnimation.isStillActive()){
+			g2.drawImage(attackAnimation.getImage(), x, y, attackWidth, attackHeight, null);
+			return;
+		}
 
-		if (walkAnimation.isStillActive())
+		if (walkAnimation.isStillActive()){
 			g2.drawImage(walkAnimation.getImage(), x, y, width, height, null);
+			return;
+		}
+
+		// if animations are not active then draw standing image instead
+		if (!walkAnimation.isStillActive() && !attackAnimation.isStillActive()) 
+			g2.drawImage(standImage, x, y, width, height, null);
 	}
 
-	private void loadAttackAnimation() {
-		// loading animation for attacking
-		Image stripImage = ImageManager
-				.loadImage("images/Player/" + characterType + "/" + characterType + "_attackRight.png");
-
-		int imageWidth = (int) stripImage.getWidth(null) / 6;
-		int imageHeight = stripImage.getHeight(null);
-
-		for (int i = 0; i < 6; i++) {
-
-			BufferedImage frameImage = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g = (Graphics2D) frameImage.getGraphics();
-
-			g.drawImage(stripImage,
-					0, 0, imageWidth, imageHeight,
-					i * imageWidth, 0, (i * imageWidth) + imageWidth, imageHeight,
-					null);
-
-			attackAnimationRight.addFrame(frameImage, 100);
-		}
-
-		stripImage = ImageManager.loadImage("images/Player/" + characterType + "/" + characterType + "_attackLeft.png");
-
-		imageWidth = (int) stripImage.getWidth(null) / 6;
-		imageHeight = stripImage.getHeight(null);
-
-		for (int i = 0; i < 6; i++) {
-
-			BufferedImage frameImage = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g = (Graphics2D) frameImage.getGraphics();
-
-			g.drawImage(stripImage,
-					0, 0, imageWidth, imageHeight,
-					i * imageWidth, 0, (i * imageWidth) + imageWidth, imageHeight,
-					null);
-
-			attackAnimationLeft.addFrame(frameImage, 100);
-		}
+	private void loadAttackAnimations() { // loading animation for attacking
+		attackAnimationRight = loadAnimation(
+				"images/Player/" + characterType + "/" + characterType + "_attackRight.png");
+		attackAnimationLeft = loadAnimation("images/Player/" + characterType + "/" + characterType + "_attackLeft.png");
 
 		attackAnimation = attackAnimationRight;
 	}
 
-	private void loadWalkAnimation() {
-		Image stripImage = ImageManager
-				.loadImage("images/Player/" + characterType + "/" + characterType + "_walkRight.png");
+	private void loadWalkAnimations() {
+		walkAnimationRight = loadAnimation("images/Player/" + characterType + "/" + characterType + "_walkRight.png");
+		walkAnimationLeft = loadAnimation("images/Player/" + characterType + "/" + characterType + "_walkLeft.png");
+
+		walkAnimation = walkAnimationRight;
+	}
+
+	private void loadAllAnimations() {
+		loadWalkAnimations();
+		loadAttackAnimations();
+	}
+
+	private Animation loadAnimation(String stripFilePath) {
+
+		Animation Animation = new Animation(false);
+
+		Image stripImage = ImageManager.loadImage(stripFilePath);
 
 		int imageWidth = (int) stripImage.getWidth(null) / 6;
 		int imageHeight = stripImage.getHeight(null);
@@ -320,33 +335,10 @@ public class Player {
 					i * imageWidth, 0, (i * imageWidth) + imageWidth, imageHeight,
 					null);
 
-			walkAnimationRight.addFrame(frameImage, 70);
+			Animation.addFrame(frameImage, 70);
 		}
 
-		stripImage = ImageManager.loadImage("images/Player/" + characterType + "/" + characterType + "_walkLeft.png");
-
-		imageWidth = (int) stripImage.getWidth(null) / 6;
-		imageHeight = stripImage.getHeight(null);
-
-		for (int i = 0; i < 6; i++) {
-
-			BufferedImage frameImage = new BufferedImage(imageWidth, imageHeight, BufferedImage.TYPE_INT_ARGB);
-			Graphics2D g = (Graphics2D) frameImage.getGraphics();
-
-			g.drawImage(stripImage,
-					0, 0, imageWidth, imageHeight,
-					i * imageWidth, 0, (i * imageWidth) + imageWidth, imageHeight,
-					null);
-
-			walkAnimationLeft.addFrame(frameImage, 70);
-		}
-
-		walkAnimation = walkAnimationRight;
-	}
-
-	private void loadAnimations() {
-		loadWalkAnimation();
-		loadAttackAnimation();
+		return Animation;
 	}
 
 	private void loadImages() {
@@ -354,17 +346,129 @@ public class Player {
 				.loadImage("images/Player/" + characterType + "/" + characterType + "_standRight.png");
 		standImageLeft = ImageManager
 				.loadImage("images/Player/" + characterType + "/" + characterType + "_standLeft.png");
+
 		standImage = standImageRight;
 	}
 
+	private void setDimensions() {
+		// player 1 is 27x38 walking and standing
+		// and 38x38 attacking
+		if (characterType == "1") {
+			width = 57;
+			height = 80;
 
-    public Rectangle2D.Double getBoundingRectangle() {
-		return new Rectangle2D.Double (x, y, width, height);
+			attackWidth = 76;
+			attackHeight = 80;
 
+		}
+
+		// player 2 is 32x38 walking and standing
+		// and 38x38 attacking
+		if (characterType == "2") {
+			width = 68;
+			height = 80;
+
+			attackWidth = 76;
+			attackHeight = 80;
+
+			speed = 8;
+			dx = dy = 8;
+			baseAttackDamage = attackDamage = 6;
+		}
+
+		// player 3 is 27x38 walking and standing
+		// and 33x38 attacking
+		if (characterType == "3") {
+			width = 57;
+			height = 80;
+
+			attackWidth = 66;
+			attackHeight = 80;
+
+			speed = 6;
+			dx = dy = 6;
+			health = maxHealth = 16;
+			baseAttackDamage = attackDamage = 6;
+		}
+	}
+
+	public Rectangle2D.Double getBoundingRectangle() {
+		int offset = 10; // used to make player range bigger, needed for collision detection
+
+		// if(characterType=="1" || characterType=="3")
+		// offset = 10;
+		// else
+		// offset = 0;
+
+		return new Rectangle2D.Double(x, y, width + offset, height);
+	}
+
+	// method used in detecting if player will collide with a solid object
+	public Rectangle2D.Double getFutureBoundingRectangle(int direction) {
+
+		int futureX = x, futureY = y;
+
+		if (direction == 1)
+			futureX = x - dx;
+		else if (direction == 2)
+			futureX = x + dx;
+		else if (direction == 3)
+			futureY = y - dy;
+		else if (direction == 4)
+			futureY = y + dy;
+
+		return new Rectangle2D.Double(futureX, futureY, width, height);
+	}
+
+	public SolidObject collidesWithSolid() {
+		Rectangle2D.Double myRect = getBoundingRectangle();
+		return soManager.collidesWith(myRect);
+	}
+
+	public void takeDamage(int damage) {
+		health -= damage;
+
+		if (health < 0)
+			health = 0;
+
+		invincibleStart = System.currentTimeMillis();
+		invincible = true;
+
+		if(!soundManager.isStillPlaying("damagePlayer"))
+			soundManager.playClip("damagePlayer",false);
+	}
+
+	public void heal(int h) {
+		health += h;
+
+		if (health > maxHealth)
+			health = maxHealth;
+	}
+
+	public Boolean isInvincible() {
+		if (invincible) { // if player is invincible currently then check if 1 second has passed yet
+			if (System.currentTimeMillis() - invincibleStart > 2000) {
+				invincible = false;
+			}
+		}
+		return invincible;
+	}
+
+	public void setAttackDamage(int a) {
+		attackDamage = a;
 	}
 
 	public void setJustAttacked(boolean a) {
 		justAttacked = a;
+	}
+
+	public boolean attackRegistered() {
+		if (!attackRegistered && attackAnimation.isStillActive()) {
+			attackRegistered = true;
+			return true;
+		}
+
+		return false;
 	}
 
 	public boolean justAttacked() {
@@ -375,11 +479,55 @@ public class Player {
 		return attacking;
 	}
 
+	public int getAttackDamage() {
+		return attackDamage;
+	}
+
 	public int getX() {
 		return x;
 	}
 
 	public int getY() {
 		return y;
+	}
+
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeight() {
+		return height;
+	}
+
+	public int getHealth() {
+		return health;
+	}
+
+	public void resetX(){
+		x = centerX;
+	}
+
+	public void resetY(){
+		y = centerY;
+	}
+
+	public int getSpeed(){
+		return speed;
+	}
+
+	public void addMaterials(int m){
+		materials+=m;
+	}
+
+	public int getMaterials(){
+		return materials;
+	}
+
+	public int getScore(){
+		return score;
+	}
+
+	public void addScore(int s){
+		score+=s;
 	}
 }
